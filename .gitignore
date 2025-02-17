@@ -1,0 +1,13 @@
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+vendor
+
+Gemfile.lock
+
+project
+target
+.idea
+.bsp
+.DS_Store
