@@ -13,7 +13,8 @@ lazy val root = (project in file("."))
       case _                        => MergeStrategy.first
     },
     libraryDependencies ++= Seq(
-      "org.scalafx" %% "scalafx" % "20.0.0-R31"
+      "org.scalafx" %% "scalafx" % "20.0.0-R31",
+      "org.scalatest" %% "scalatest" % "3.3.0-SNAP4" % Test,
     ),
     libraryDependencies ++= {
       val platforms = Seq("linux", "mac", "win")
