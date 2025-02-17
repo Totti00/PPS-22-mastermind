@@ -1,5 +1,5 @@
 package mastermind
 
-class Main {
+object Main extends App {
   println(5)
 }
