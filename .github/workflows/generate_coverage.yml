@@ -29,14 +29,23 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'sbt'
 
+      # Step 3: Install sbt (if it's not already installed)
       - name: Install sbt
         run: |
           if [ "$RUNNER_OS" == "macOS" ]; then
-             brew install sbt
+            brew install sbt
+          else
+            sudo apt-get update
+            sudo apt-get install sbt
           fi
-        shell: bash
+
+      # Cache sbt dependencies
+      - name: Cache SBT
+        uses: actions/cache@v3
+        with:
+          path: ~/.ivy2/cache
+          key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
 
       # Step 3: Generate ScalaDoc
       - name: Run sbt jacoco to generate coverage
