@@ -27,14 +27,16 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
           java-version: '17'
+          distribution: 'temurin'
+          cache: 'sbt'
 
-      - name: Cache SBT
-        uses: actions/cache@v3
-        with:
-          path: ~/.ivy2/cache
-          key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
+      - name: Install sbt
+        run: |
+          if [ "$RUNNER_OS" == "macOS" ]; then
+             brew install sbt
+          fi
+        shell: bash
 
       # Step 3: Generate ScalaDoc
       - name: Run sbt jacoco to generate coverage
