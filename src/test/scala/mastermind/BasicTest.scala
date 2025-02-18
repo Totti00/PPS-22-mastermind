@@ -8,5 +8,4 @@ class BasicTest extends AnyWordSpec:
       assert(1 == 1)
     }
 
-
-}
+  }
