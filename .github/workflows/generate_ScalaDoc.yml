@@ -10,7 +10,7 @@ on:
 jobs:
   generate-doc:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}  # Ensure it only runs if tests succeed
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       SCALA_TARGET: ./target/scala-3.3.5
 
