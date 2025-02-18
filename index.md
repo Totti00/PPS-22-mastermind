@@ -6,7 +6,7 @@ permalink: /
 ---
 
 # Introduzione
-![Logo](./docs/img/scothello-logo.png)
+![Logo](./docs/img/mastermind-logo.png)
 
 L'obiettivo del progetto è la realizzazione di un clone del gioco Mastermind
 
