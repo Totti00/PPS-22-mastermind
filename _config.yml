@@ -30,7 +30,7 @@ github_username:
 theme: just-the-docs
 
 # Color scheme supports "light" (default) and "dark"
-#color_scheme: dark
+color_scheme: light
 
 nav_external_links:
   - title: Scaladoc
