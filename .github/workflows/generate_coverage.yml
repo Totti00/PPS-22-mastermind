@@ -33,7 +33,7 @@ jobs:
 
       # Step 3: Generate Jacoco
       - name: Run sbt jacoco to generate coverage
-        run: sbt clean jacoco
+        run: sbt jacoco
 
       # Step 4: Move generated coverage to a temporary directory
       - name: Move coverage to temporary directory
