@@ -1,17 +1,61 @@
-## About The Project
-Project for `Paradigmi di Programmazione e Sviluppo` course of `University of Bologna` (A.Y. 2022/2023).
-`PPS-22-mastermind` is a simple implementation of the Mastermind game in Scala.
 
-### Build With
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/totti00/PPS-22-mastermind">
+    <img src="res/img/mastermind-logo.jpg" alt="Logo" width="470" height="180">
+  </a>
+
+<h3 align="center">Mastermind</h3>
+
+  <p align="center">
+    A game based on logic, deduction, and pattern recognition, a clone of Mastermind designed for strategic codebreaking.
+    <br />
+    <br />
+    <a href="https://totti00.github.io/PPS-22-mastermind/scaladoc/"><strong>Explore the docs 📖</strong></a>
+  </p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+    </li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#acknowledgements">Acknowledgements</a></li>
+  </ol>
+</details>
+
+<!-- ABOUT THE PROJECT -->
+
+## About The Project
+The goal of the project is to create a clone of the board game "Mastermind," a game of logic and deduction for two players.
+
+In the game, one player assumes the role of the codemaker, creating a secret sequence of colored pegs, while the other acts 
+as the codebreaker, attempting to deduce the correct combination. The codebreaker makes successive guesses, receiving 
+feedback in the form of black and white pegs that indicate correct colors and positions. The objective is to crack the code 
+within a limited number of attempts using logic and strategic reasoning.
+
+<!-- BUILT WITH -->
+
+### Built With
 - Scala 3
 - SBT
 - ScalaTest
+- ScalaFX
 
-## Documentation
-The documentation of the project can be found [here](https://totti00.github.io/PPS-22-mastermind/).
+<!-- GETTING STARTED -->
 
-The scala documentation can be found [here](https://totti00.github.io/PPS-22-mastermind/scaladoc/).
-## Usage
+## Getting Started
 The latest `.jar` file can be downloaded from the [releases section](https://github.com/Totti00/PPS-22-mastermind/releases).
 To execute the game, run the following command:
 ```shell
@@ -21,11 +65,6 @@ Otherwise, you can clone the repository and run the game with the following comm
 ```shell
 $ sbt compile
 $ sbt run
-```
-## Test
-You can clone the repository, move inside application's folder and execute tests with the following command:
-```shell
-$ sbt test
 ```
 
 <!-- CONTRIBUTING -->
