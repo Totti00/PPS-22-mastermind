@@ -31,17 +31,17 @@ jobs:
           java-version: '17'
           cache: 'sbt'
 
-      # Step 3: Generate ScalaDoc
+      # Step 3: Generate Jacoco
       - name: Run sbt jacoco to generate coverage
         run: sbt clean jacoco
 
-      # Step 4: Move generated ScalaDoc to a temporary directory
+      # Step 4: Move generated coverage to a temporary directory
       - name: Move coverage to temporary directory
         run: |
           mkdir -p /tmp/coverage
           cp -r ${SCALA_TARGET}/jacoco/report/html/* /tmp/coverage
 
-      # Step 5: Checkout the doc branch to add the ScalaDoc
+      # Step 5: Checkout the doc branch to add the coverage
       - name: Checkout doc branch
         uses: actions/checkout@v3
         with:
@@ -49,13 +49,13 @@ jobs:
           persist-credentials: false
           fetch-depth: 0  # Fetch full history to allow branch switching
 
-      # Step 6: Copy the generated ScalaDoc to the Jekyll site
+      # Step 6: Copy the generated coverage to the Jekyll site
       - name: Copy coverage to Jekyll site
         run: |
           mkdir -p ./test-coverage
           cp -r /tmp/coverage/* ./test-coverage
 
-      # Step 7: Commit the updated ScalaDoc
+      # Step 7: Commit the updated coverage
       - name: Commit changes
         run: |
           git config --local user.name "github-actions[bot]"
