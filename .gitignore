@@ -5,7 +5,6 @@ _site
 vendor
 
 Gemfile.lock
-test-coverage/jacoco-sessions.html
 
 project
 target
