@@ -13,6 +13,7 @@ on:
       - doc
     paths-ignore:
       - "mastermind.drawio"
+      - "test-coverage/jacoco-sessions.html"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
