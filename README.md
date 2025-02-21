@@ -61,7 +61,7 @@ The goal of the project is to create a clone of the board game "Mastermind," a g
 In this game, the system assumes the role of the encoder by generating a secret combination of colored tokens. The player, 
 acting as the decoder, must attempt to deduce the correct combination through a series of guesses. After each attempt, the 
 system provides feedback using specialized indicators, specifying the number of correctly placed colors as well as the 
-number of colors that are present but incorrectly positioned.
+number of colors that are present but incorrectly positioned. 
 
 <!-- BUILT WITH -->
 
