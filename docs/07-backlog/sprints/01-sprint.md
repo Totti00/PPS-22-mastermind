@@ -18,9 +18,9 @@ nav_order: 1
 | Domain understanding & reporting | 2.3 | Scrivere requisiti nella documentazione                        | Team       |     2     |       2       | 0  | 0  | 0  | 2  | 0  | 0  |
 | Domain understanding & reporting | 2.4 | Scrivere introduzione documentazione con spiegazione del gioco | Team       |     1     |       1       | 0  | 0  | 0  | 1  | 0  | 0  |
 | Domain understanding & reporting | 2.5 | Scrivere processo adottato nella relazione                     | Team       |     2     |       2       | 0  | 0  | 0  | 1  | 1  | 0  |
-| Software Architecture            | 3.1 | Analisi dei pro e contro nei pattern architetturali            | Team       |     4     |       4       | 4  | 4  | 4  | 2  | 0  | 0  |
-| Software Architecture            | 3.2 | Implementazione architettura base                              | Team       |     2     |       2       | 2  | 2  | 2  | 2  | 2  | 0  |
-|                                  |     | **TOT**                                                        |            |    30     |      30       | 23 | 21 | 20 | 16 | 4  | 0  |
+| Software Architecture            | 3.1 | Analisi dei pro e contro nei pattern architetturali            | Team       |     0     |       0       | 0  | 0  | 0  | 0  | 0  | 0  |
+| Software Architecture            | 3.2 | Implementazione architettura base                              | Team       |     0     |       0       | 0  | 0  | 0  | 0  | 0  | 0  |
+|                                  |     | **TOT**                                                        |            |    22     |      22       | 2  | 3  | 6  | 4  | 1  | 0  |
 
 ## Sprint goal
 

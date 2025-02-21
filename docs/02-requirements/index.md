@@ -21,7 +21,7 @@ Di seguito sarà riportata una descrizione più dettagliata del nostro dominio a
 - L'utente deve poter interagire con l'applicazione tramite un'interfaccia grafica.
 - L'utente deve poter visualizzare il menù principale all'avvio dell'applicazione, con le opzioni per iniziare una
   nuova partita e visualizzare le regole.
-- L'utente deve poter iniziare una nuova partita scegliendo tra le diverse modalità di gioco (Facile, Media, Difficile, Estrema).
+- L'utente deve poter iniziare una nuova partita scegliendo tra diverse modalità di gioco.
 - L'utente deve poter visualizzare il campo di gioco una volta iniziata la partita.
 - L'utente deve poter inserire una sequenza di colori per provare a indovinare il codice segreto.
 - L'utente deve poter ricevere un feedback per ogni tentativo effettuato.
