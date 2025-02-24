@@ -11,11 +11,7 @@ object Launcher extends ModelModule.Interface with ViewModule.Interface with Con
   override val view = new ViewImpl()
   override val controller = new ControllerImpl()
 
-
   @main def main(): Unit =
     view.print()
     model.print()
     controller.print()
-
-
-

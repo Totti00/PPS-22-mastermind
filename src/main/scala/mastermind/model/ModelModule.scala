@@ -2,7 +2,7 @@ package mastermind.model
 
 object ModelModule:
   trait Model:
-    //all the methods
+    // all the methods
     def print(): Unit
 
   trait Provider:
@@ -12,7 +12,4 @@ object ModelModule:
     class ModelImpl extends Model:
       def print(): Unit = println("ModelImpl hello")
 
-
   trait Interface extends Provider with Component
-
-
