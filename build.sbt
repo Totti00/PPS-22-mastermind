@@ -4,7 +4,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "Mastermind",
     scalaVersion := "3.3.5",
-    assembly / mainClass := Some("mastermind.main"),
+    assembly / mainClass := Some("mastermind.Launcher"),
     assembly / assemblyJarName := "mastermind.jar",
     assembly / assemblyMergeStrategy := {
       case "reference.conf"         => MergeStrategy.concat
