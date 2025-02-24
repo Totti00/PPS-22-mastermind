@@ -18,9 +18,7 @@ nav_order: 1
 | Domain understanding & reporting  | 2.3 | Scrivere requisiti nella documentazione                        |     Team     |     2     |       2       |
 | Domain understanding & reporting  | 2.4 | Scrivere introduzione documentazione con spiegazione del gioco |     Team     |     1     |       1       |
 | Domain understanding & reporting  | 2.5 | Scrivere processo adottato nella relazione                     |     Team     |     2     |       2       |
-|       Software Architecture       | 3.1 | Analisi dei pro e contro nei pattern architetturali            |     Team     |     0     |       0       |
-|       Software Architecture       | 3.2 | Implementazione architettura base                              |     Team     |     0     |       0       |
-|                                   |     | **TOT**                                                        |              |    22     |      22       |
+|                                   |     | **TOT**                                                        |              |    16     |      16       |
 
 
 ## Sprint goal
@@ -29,7 +27,6 @@ Gli obiettivi di questo Sprint sono stati:
 
 - Inizializzazione del progetto con relative configurazioni + C.I.
 - Definizione di un primo dominio
-- Definizione dell'architettura e prima implementazione
 
 ## Deadline
 
