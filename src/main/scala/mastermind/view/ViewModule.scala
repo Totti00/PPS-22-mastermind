@@ -31,8 +31,7 @@ object ViewModule:
         loadView("homepage")
 
       override def loadView(path: String, mode: Option[String] = None): Unit =
-        if path == "game" then
-          gameView.show(stage, mode.getOrElse("medium"))
+        if path == "game" then gameView.show(stage, mode.getOrElse("medium"))
         else
           val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
           loader.setController(context.controller)
@@ -40,17 +39,18 @@ object ViewModule:
 
           val namespace = loader.getNamespace
           namespace.get("logo") match
-            case logo: javafx.scene.image.ImageView => logo.setImage(new Image(getClass.getResource("/img/mastermind-logo.jpg").toString))
+            case logo: javafx.scene.image.ImageView =>
+              logo.setImage(new Image(getClass.getResource("/img/mastermind-logo.jpg").toString))
             case _ =>
 
-          import scalafx.Includes._
+          import scalafx.Includes.*
           namespace.get("backButton") match
             case button: javafx.scene.control.Button => button.setOnAction(_ => loadView("homepage"))
-            case _ =>
+            case _                                   =>
           namespace.get("rulesButton") match
             case button: javafx.scene.control.Button => button.setOnAction(_ => loadView("rules"))
-            case _ =>
-          
+            case _                                   =>
+
           val difficultyMapping = Map(
             "easyButton" -> "easy",
             "mediumButton" -> "medium",
@@ -60,7 +60,7 @@ object ViewModule:
           difficultyMapping.foreach { case (buttonId, difficulty) =>
             namespace.get(buttonId) match
               case button: javafx.scene.control.Button => button.setOnAction(_ => loadView("game", Some(difficulty)))
-              case _ =>
+              case _                                   =>
           }
 
           stage.scene = new Scene(root, 800, 500)

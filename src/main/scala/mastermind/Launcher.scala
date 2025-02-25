@@ -13,5 +13,5 @@ object Launcher extends MVC with JFXApp3:
   override val view = new ViewImpl()
   override val controller = new ControllerImpl()
 
-  override def start(): Unit = 
+  override def start(): Unit =
     view.show(PrimaryStage());
