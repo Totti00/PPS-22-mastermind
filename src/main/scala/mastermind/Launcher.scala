@@ -4,14 +4,14 @@ import mastermind.contoller.ControllerModule
 import mastermind.model.ModelModule
 import mastermind.view.ViewModule
 import scalafx.application.JFXApp3
+import scalafx.application.JFXApp3.PrimaryStage
 
-object Launcher extends ModelModule.Interface with ViewModule.Interface with ControllerModule.Interface:
+trait MVC extends ModelModule.Interface with ViewModule.Interface with ControllerModule.Interface
 
+object Launcher extends MVC with JFXApp3:
   override val model = new ModelImpl()
   override val view = new ViewImpl()
   override val controller = new ControllerImpl()
 
-  @main def main(): Unit =
-    view.print()
-    model.print()
-    controller.print()
+  override def start(): Unit = 
+    view.show(PrimaryStage());
