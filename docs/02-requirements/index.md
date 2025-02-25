@@ -56,12 +56,12 @@ Di seguito sarà riportata una descrizione più dettagliata del nostro dominio a
 - Documentazione: Realizzare una documentazione chiara e completa per facilitare la comprensione del codice, la risoluzione dei problemi.
 - Manutenibilità: il codice deve essere strutturato in modo da agevolare future modifiche e aggiornamenti.
 
-## Implementazione **TODO**
+## Implementazione
 Utilizzo di:
 - Scala 3.3.5
 - ScalaTest 3.3.x
 - JDK 19+
-- ScalaFX 20.0.0-R31 **TODO**
+- ScalaFX 20.0.0-R31
 
 ## Requisiti Opzionali:
 - Gestione delle partite: fornire un sistema per avviare, mettere in pausa, salvare e riprendere partite in corso.
