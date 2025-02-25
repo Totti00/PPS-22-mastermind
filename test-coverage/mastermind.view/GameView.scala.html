@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameView.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.view</a> &gt; <span class="el_source">GameView.scala</span></div><h1>GameView.scala</h1><pre class="source lang-java linenums">package mastermind.view
+
+import mastermind.contoller.ControllerModule
+import javafx.fxml.FXMLLoader
+import scalafx.scene.Scene
+import scalafx.stage.Stage
+import javafx.scene.Parent
+
+<span class="nc" id="L9">class GameView(context: ControllerModule.Provider):</span>
+
+  def show(stage: Stage, difficulty: String): Unit =
+<span class="nc" id="L12">    val loader = new FXMLLoader(getClass.getResource(&quot;/fxml/game.fxml&quot;))</span>
+<span class="nc" id="L13">    loader.setController(this)</span>
+<span class="nc" id="L14">    val root: Parent = loader.load()</span>
+
+<span class="nc" id="L16">    val namespace = loader.getNamespace</span>
+
+<span class="nc" id="L18">    namespace.get(&quot;resetGameButton&quot;) match</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">      case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; context.controller.resetGame())</span>
+<span class="nc" id="L20">      case _                                   =&gt;</span>
+
+<span class="nc" id="L22">    namespace.get(&quot;backButton&quot;) match</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">      case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; context.controller.backHome(&quot;homepage&quot;))</span>
+<span class="nc" id="L24">      case _                                   =&gt;</span>
+
+<span class="nc" id="L26">    context.controller.startGame(difficulty) // Inizializza il gioco con la difficoltà scelta</span>
+
+    import scalafx.Includes.*
+<span class="nc" id="L29">    stage.scene = new Scene(root, 800, 500)</span>
+<span class="nc" id="L30">    stage.title = s&quot;Mastermind&quot;</span>
+<span class="nc" id="L31">    stage.resizable = false</span>
+<span class="nc" id="L32">    stage.show()</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

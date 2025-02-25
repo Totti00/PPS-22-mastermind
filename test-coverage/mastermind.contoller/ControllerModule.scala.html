@@ -2,21 +2,31 @@
 
 import mastermind.model.ModelModule
 import mastermind.view.ViewModule
+import scalafx.event.ActionEvent
 
-<span class="nc" id="L6">object ControllerModule:</span>
+<span class="nc" id="L7">object ControllerModule:</span>
 
-<span class="nc" id="L8">  trait Controller:</span>
-    def print(): Unit
+<span class="nc" id="L9">  trait Controller:</span>
+    def playGame(event: ActionEvent): Unit
+    def exitGame(event: ActionEvent): Unit
+    def resetGame(): Unit
+    def startGame(difficulty: String): Unit
+    def backHome(path: String): Unit
 
   trait Provider:
     val controller: Controller
 
-  type Requirements = ModelModule.Provider with ViewModule.Provider
+  type Requirements = ViewModule.Provider with ModelModule.Provider
 
   trait Component:
     context: Requirements =&gt;
-<span class="nc bnc" id="L18" title="All 2 branches missed.">    class ControllerImpl extends Controller:</span>
-<span class="nc" id="L19">      override def print(): Unit = println(&quot;Hello World&quot;)</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">    class ControllerImpl extends Controller:</span>
+<span class="nc" id="L24">      override def playGame(event: ActionEvent): Unit = println(&quot;Avvia il gioco!&quot;)</span>
+<span class="nc" id="L25">      override def exitGame(event: ActionEvent): Unit = println(&quot;Esci dal gioco!&quot;)</span>
+<span class="nc" id="L26">      override def resetGame(): Unit = println(&quot;Ricomincia il gioco!&quot;)</span>
+<span class="nc" id="L27">      override def startGame(difficulty: String): Unit = println(s&quot;Avvia il gioco con difficoltà $difficulty&quot;)</span>
+
+<span class="nc" id="L29">      override def backHome(path: String): Unit = context.view.loadView(path)</span>
 
   trait Interface extends Provider with Component:
     self: Requirements =&gt;

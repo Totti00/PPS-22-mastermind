@@ -4,15 +4,15 @@ import mastermind.contoller.ControllerModule
 import mastermind.model.ModelModule
 import mastermind.view.ViewModule
 import scalafx.application.JFXApp3
+import scalafx.application.JFXApp3.PrimaryStage
 
-<span class="nc" id="L8">object Launcher extends ModelModule.Interface with ViewModule.Interface with ControllerModule.Interface:</span>
+trait MVC extends ModelModule.Interface with ViewModule.Interface with ControllerModule.Interface
 
-<span class="nc" id="L10">  override val model = new ModelImpl()</span>
-<span class="nc" id="L11">  override val view = new ViewImpl()</span>
-<span class="nc" id="L12">  override val controller = new ControllerImpl()</span>
+<span class="nc bnc" id="L11" title="All 18 branches missed.">object Launcher extends MVC with JFXApp3:</span>
+<span class="nc" id="L12">  override val model = new ModelImpl()</span>
+<span class="nc" id="L13">  override val view = new ViewImpl()</span>
+<span class="nc" id="L14">  override val controller = new ControllerImpl()</span>
 
-<span class="nc" id="L14">  @main def main(): Unit =</span>
-<span class="nc" id="L15">    view.print()</span>
-<span class="nc" id="L16">    model.print()</span>
-<span class="nc" id="L17">    controller.print()</span>
+  override def start(): Unit =
+<span class="nc" id="L17">    view.show(PrimaryStage());</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
