@@ -47,7 +47,7 @@ object ViewModule:
 
           namespace.get("backButton") match
             case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("homepage"))
-            case _                              =>
+            case _                                   =>
           namespace.get("rulesButton") match
             case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("rules"))
             case _                                   =>
