@@ -2,7 +2,7 @@
 name: Run Tests
 on:
   push:
-    branches-ignore: [ 'doc' ]
+    branches-ignore: [ 'doc', 'develop' ]
   pull_request:
 
   # to manually trigger a workflow on GitHub
