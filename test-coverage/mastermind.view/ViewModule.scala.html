@@ -31,7 +31,7 @@ import javafx.scene.image.Image
 <span class="nc" id="L31">        loadView(&quot;homepage&quot;)</span>
 
 <span class="nc" id="L33">      override def loadView(path: String, mode: Option[String] = None): Unit =</span>
-<span class="nc bnc" id="L34" title="All 6 branches missed.">        if path == &quot;game&quot; then gameView.show(stage, mode.getOrElse(&quot;medium&quot;))</span>
+<span class="nc bnc" id="L34" title="All 6 branches missed.">        if path == &quot;game&quot; then gameView.show(stage, mode.get) // get</span>
         else
 <span class="nc" id="L36">          val loader = new FXMLLoader(getClass.getResource(s&quot;/fxml/$path.fxml&quot;))</span>
 <span class="nc" id="L37">          loader.setController(context.controller)</span>
@@ -44,29 +44,31 @@ import javafx.scene.image.Image
 <span class="nc" id="L44">            case _ =&gt;</span>
 
           import scalafx.Includes.*
-<span class="nc" id="L47">          namespace.get(&quot;backButton&quot;) match</span>
-<span class="nc bnc" id="L48" title="All 2 branches missed.">            case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; loadView(&quot;homepage&quot;))</span>
-<span class="nc" id="L49">            case _                                   =&gt;</span>
-<span class="nc" id="L50">          namespace.get(&quot;rulesButton&quot;) match</span>
-<span class="nc bnc" id="L51" title="All 2 branches missed.">            case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; loadView(&quot;rules&quot;))</span>
-<span class="nc" id="L52">            case _                                   =&gt;</span>
 
-<span class="nc" id="L54">          val difficultyMapping = Map(</span>
-<span class="nc" id="L55">            &quot;easyButton&quot; -&gt; &quot;easy&quot;,</span>
-<span class="nc" id="L56">            &quot;mediumButton&quot; -&gt; &quot;medium&quot;,</span>
-<span class="nc" id="L57">            &quot;hardButton&quot; -&gt; &quot;hard&quot;,</span>
-<span class="nc" id="L58">            &quot;extremeButton&quot; -&gt; &quot;extreme&quot;</span>
+<span class="nc" id="L48">          namespace.get(&quot;backButton&quot;) match</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">            case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; context.controller.goToPage(&quot;homepage&quot;))</span>
+<span class="nc" id="L50">            case _                                   =&gt;</span>
+<span class="nc" id="L51">          namespace.get(&quot;rulesButton&quot;) match</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">            case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; context.controller.goToPage(&quot;rules&quot;))</span>
+<span class="nc" id="L53">            case _                                   =&gt;</span>
+
+<span class="nc" id="L55">          val difficultyMapping = Map(</span>
+<span class="nc" id="L56">            &quot;easyButton&quot; -&gt; &quot;easy&quot;,</span>
+<span class="nc" id="L57">            &quot;mediumButton&quot; -&gt; &quot;medium&quot;,</span>
+<span class="nc" id="L58">            &quot;hardButton&quot; -&gt; &quot;hard&quot;,</span>
+<span class="nc" id="L59">            &quot;extremeButton&quot; -&gt; &quot;extreme&quot;</span>
           )
-<span class="nc" id="L60">          difficultyMapping.foreach { case (buttonId, difficulty) =&gt;</span>
+<span class="nc" id="L61">          difficultyMapping.foreach { case (buttonId, difficulty) =&gt;</span>
             namespace.get(buttonId) match
-              case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; loadView(&quot;game&quot;, Some(difficulty)))
-              case _                                   =&gt;
+              case button: javafx.scene.control.Button =&gt;
+                button.setOnAction(_ =&gt; context.controller.goToPage(&quot;game&quot;, Some(difficulty)))
+              case _ =&gt;
           }
 
-<span class="nc" id="L66">          stage.scene = new Scene(root, 800, 500)</span>
-<span class="nc" id="L67">          stage.title = &quot;Mastermind&quot;</span>
-<span class="nc" id="L68">          stage.resizable = false</span>
-<span class="nc" id="L69">          stage.show()</span>
+<span class="nc" id="L68">          stage.scene = new Scene(root, 800, 500)</span>
+<span class="nc" id="L69">          stage.title = &quot;Mastermind&quot;</span>
+<span class="nc" id="L70">          stage.resizable = false</span>
+<span class="nc" id="L71">          stage.show()</span>
 
   trait Interface extends Provider with Component:
     self: Requirements =&gt;

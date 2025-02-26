@@ -20,7 +20,7 @@ import javafx.scene.Parent
 <span class="nc" id="L20">      case _                                   =&gt;</span>
 
 <span class="nc" id="L22">    namespace.get(&quot;backButton&quot;) match</span>
-<span class="nc bnc" id="L23" title="All 2 branches missed.">      case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; context.controller.backHome(&quot;homepage&quot;))</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">      case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; context.controller.goToPage(&quot;homepage&quot;))</span>
 <span class="nc" id="L24">      case _                                   =&gt;</span>
 
 <span class="nc" id="L26">    context.controller.startGame(difficulty) // Inizializza il gioco con la difficoltà scelta</span>
