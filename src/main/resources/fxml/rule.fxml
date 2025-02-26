@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane fx:id="infoContainer" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="587.0" stylesheets="/css/baseStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane fx:id="gridRule" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="409.0" prefWidth="600.0" stylesheets="/css/baseStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.0" minWidth="0.0" prefWidth="76.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="600.0" minWidth="10.0" prefWidth="524.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <ImageView GridPane.rowIndex="2">
+               <image>
+                  <Image url="/img/left-click.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fitHeight="200.0" fitWidth="200.0" GridPane.rowIndex="1">
+               <image>
+                  <Image url="/img/scroll.png" />
+               </image>
+            </ImageView>
+            <Label text="Scroll to change the color of the courser to place different stones" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="To place a stone, click on a black field (You will make it, we believe in you)" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ImageView fitHeight="200.0" fitWidth="200.0" GridPane.rowIndex="3">
+               <image>
+                  <Image url="/img/stone_A.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="200.0" fitWidth="200.0" GridPane.rowIndex="4">
+               <image>
+                  <Image url="/img/hstone_R.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="200.0" fitWidth="200.0" GridPane.rowIndex="5">
+               <image>
+                  <Image url="/img/hstone_W.png" />
+               </image>
+            </ImageView>
+            <Label text="Show there is a stone of the right color in the current row but not in the right position" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <opaqueInsets>
+                  <Insets bottom="5.0" />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></Label>
+            <Label text="These stones show the current row in which you may place stones" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Show there is a stone of the right color and in the right position in the current row (You so good!)" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </padding>
+      </GridPane>
+      <Label fx:id="ruleTitle" alignment="CENTER" contentDisplay="CENTER" text="You need some help? Here you go!" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Button fx:id="ruleExitButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="587.0" text="ESCI" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+   </children>
+</AnchorPane>

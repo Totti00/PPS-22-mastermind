@@ -28,7 +28,7 @@ object ViewModule:
 
       override def show(primaryStage: Stage): Unit =
         stage = primaryStage
-        loadView("homepage")
+        loadView("MenuPage")
 
       override def loadView(path: String, mode: Option[String] = None): Unit =
         if path == "game" then gameView.show(stage, mode.get) // get
@@ -38,25 +38,21 @@ object ViewModule:
           val root: Parent = loader.load()
 
           val namespace = loader.getNamespace
-          namespace.get("logo") match
-            case logo: javafx.scene.image.ImageView =>
-              logo.setImage(new Image(getClass.getResource("/img/mastermind-logo.jpg").toString))
-            case _ =>
 
           import scalafx.Includes.*
 
-          namespace.get("backButton") match
-            case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("homepage"))
+          namespace.get("ruleExitButton") match
+            case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("MenuPage"))
             case _                                   =>
           namespace.get("rulesButton") match
-            case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("rules"))
+            case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("rule"))
             case _                                   =>
 
           val difficultyMapping = Map(
-            "easyButton" -> "easy",
-            "mediumButton" -> "medium",
-            "hardButton" -> "hard",
-            "extremeButton" -> "extreme"
+            "easyModeButton" -> "easy",
+            "mediumModeButton" -> "medium",
+            "hardModeButton" -> "hard",
+            "extremeModeButton" -> "extreme"
           )
           difficultyMapping.foreach { case (buttonId, difficulty) =>
             namespace.get(buttonId) match
