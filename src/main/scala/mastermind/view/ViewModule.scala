@@ -31,7 +31,7 @@ object ViewModule:
         loadView("homepage")
 
       override def loadView(path: String, mode: Option[String] = None): Unit =
-        if path == "game" then gameView.show(stage, mode.getOrElse("medium"))
+        if path == "game" then gameView.show(stage, mode.get) // get
         else
           val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
           loader.setController(context.controller)
@@ -44,11 +44,12 @@ object ViewModule:
             case _ =>
 
           import scalafx.Includes.*
+
           namespace.get("backButton") match
-            case button: javafx.scene.control.Button => button.setOnAction(_ => loadView("homepage"))
+            case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("homepage"))
             case _                                   =>
           namespace.get("rulesButton") match
-            case button: javafx.scene.control.Button => button.setOnAction(_ => loadView("rules"))
+            case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("rules"))
             case _                                   =>
 
           val difficultyMapping = Map(
@@ -59,8 +60,9 @@ object ViewModule:
           )
           difficultyMapping.foreach { case (buttonId, difficulty) =>
             namespace.get(buttonId) match
-              case button: javafx.scene.control.Button => button.setOnAction(_ => loadView("game", Some(difficulty)))
-              case _                                   =>
+              case button: javafx.scene.control.Button =>
+                button.setOnAction(_ => context.controller.goToPage("game", Some(difficulty)))
+              case _ =>
           }
 
           stage.scene = new Scene(root, 800, 500)

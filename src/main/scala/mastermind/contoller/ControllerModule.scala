@@ -11,7 +11,7 @@ object ControllerModule:
     def exitGame(event: ActionEvent): Unit
     def resetGame(): Unit
     def startGame(difficulty: String): Unit
-    def backHome(path: String): Unit
+    def goToPage(path: String, mode: Option[String] = None): Unit
 
   trait Provider:
     val controller: Controller
@@ -26,7 +26,7 @@ object ControllerModule:
       override def resetGame(): Unit = println("Ricomincia il gioco!")
       override def startGame(difficulty: String): Unit = println(s"Avvia il gioco con difficoltà $difficulty")
 
-      override def backHome(path: String): Unit = context.view.loadView(path)
+      override def goToPage(path: String, mode: Option[String]): Unit = context.view.loadView(path, mode)
 
   trait Interface extends Provider with Component:
     self: Requirements =>
