@@ -51,7 +51,6 @@ object ViewModule:
               case button: javafx.scene.control.Button => button.setOnAction(_ => popup.hide())
               case _                                   =>
 
-
           case _ =>
             val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
             loader.setController(context.controller)
@@ -78,8 +77,6 @@ object ViewModule:
             stage.scene = new Scene(root, 800, 500)
             stage.title = "Mastermind"
             stage.show()
-
-
 
   trait Interface extends Provider with Component:
     self: Requirements =>

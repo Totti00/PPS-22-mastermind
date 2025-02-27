@@ -5,14 +5,13 @@ trait Game:
   var code: Code
   var currentTurn: Int
   def getCode: Code
-  def resetGame() : Game
+  def resetGame(): Game
 
 object Game:
-    def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn)
+  def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn)
 
-    private case class GameImpl(board: Board, code: Code, var currentTurn: Int) extends Game:
+  private case class GameImpl(board: Board, code: Code, var currentTurn: Int) extends Game:
 
-      override def getCode: Code = code
+    override def getCode: Code = code
 
-      override def resetGame(): Game = Game(Board(board.getRows, board.getCols), new Code(4), 0)
-
+    override def resetGame(): Game = Game(Board(board.getRows, board.getCols), new Code(4), 0)
