@@ -28,5 +28,4 @@ class GameView(context: ControllerModule.Provider):
     import scalafx.Includes.*
     stage.scene = new Scene(root, 800, 500)
     stage.title = s"Mastermind"
-    stage.resizable = false
     stage.show()
