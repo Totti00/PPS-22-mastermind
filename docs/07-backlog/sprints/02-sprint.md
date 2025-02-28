@@ -10,11 +10,11 @@ nav_order: 2
 |                                   Software Architecture                                   | 3.1 | Analisi dei pro e contro nei pattern architetturali |    Team    |     2     |       2       |
 |                                   Software Architecture                                   | 3.2 | Implementazione architettura base                   |    Team    |     2     |       2       |
 |                             Menù principale dell'applicazione                             | 4.1 | Integrare MVC con ScalaFx                           |   Totaro   |     2     |       4       |
-|                             Menù principale dell'applicazione                             | 4.2 | Creazione pagina menù principale                    |   Ramzi    |     0     |       0       |
-|                             Menù principale dell'applicazione                             | 4.3 | Creazione pagina regole                             |   Ramzi    |     0     |       0       |
+|                             Menù principale dell'applicazione                             | 4.2 | Creazione pagina menù principale                    |   Ramzi    |     2     |       4       |
+|                             Menù principale dell'applicazione                             | 4.3 | Creazione pagina regole                             |   Ramzi    |     1     |       2       |
 |                             Menù principale dell'applicazione                             | 4.4 | Doc MVC                                             |   Totaro   |     2     |       2       |
 |   Come giocatore, voglio iniziare una nuova partita scegliendo tra le modalità di gioco   | 5.1 | Controller gestione modalità                        |   Totaro   |     1     |       1       |
-|                                                                                           |     | **TOT**                                             |            |    16     |      16       |
+|                                                                                           |     | **TOT**                                             |            |    12     |      17       |
 
 ## Sprint goal
 
