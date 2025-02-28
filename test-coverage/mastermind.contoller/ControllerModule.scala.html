@@ -11,7 +11,7 @@ import scalafx.event.ActionEvent
     def exitGame(event: ActionEvent): Unit
     def resetGame(): Unit
     def startGame(difficulty: String): Unit
-    def backHome(path: String): Unit
+<span class="nc" id="L14">    def goToPage(path: String, mode: Option[String] = None): Unit</span>
 
   trait Provider:
     val controller: Controller
@@ -26,7 +26,7 @@ import scalafx.event.ActionEvent
 <span class="nc" id="L26">      override def resetGame(): Unit = println(&quot;Ricomincia il gioco!&quot;)</span>
 <span class="nc" id="L27">      override def startGame(difficulty: String): Unit = println(s&quot;Avvia il gioco con difficoltà $difficulty&quot;)</span>
 
-<span class="nc" id="L29">      override def backHome(path: String): Unit = context.view.loadView(path)</span>
+<span class="nc" id="L29">      override def goToPage(path: String, mode: Option[String]): Unit = context.view.loadView(path, mode)</span>
 
   trait Interface extends Provider with Component:
     self: Requirements =&gt;
