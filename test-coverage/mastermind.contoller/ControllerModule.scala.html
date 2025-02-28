@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ControllerModule.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.contoller</a> &gt; <span class="el_source">ControllerModule.scala</span></div><h1>ControllerModule.scala</h1><pre class="source lang-java linenums">package mastermind.contoller
 
 import mastermind.model.ModelModule
+import mastermind.model.entity.Game
 import mastermind.view.ViewModule
 import scalafx.event.ActionEvent
 
-<span class="nc" id="L7">object ControllerModule:</span>
+<span class="nc" id="L8">object ControllerModule:</span>
 
-<span class="nc" id="L9">  trait Controller:</span>
+<span class="nc" id="L10">  trait Controller:</span>
     def playGame(event: ActionEvent): Unit
     def exitGame(event: ActionEvent): Unit
     def resetGame(): Unit
     def startGame(difficulty: String): Unit
-<span class="nc" id="L14">    def goToPage(path: String, mode: Option[String] = None): Unit</span>
+<span class="nc" id="L15">    def goToPage(path: String, mode: Option[String] = None): Unit</span>
 
   trait Provider:
     val controller: Controller
@@ -20,13 +21,18 @@ import scalafx.event.ActionEvent
 
   trait Component:
     context: Requirements =&gt;
-<span class="nc bnc" id="L23" title="All 2 branches missed.">    class ControllerImpl extends Controller:</span>
-<span class="nc" id="L24">      override def playGame(event: ActionEvent): Unit = println(&quot;Avvia il gioco!&quot;)</span>
-<span class="nc" id="L25">      override def exitGame(event: ActionEvent): Unit = println(&quot;Esci dal gioco!&quot;)</span>
-<span class="nc" id="L26">      override def resetGame(): Unit = println(&quot;Ricomincia il gioco!&quot;)</span>
-<span class="nc" id="L27">      override def startGame(difficulty: String): Unit = println(s&quot;Avvia il gioco con difficoltà $difficulty&quot;)</span>
+<span class="nc bnc" id="L24" title="All 2 branches missed.">    class ControllerImpl extends Controller:</span>
+      private var currentGame: Game = _
+<span class="nc" id="L26">      override def playGame(event: ActionEvent): Unit = println(&quot;Avvia il gioco!&quot;)</span>
+<span class="nc" id="L27">      override def exitGame(event: ActionEvent): Unit = println(&quot;Esci dal gioco!&quot;)</span>
+      override def resetGame(): Unit =
+<span class="nc" id="L29">        currentGame = context.model.reset()</span>
+<span class="nc" id="L30">        println(&quot;Ricomincia il gioco!&quot;)</span>
+      override def startGame(difficulty: String): Unit =
+<span class="nc" id="L32">        currentGame = context.model.startNewGame(difficulty);</span>
+<span class="nc" id="L33">        println(s&quot;Avvia il gioco con difficoltà $difficulty -&gt; Codice: ${currentGame.code}&quot;)</span>
 
-<span class="nc" id="L29">      override def goToPage(path: String, mode: Option[String]): Unit = context.view.loadView(path, mode)</span>
+<span class="nc" id="L35">      override def goToPage(path: String, mode: Option[String]): Unit = context.view.loadView(path, mode)</span>
 
   trait Interface extends Provider with Component:
     self: Requirements =&gt;

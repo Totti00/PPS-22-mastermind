@@ -20,7 +20,7 @@ import javafx.scene.Parent
 <span class="nc" id="L20">      case _                                   =&gt;</span>
 
 <span class="nc" id="L22">    namespace.get(&quot;backButton&quot;) match</span>
-<span class="nc bnc" id="L23" title="All 2 branches missed.">      case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; context.controller.goToPage(&quot;homepage&quot;))</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">      case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; context.controller.goToPage(&quot;MenuPage&quot;))</span>
 <span class="nc" id="L24">      case _                                   =&gt;</span>
 
 <span class="nc" id="L26">    context.controller.startGame(difficulty) // Inizializza il gioco con la difficoltà scelta</span>
@@ -28,6 +28,5 @@ import javafx.scene.Parent
     import scalafx.Includes.*
 <span class="nc" id="L29">    stage.scene = new Scene(root, 800, 500)</span>
 <span class="nc" id="L30">    stage.title = s&quot;Mastermind&quot;</span>
-<span class="nc" id="L31">    stage.resizable = false</span>
-<span class="nc" id="L32">    stage.show()</span>
+<span class="nc" id="L31">    stage.show()</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

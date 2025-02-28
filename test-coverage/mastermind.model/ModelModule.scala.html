@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModelModule.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.model</a> &gt; <span class="el_source">ModelModule.scala</span></div><h1>ModelModule.scala</h1><pre class="source lang-java linenums">package mastermind.model
 
-<span class="nc" id="L3">object ModelModule:</span>
-<span class="nc" id="L4">  trait Model:</span>
-    // all the methods
-    def print(): Unit
+import mastermind.model.entity.{Board, Code, Game}
+
+<span class="nc" id="L5">object ModelModule:</span>
+
+  // Factory per generare il gioco in base alla difficoltà
+<span class="nc" id="L8">  private object GameFactory:</span>
+<span class="nc" id="L9">    def createGame(difficulty: String): Game = difficulty match</span>
+<span class="nc bnc" id="L10" title="All 15 branches missed.">      case &quot;easy&quot;    =&gt; Game(Board(10, 4), new Code(4), 0)</span>
+<span class="nc" id="L11">      case &quot;medium&quot;  =&gt; Game(Board(8, 5), new Code(5), 0)</span>
+<span class="nc" id="L12">      case &quot;hard&quot;    =&gt; Game(Board(6, 5), new Code(5), 0)</span>
+<span class="nc" id="L13">      case &quot;extreme&quot; =&gt; Game(Board(6, 6), new Code(6), 0)</span>
+<span class="nc" id="L14">      case _         =&gt; throw new IllegalArgumentException(&quot;Invalid difficulty&quot;)</span>
+
+  trait Model:
+    def startNewGame(difficulty: String): Game
+    def reset(): Game
 
   trait Provider:
     val model: Model
 
   trait Component:
-<span class="nc bnc" id="L12" title="All 2 branches missed.">    class ModelImpl extends Model:</span>
-<span class="nc" id="L13">      def print(): Unit = println(&quot;ModelImpl hello&quot;)</span>
+<span class="nc bnc" id="L24" title="All 2 branches missed.">    class ModelImpl extends Model:</span>
+      private var currentGame: Game = _
+      private var currentDifficulty: String = _
+
+      override def startNewGame(difficulty: String): Game =
+<span class="nc" id="L29">        currentDifficulty = difficulty</span>
+<span class="nc" id="L30">        currentGame = GameFactory.createGame(currentDifficulty)</span>
+<span class="nc" id="L31">        currentGame</span>
+
+      override def reset(): Game =
+<span class="nc" id="L34">        startNewGame(currentDifficulty)</span>
 
   trait Interface extends Provider with Component
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
