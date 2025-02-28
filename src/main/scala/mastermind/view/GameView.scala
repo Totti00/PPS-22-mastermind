@@ -20,7 +20,7 @@ class GameView(context: ControllerModule.Provider):
       case _                                   =>
 
     namespace.get("backButton") match
-      case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("homepage"))
+      case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("MenuPage"))
       case _                                   =>
 
     context.controller.startGame(difficulty) // Inizializza il gioco con la difficoltà scelta
@@ -28,5 +28,4 @@ class GameView(context: ControllerModule.Provider):
     import scalafx.Includes.*
     stage.scene = new Scene(root, 800, 500)
     stage.title = s"Mastermind"
-    stage.resizable = false
     stage.show()

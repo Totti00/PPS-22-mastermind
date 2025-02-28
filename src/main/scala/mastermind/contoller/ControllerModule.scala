@@ -1,6 +1,7 @@
 package mastermind.contoller
 
 import mastermind.model.ModelModule
+import mastermind.model.entity.Game
 import mastermind.view.ViewModule
 import scalafx.event.ActionEvent
 
@@ -21,10 +22,15 @@ object ControllerModule:
   trait Component:
     context: Requirements =>
     class ControllerImpl extends Controller:
+      private var currentGame: Game = _
       override def playGame(event: ActionEvent): Unit = println("Avvia il gioco!")
       override def exitGame(event: ActionEvent): Unit = println("Esci dal gioco!")
-      override def resetGame(): Unit = println("Ricomincia il gioco!")
-      override def startGame(difficulty: String): Unit = println(s"Avvia il gioco con difficoltà $difficulty")
+      override def resetGame(): Unit =
+        currentGame = context.model.reset()
+        println("Ricomincia il gioco!")
+      override def startGame(difficulty: String): Unit =
+        currentGame = context.model.startNewGame(difficulty);
+        println(s"Avvia il gioco con difficoltà $difficulty -> Codice: ${currentGame.code}")
 
       override def goToPage(path: String, mode: Option[String]): Unit = context.view.loadView(path, mode)
 
