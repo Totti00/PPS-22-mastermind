@@ -61,7 +61,7 @@ Utilizzo di:
 - Scala 3.3.5
 - ScalaTest 3.3.x
 - JDK 19+
-- ScalaFX 20.0.0-R31
+- ScalaFX 22.0.0-R31
 
 ## Requisiti Opzionali:
 - Gestione delle partite: fornire un sistema per avviare, mettere in pausa, salvare e riprendere partite in corso.

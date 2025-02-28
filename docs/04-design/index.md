@@ -25,7 +25,22 @@ Un esempio di modulo view implementato utilizzando questo pattern è il seguente
 ```scala
 object ViewModule:
   trait View:
-    def render(): Unit
+    def show(stage: Stage): Unit
+  
+  trait Provider:
+    val view: View
+
+  type Requirements = ControllerModule.Provider
+
+  trait Component:
+    context: Requirements =>
+    class ViewImpl extends View:
+        private val GameView = new GameView(context)
+        private var stage: Stage = _
+        def show(primaryStage: Stage): Unit = {
+          stage = primaryStage
+          loadView("MenuPage")
+        }
 ```
 
 Questa strategia, sostanzialmente, prevede di implementare il *pattern MVC* come una composizione di tre elementi: Model (M), View (V) 

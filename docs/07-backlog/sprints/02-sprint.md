@@ -12,10 +12,8 @@ nav_order: 2
 |                             Menù principale dell'applicazione                             | 4.1 | Integrare MVC con ScalaFx                           |   Totaro   |     2     |       4       |
 |                             Menù principale dell'applicazione                             | 4.2 | Creazione pagina menù principale                    |   Ramzi    |     0     |       0       |
 |                             Menù principale dell'applicazione                             | 4.3 | Creazione pagina regole                             |   Ramzi    |     0     |       0       |
-|                             Menù principale dell'applicazione                             | 4.4 | Doc MVC                                             |    Team    |     0     |       0       |
-|   Come giocatore, voglio iniziare una nuova partita scegliendo tra le modalità di gioco   | 5.1 | Controller gestione modalità                        |            |     0     |       0       |
-|   Come giocatore, voglio iniziare una nuova partita scegliendo tra le modalità di gioco   | 5.2 | Implementazione logica di inizio partita            |            |     0     |       0       |
-| Come giocatore, voglio visualizzare il campo di gioco una volta che la partita è iniziata | 6.1 | Creazione pagina di gioco                           |            |     0     |       0       |
+|                             Menù principale dell'applicazione                             | 4.4 | Doc MVC                                             |   Totaro   |     2     |       2       |
+|   Come giocatore, voglio iniziare una nuova partita scegliendo tra le modalità di gioco   | 5.1 | Controller gestione modalità                        |   Totaro   |     1     |       1       |
 |                                                                                           |     | **TOT**                                             |            |    16     |      16       |
 
 ## Sprint goal
@@ -30,8 +28,10 @@ Gli obiettivi di questo Sprint sono stati:
 02/03/2025
 
 ## Sprint review
-
+Lo Sprint goal è stato raggiunto secondo i tempi previsti.
 
 ## Sprint retrospective
-
+Durante il secondo sprint, l'obiettivo principale è stato quello di ottenere un primo risultato concreto, in linea con i principi 
+Agile. Per questo motivo, si è scelto di concentrarsi inizialmente sulla realizzazione delle prime View, così da poter integrare 
+progressivamente gli sviluppi e renderli subito accessibili agli utenti.
 
