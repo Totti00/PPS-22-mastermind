@@ -5,7 +5,6 @@ import mastermind.contoller.ControllerModule
 import scalafx.scene.Scene
 import scalafx.stage.{Popup, Stage}
 import javafx.scene.Parent
-import javafx.scene.image.Image
 
 object ViewModule:
 
@@ -21,9 +20,8 @@ object ViewModule:
   trait Component:
     context: Requirements =>
 
-    private val gameView = new GameView(context)
-
     class ViewImpl extends View:
+      private val gameView = new GameView(context)
       private var stage: Stage = _
 
       override def show(primaryStage: Stage): Unit =

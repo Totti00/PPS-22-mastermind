@@ -14,4 +14,4 @@ object Game:
 
     override def getCode: Code = code
 
-    override def resetGame(): Game = Game(Board(board.getRows, board.getCols), new Code(4), 0)
+    override def resetGame(): Game = Game(Board(board.getRows, board.getCols), Code(4), 0)

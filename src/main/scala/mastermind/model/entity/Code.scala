@@ -1,6 +1,10 @@
 package mastermind.model.entity
 
-case class Code(code: Vector[Int]):
+trait Code:
+  def size: Int
 
-  def this(size: Int) = this(Vector.fill(size)(5))
-  val size: Int = code.size
+object Code:
+  def apply(size: Int): Code = CodeImpl(Vector.fill(size)(5))
+  
+  private case class CodeImpl(code: Vector[Int]) extends Code:
+    override def size: Int = code.size
