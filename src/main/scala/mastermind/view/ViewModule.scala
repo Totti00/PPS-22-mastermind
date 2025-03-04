@@ -9,7 +9,19 @@ import javafx.scene.Parent
 object ViewModule:
 
   trait View:
+
+    /** Displays the view.
+      * @param stage
+      *   The main window to display the view.
+      */
     def show(stage: Stage): Unit
+
+    /** Loads a view from an FXML file.
+      * @param path
+      *   The path to the FXML file.
+      * @param mode
+      *   An optional parameter specifying the mode (e.g., difficulty level).
+      */
     def loadView(path: String, mode: Option[String] = None): Unit
 
   trait Provider:

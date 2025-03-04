@@ -19,6 +19,13 @@ class GameView(context: ControllerModule.Provider):
   private var browseColors: Int = 0
   private val selectableColors: Vector[String] = Vector("G", "R", "B", "Y", "P", "W")
 
+  /** Displays the game view, initializing grids, buttons, and setting up the scene.
+    *
+    * @param stage
+    *   The main window to display the game scene.
+    * @param difficulty
+    *   The chosen difficulty level for the game.
+    */
   def show(stage: Stage, difficulty: String): Unit =
     val loader = new FXMLLoader(getClass.getResource("/fxml/Game.fxml"))
     loader.setController(this)
@@ -59,6 +66,13 @@ class GameView(context: ControllerModule.Provider):
     stage.title = "Mastermind"
     stage.show()
 
+  /** Initializes the attempt and hint grids with labels representing stones and hints.
+    *
+    * @param attemptGrid
+    *   The attempt grid to initialize.
+    * @param hintGrid
+    *   The hint grid to initialize.
+    */
   private def initializeGrids(attemptGrid: GridPane, hintGrid: GridPane): Unit =
     attemptGrid.getChildren.clear()
     hintGrid.getChildren.clear()
@@ -70,12 +84,19 @@ class GameView(context: ControllerModule.Provider):
       hintGrid.add(getHint(c, r), c, r)
     }
 
+  /** Handles submitting the user's guess, extracting and processing it if valid.
+    */
   private def submitGuess(): Unit =
     val guess = extractGuess()
     if guess.nonEmpty then
       println("Guess: " + guess)
       // updateHintGrid(hints)
 
+  /** Extracts the current guess from the attempt grid.
+    *
+    * @return
+    *   A vector of strings representing the user's selected colors.
+    */
   private def extractGuess(): Vector[String] =
     attemptGrid.getChildren
       .filtered(_.isInstanceOf[TextField])
@@ -84,10 +105,22 @@ class GameView(context: ControllerModule.Provider):
       .filter(_.nonEmpty)
       .toVector
 
+  /** Updates the hint grid with feedback from previous guesses.
+    * @param hints
+    *   A vector of strings representing the hints to display.
+    */
   private def updateHintGrid(hints: Vector[String]): Unit =
     val labels = hintGrid.getChildren.filtered(_.isInstanceOf[Label])
     for i <- hints.indices if i < labels.size do labels.get(i).asInstanceOf[Label].setText(hints(i))
 
+  /** Returns a stone label for the given column and row.
+    * @param c
+    *   The column index.
+    * @param r
+    *   The row index.
+    * @return
+    *   A label representing a stone.
+    */
   private def getStone(c: Int, r: Int): Label =
     val circle_size = 60
     val image_size = circle_size - 5
@@ -103,6 +136,14 @@ class GameView(context: ControllerModule.Provider):
     label.setOnMouseClicked(_ => println("Coglioooo"))
     label
 
+  /** Returns a hint label for the given column and row.
+    * @param c
+    *   The column index.
+    * @param r
+    *   The row index.
+    * @return
+    *   A label representing a hint.
+    */
   private def getHint(c: Int, r: Int): Label =
     val circle_size = 60
     val image_size = circle_size - 5
@@ -123,6 +164,10 @@ class GameView(context: ControllerModule.Provider):
     )
     label
 
+  /** Sets up the scroll handler for the scene, allowing the user to change the cursor color.
+    * @param scene
+    *   The scene to set up the scroll handler for.
+    */
   private def setupScrollHandler(scene: Scene): Unit =
     scene.addEventHandler(
       ScrollEvent.Scroll,
