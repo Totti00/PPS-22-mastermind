@@ -4,37 +4,43 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" spacing="10" style="-fx-padding: 20; -fx-background-color: #2f3136;">
-    <GridPane fx:id="border" alignment="CENTER" vgap="20" hgap="20" style="-fx-background-color: #2f3136;">
+<!-- style="-fx-padding: 20; -fx-background-color: #2f3136;" -->
+<VBox fx:id="mainContainer" xmlns:fx="http://javafx.com/fxml" spacing="10" stylesheets="/css/baseStyle.css">
+
+    <!-- style="-fx-background-color: #2f3136;"-->
+    <GridPane fx:id="border" alignment="CENTER" vgap="20" hgap="20" >
 
         <!-- Game Logo -->
         <ImageView fx:id="gameLogo" GridPane.columnSpan="2" />
 
-        <!-- Stone Matrix -->
+        <!-- Stone Matrix style="-fx-background-color: #202225; -fx-background-radius: 10;"-->
         <GridPane fx:id="stone_matrix" maxWidth="300" maxHeight="300" alignment="CENTER" hgap="10" vgap="10"
-                  style="-fx-background-color: #202225; -fx-background-radius: 10;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                   GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
-        <!-- Hint Stone Matrix -->
+        <!-- Hint Stone Matrix style="-fx-background-color: #202225; -fx-background-radius: 10;"-->
         <GridPane fx:id="hint_stone_matrix" maxWidth="300" maxHeight="300" alignment="CENTER" hgap="10" vgap="10"
-                  style="-fx-background-color: #202225; -fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                   GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-        <!-- Check Button -->
+        <!-- Check Button style="-fx-text-fill: linear-gradient(#da1e28, #2625ff); -fx-font-size: 14px; -fx-font-weight: normal;
+                      -fx-padding: 7 9 7 9; -fx-background-color: #202225; -fx-background-radius: 10px;"-->
         <Button fx:id="checkButton" text="Check Code" minWidth="300" GridPane.columnIndex="0" GridPane.rowIndex="2" />
 
-        <!-- Label Current Turn -->
+        <!-- Label Current Turn style="-fx-text-fill: linear-gradient(#da1e28, #2625ff); -fx-font-size: 14px; -fx-font-weight: normal;
+                      -fx-padding: 7 9 7 9; -fx-background-color: #202225; -fx-background-radius: 10px;"-->
         <Label fx:id="labelCurrentTurn" text="Remaining Turns:" minWidth="300" alignment="CENTER"
-               style="-fx-text-fill: linear-gradient(#da1e28, #2625ff); -fx-font-size: 25px; -fx-font-weight: normal;
-                      -fx-padding: 7 9 7 9; -fx-background-color: #202225; -fx-background-radius: 10px;"
                GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-        <!-- Undo/Redo/Reset Buttons Grid -->
-        <GridPane fx:id="urr_Grid" GridPane.columnIndex="0" GridPane.rowIndex="3">
-            <Button fx:id="resetGameButton" minWidth="96" text="Reset"/>
+        <!-- Undo/Redo/Reset Buttons Grid style="-fx-text-fill: linear-gradient(#da1e28, #2625ff); -fx-font-size: 14px; -fx-font-weight: normal;
+                      -fx-padding: 7 9 7 9; -fx-background-color: #202225; -fx-background-radius: 10px;"-->
+        <GridPane fx:id="urr_Grid" GridPane.columnIndex="0" GridPane.rowIndex="3" hgap="10">
+            <Button fx:id="backButton" minWidth="96" text="Back" GridPane.columnIndex="0" />
+            <Button fx:id="resetGameButton" minWidth="96" text="Reset" GridPane.columnIndex="1" />
         </GridPane>
 
-        <!-- Help Button Grid -->
+        <!-- Help Button Grid style="-fx-text-fill: linear-gradient(#da1e28, #2625ff); -fx-font-size: 14px; -fx-font-weight: normal;
+                      -fx-padding: 7 9 7 9; -fx-background-color: #202225; -fx-background-radius: 10px;"-->
         <GridPane fx:id="hsl_Grid" GridPane.columnIndex="1" GridPane.rowIndex="3">
-            <Button fx:id="helpButton" minWidth="96" text="Help"/>
+            <Button fx:id="helpButton" minWidth="96" text="Help" />
         </GridPane>
     </GridPane>
 </VBox>

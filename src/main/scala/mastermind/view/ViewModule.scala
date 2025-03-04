@@ -33,7 +33,7 @@ object ViewModule:
 
         path match
           case "game" => gameView.show(stage, mode.get)
-          case "rule" =>
+          case "Rules" =>
             println("rule")
             val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
             val root: Parent = loader.load()
@@ -57,7 +57,7 @@ object ViewModule:
 
             import scalafx.Includes.*
             namespace.get("rulesButton") match
-              case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("rule"))
+              case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("Rules"))
               case _                                   =>
 
             val difficultyMapping = Map(

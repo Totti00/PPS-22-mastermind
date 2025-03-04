@@ -40,13 +40,17 @@ class GameView(context: ControllerModule.Provider):
       case button: Button => button.setOnAction(_ => submitGuess())
       case _              =>
 
+    namespace.get("helpButton") match
+      case button: Button => button.setOnAction(_ => context.controller.goToPage("Rules"))
+      case _              =>
+
     context.controller.startGame(difficulty) // Inizializza il gioco con la difficoltà scelta
     initializeGrids(attemptGrid, hintGrid)
 
     import scalafx.Includes.*
     stage.scene = new Scene(root)
     stage.sizeToScene()
-    stage.title = s"Mastermind"
+    stage.title = "Mastermind"
     stage.show()
 
   private def initializeGrids(attemptGrid: GridPane, hintGrid: GridPane): Unit =
