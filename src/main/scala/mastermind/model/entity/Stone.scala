@@ -1,5 +1,7 @@
 package mastermind.model.entity
 
+import scala.util.Random
+
 sealed trait Stone:
   def stringRepresentation: String
 
@@ -21,7 +23,7 @@ case object Empty extends PlayableStone:
   override def stringRepresentation: String = "Empty"
 
 object PlayableStone:
-  def apply(stringRepresentation: String): Stone = stringRepresentation match
+  def apply(stringRepresentation: String): PlayableStone = stringRepresentation match
     case "Red"    => Red
     case "Green"  => Green
     case "Blue"   => Blue
@@ -30,6 +32,17 @@ object PlayableStone:
     case "Purple" => Purple
     case "Empty"  => Empty
     case _        => Empty // Default case
+
+  def random: PlayableStone =
+    PlayableStone(Random.nextInt(6) match
+      case 0 => "Red"
+      case 1 => "Green"
+      case 2 => "Blue"
+      case 3 => "Yellow"
+      case 4 => "White"
+      case 5 => "Purple"
+      case _ => "Empty"
+    )
 
 sealed trait HintStone extends Stone
 
@@ -42,7 +55,7 @@ case object HintEmpty extends HintStone:
 
 object HintStone:
   def apply(stringRepresentation: String): HintStone = stringRepresentation match
-    case "R" => HintRed
-    case "W" => HintWhite
-    case "E" => HintEmpty
-    case _   => HintEmpty // Default case
+    case "Red"   => HintRed
+    case "White" => HintWhite
+    case "Empty" => HintEmpty
+    case _       => HintEmpty // Default case

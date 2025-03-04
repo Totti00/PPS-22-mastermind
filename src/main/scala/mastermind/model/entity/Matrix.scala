@@ -10,12 +10,12 @@ trait Matrix[T]:
   def replaceRow(row: Int, vec: Vector[T]): Matrix[T]
 
 object Matrix:
-  // Metodo di costruzione per una matrice di dimensioni specifiche con un valore di riempimento
+
   def apply[T](rows: Int, cols: Int, filling: T): Matrix[T] =
     MatrixImpl(Vector.fill(rows, cols)(filling))
 
   private case class MatrixImpl[T](override val elements: Vector[Vector[T]]) extends Matrix[T]:
-    assert(elements != null)
+    assert(elements != null && elements.nonEmpty, "matrix empty or null")
     override def replaceRow(row: Int, vec: Vector[T]): Matrix[T] = copy(elements.updated(row, vec))
     override def replaceCell(row: Int, col: Int, cell: T): Matrix[T] = copy(
       elements.updated(row, elements(row).updated(col, cell))
