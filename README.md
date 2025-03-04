@@ -21,7 +21,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/totti00/PPS-22-mastermind">
-    <img src="res/img/mastermind-logo.jpg" alt="Logo" width="470" height="180">
+    <img src="src/main/resources/img/mastermind-logo.jpg" alt="Logo" width="470" height="180">
   </a>
 
 <h3 align="center">Mastermind</h3>
