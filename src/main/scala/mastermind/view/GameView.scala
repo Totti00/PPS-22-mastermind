@@ -4,15 +4,20 @@ import mastermind.contoller.ControllerModule
 import javafx.fxml.FXMLLoader
 import scalafx.scene.Scene
 import scalafx.stage.Stage
-import javafx.scene.Parent
+import javafx.scene.{ImageCursor, Parent}
 import javafx.scene.layout.GridPane
 import javafx.scene.control.{Button, Label, TextField}
-import javafx.scene.image.{Image, ImageView}
+import scalafx.Includes.*
+import scalafx.scene.image.{Image, ImageView}
+import scalafx.scene.input.ScrollEvent
+
 import scala.jdk.CollectionConverters.*
 
 class GameView(context: ControllerModule.Provider):
   private var attemptGrid: javafx.scene.layout.GridPane = _
   private var hintGrid: javafx.scene.layout.GridPane = _
+  private var browseColors: Int = 0
+  private val selectableColors: Vector[String] = Vector("G", "R", "B", "Y", "P", "W")
 
   def show(stage: Stage, difficulty: String): Unit =
     val loader = new FXMLLoader(getClass.getResource("/fxml/Game.fxml"))
@@ -49,6 +54,7 @@ class GameView(context: ControllerModule.Provider):
 
     import scalafx.Includes.*
     stage.scene = new Scene(root)
+    setupScrollHandler(stage.scene.value)
     stage.sizeToScene()
     stage.title = "Mastermind"
     stage.show()
@@ -116,3 +122,20 @@ class GameView(context: ControllerModule.Provider):
       )
     )
     label
+
+  private def setupScrollHandler(scene: Scene): Unit =
+    scene.addEventHandler(
+      ScrollEvent.Scroll,
+      (event: ScrollEvent) =>
+        if math.abs(event.deltaY) >= 2 then
+          if event.deltaY < 0 then
+            browseColors = (browseColors + 1) % selectableColors.length
+            val newCursorImage = new Image(
+              getClass.getResource("/img/coursers/courser_" + selectableColors(browseColors) + ".png").toExternalForm,
+              32,
+              32,
+              true,
+              true
+            )
+            scene.setCursor(new ImageCursor(newCursorImage))
+    )
