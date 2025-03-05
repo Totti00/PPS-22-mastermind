@@ -15,6 +15,3 @@ object Code:
       println(userInput)
       val testHintRow = Vector(HintStone("Red"), HintStone("White"), HintStone("White"), HintStone("Empty"))
       testHintRow
-
-
-    
