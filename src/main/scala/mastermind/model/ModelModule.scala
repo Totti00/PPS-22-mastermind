@@ -14,7 +14,9 @@ object ModelModule:
     def startNewGame(difficulty: String): Game
     def reset(): Game
     def getPlayableStone(row: Int, col: Int): String
+    def getHintStone(row: Int, col: Int): String
     def getSizeBoard: (Int, Int)
+    def checkColor(row: Int): Boolean
 
   trait Provider:
     val model: Model
@@ -42,8 +44,14 @@ object ModelModule:
 
       override def getPlayableStone(row: Int, col: Int): String =
         println(row + " " + col + " " + currentGame.board.getPlayableStone(row, col).stringRepresentation)
+
         currentGame.board.getPlayableStone(row, col).stringRepresentation
 
+      override def getHintStone(row: Int, col: Int): String =
+        currentGame.board.getHintStone(row, col).stringRepresentation
+
       override def getSizeBoard: (Int, Int) = (currentGame.board.rows, currentGame.board.cols)
+
+      override def checkColor(row: Int): Boolean = currentGame.currentTurn.==(row)
 
   trait Interface extends Provider with Component

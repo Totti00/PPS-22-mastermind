@@ -49,12 +49,12 @@
             </ImageView>
             <ImageView fitHeight="200.0" fitWidth="200.0" GridPane.rowIndex="4">
                <image>
-                  <Image url="/img/hintStones/hstone_R.png" />
+                  <Image url="/img/hintStones/hstone_Red.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="200.0" fitWidth="200.0" GridPane.rowIndex="5">
                <image>
-                  <Image url="/img/hintStones/hstone_W.png" />
+                  <Image url="/img/hintStones/hstone_White.png" />
                </image>
             </ImageView>
             <Label text="Show there is a stone of the right color in the current row but not in the right position" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5">

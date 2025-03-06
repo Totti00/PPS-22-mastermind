@@ -159,7 +159,11 @@ class GameView(context: ControllerModule.Provider):
       label.setGraphic(
         new ImageView(
           new Image(
-            getClass.getResource("/img/stones/stone_" + selectableColors(browseColors) + ".png").toExternalForm,
+            getClass
+              .getResource(
+                "/img/stones/stone_" + context.controller.updateColor(r, c, selectableColors(browseColors)) + ".png"
+              )
+              .toExternalForm,
             image_size,
             image_size,
             true,
@@ -188,7 +192,9 @@ class GameView(context: ControllerModule.Provider):
     label.setGraphic(
       new ImageView(
         new Image(
-          getClass.getResource("/img/hintStones/hstone_E.png").toExternalForm,
+          getClass
+            .getResource("/img/hintStones/hstone_" + context.controller.getStone(r, c, "hint") + ".png")
+            .toExternalForm,
           image_size,
           image_size,
           true,

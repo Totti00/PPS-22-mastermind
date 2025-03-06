@@ -15,7 +15,7 @@ object ControllerModule:
     def goToPage(path: String, mode: Option[String] = None): Unit
     def getStone(row: Int, col: Int, typeStone: String): String
     def getSizeBoard: (Int, Int)
-
+    def updateColor(row: Int, col: Int, color: String): String
   trait Provider:
     val controller: Controller
 
@@ -39,10 +39,14 @@ object ControllerModule:
       override def getStone(row: Int, col: Int, typeStone: String): String =
         typeStone.toLowerCase match
           case "playable" => context.model.getPlayableStone(row, col)
-          case "hint"     => ???
+          case "hint"     => context.model.getHintStone(row, col)
           case _          => ???
 
       override def getSizeBoard: (Int, Int) = context.model.getSizeBoard
+
+      override def updateColor(row: Int, col: Int, color: String): String = context.model.checkColor(row) match
+        case true  => color
+        case false => context.model.getPlayableStone(row, col)
 
   trait Interface extends Provider with Component:
     self: Requirements =>
