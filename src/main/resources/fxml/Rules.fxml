@@ -44,7 +44,7 @@
             <Label text="To place a stone, click on a black field (You will make it, we believe in you)" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <ImageView fitHeight="200.0" fitWidth="200.0" GridPane.rowIndex="3">
                <image>
-                  <Image url="/img/stones/stone_A.png" />
+                  <Image url="/img/stones/stone_StartCurrentTurn.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="200.0" fitWidth="200.0" GridPane.rowIndex="4">

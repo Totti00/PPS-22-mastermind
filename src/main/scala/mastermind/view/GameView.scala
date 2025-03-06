@@ -17,7 +17,7 @@ class GameView(context: ControllerModule.Provider):
   private var attemptGrid: javafx.scene.layout.GridPane = _
   private var hintGrid: javafx.scene.layout.GridPane = _
   private var browseColors: Int = 0
-  private val selectableColors: Vector[String] = Vector("G", "R", "B", "Y", "P", "W")
+  private val selectableColors: Vector[String] = Vector("Green", "Red", "Blue", "Yellow", "Purple", "White")
 
   /** Displays the game view, initializing grids, buttons, and setting up the scene.
     *
@@ -76,8 +76,9 @@ class GameView(context: ControllerModule.Provider):
   private def initializeGrids(attemptGrid: GridPane, hintGrid: GridPane): Unit =
     attemptGrid.getChildren.clear()
     hintGrid.getChildren.clear()
-    val rows = 10
-    val cols = 4
+    val rows = context.controller.getSizeBoard._1
+    val cols = context.controller.getSizeBoard._2
+
     val positions = for c <- 0 until cols; r <- 0 until rows yield (c, r)
     positions.foreach { case (c, r) =>
       attemptGrid.add(getStone(c, r), c, r)
@@ -130,10 +131,32 @@ class GameView(context: ControllerModule.Provider):
     label.setMaxSize(circle_size, circle_size)
     label.setGraphic(
       new ImageView(
-        new Image(getClass.getResource("/img/stones/stone_A.png").toExternalForm, image_size, image_size, true, true)
+        new Image(
+          getClass
+            .getResource("/img/stones/stone_" + context.controller.getStone(r, c, "playable") + ".png")
+            .toExternalForm,
+          image_size,
+          image_size,
+          true,
+          true
+        )
       )
     )
-    label.setOnMouseClicked(_ => println("Coglioooo"))
+    label.setOnMouseClicked { _ =>
+      // context.controller.updateCell(r,c,selectableColors(browseColors)))
+
+      label.setGraphic(
+        new ImageView(
+          new Image(
+            getClass.getResource("/img/stones/stone_" + selectableColors(browseColors) + ".png").toExternalForm,
+            image_size,
+            image_size,
+            true,
+            true
+          )
+        )
+      )
+    }
     label
 
   /** Returns a hint label for the given column and row.

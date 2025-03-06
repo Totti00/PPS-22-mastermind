@@ -9,8 +9,8 @@ class StoneTest extends AnyFlatSpec:
   }
 
   "a red Playable stone" should "be red stone" in {
-    assert(PlayableStone("Red") == Red)
-    assert(!(PlayableStone("Red") == HintRed))
+    assert(PlayerStoneGrid("Red") == Red)
+    assert(!(PlayerStoneGrid("Red") == HintRed))
   }
 
   "a Hint white" should "be white" in {

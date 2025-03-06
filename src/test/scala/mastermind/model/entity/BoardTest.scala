@@ -7,8 +7,8 @@ class BoardTest extends AnyFlatSpec:
   // Test di creazione della Board
   "Board" should "be created with specified dimensions and default values" in {
     val startBoard = Board(6, 4)
-    val firstTestBoard = Board(6, 4, PlayableStone("Empty"), HintStone("Empty"))
-    val secondTestBoard = Board(6, 4, PlayableStone("Empty"), HintStone("Red"))
+    val firstTestBoard = Board(6, 4, PlayerStoneGrid("Empty"), HintStone("Empty"))
+    val secondTestBoard = Board(6, 4, PlayerStoneGrid("Empty"), HintStone("Red"))
 
     assert(startBoard.rows == 6)
     assert(startBoard.cols == 4)
@@ -18,9 +18,9 @@ class BoardTest extends AnyFlatSpec:
   }
 
   "Board" should "give the stone in a specified row correctly" in {
-    val board = Board(6, 4, PlayableStone("Empty"), HintStone("Red"))
-    assert(board.getPlayableStone(0, 3) == PlayableStone("Empty"))
-    assert(board.getPlayableStone(0, 2) != PlayableStone("Yellow"))
+    val board = Board(6, 4, PlayerStoneGrid("Empty"), HintStone("Red"))
+    assert(board.getPlayableStone(0, 3) == PlayerStoneGrid("Empty"))
+    assert(board.getPlayableStone(0, 2) != PlayerStoneGrid("Yellow"))
     assert(board.getHintStone(0, 2) == HintStone("Red"))
   }
 
@@ -28,16 +28,16 @@ class BoardTest extends AnyFlatSpec:
   "placeGuessAndHints" should "update the specified row correctly" in {
     val board = Board(6, 4)
     val newPlayableRow =
-      Vector(PlayableStone("Red"), PlayableStone("Blue"), PlayableStone("Green"), PlayableStone("Yellow"))
+      Vector(PlayerStoneGrid("Red"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Green"), PlayerStoneGrid("Yellow"))
     val newHintRow = Vector(HintStone("Red"), HintStone("White"), HintStone("White"), HintStone("Empty"))
 
     // Aggiorna la prima riga della board
     val updatedBoard = board.placeGuessAndHints(newPlayableRow, newHintRow, 0)
 
-    assert(updatedBoard.getPlayableStone(0, 0) == PlayableStone("Red"))
-    assert(updatedBoard.getPlayableStone(0, 1) == PlayableStone("Blue"))
-    assert(updatedBoard.getPlayableStone(0, 2) == PlayableStone("Green"))
-    assert(updatedBoard.getPlayableStone(0, 3) == PlayableStone("Yellow"))
+    assert(updatedBoard.getPlayableStone(0, 0) == PlayerStoneGrid("Red"))
+    assert(updatedBoard.getPlayableStone(0, 1) == PlayerStoneGrid("Blue"))
+    assert(updatedBoard.getPlayableStone(0, 2) == PlayerStoneGrid("Green"))
+    assert(updatedBoard.getPlayableStone(0, 3) == PlayerStoneGrid("Yellow"))
 
     assert(updatedBoard.getHintStone(0, 0) == HintStone("Red"))
     assert(updatedBoard.getHintStone(0, 1) == HintStone("White"))

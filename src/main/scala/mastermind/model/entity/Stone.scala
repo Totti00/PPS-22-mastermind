@@ -5,36 +5,39 @@ import scala.util.Random
 sealed trait Stone:
   def stringRepresentation: String
 
-sealed trait PlayableStone extends Stone
+sealed trait PlayerStoneGrid extends Stone
 
-case object Red extends PlayableStone:
+case object StartCurrentTurn extends PlayerStoneGrid:
+  override def stringRepresentation: String = "StartCurrentTurn"
+case object Red extends PlayerStoneGrid:
   override def stringRepresentation: String = "Red"
-case object Green extends PlayableStone:
+case object Green extends PlayerStoneGrid:
   override def stringRepresentation: String = "Green"
-case object Blue extends PlayableStone:
+case object Blue extends PlayerStoneGrid:
   override def stringRepresentation: String = "Blue"
-case object Yellow extends PlayableStone:
+case object Yellow extends PlayerStoneGrid:
   override def stringRepresentation: String = "Yellow"
-case object White extends PlayableStone:
+case object White extends PlayerStoneGrid:
   override def stringRepresentation: String = "White"
-case object Purple extends PlayableStone:
+case object Purple extends PlayerStoneGrid:
   override def stringRepresentation: String = "Purple"
-case object Empty extends PlayableStone:
+case object Empty extends PlayerStoneGrid:
   override def stringRepresentation: String = "Empty"
 
-object PlayableStone:
-  def apply(stringRepresentation: String): PlayableStone = stringRepresentation match
-    case "Red"    => Red
-    case "Green"  => Green
-    case "Blue"   => Blue
-    case "Yellow" => Yellow
-    case "White"  => White
-    case "Purple" => Purple
-    case "Empty"  => Empty
-    case _        => Empty // Default case
+object PlayerStoneGrid:
+  def apply(stringRepresentation: String): PlayerStoneGrid = stringRepresentation match
+    case "Red"              => Red
+    case "Green"            => Green
+    case "Blue"             => Blue
+    case "Yellow"           => Yellow
+    case "White"            => White
+    case "Purple"           => Purple
+    case "Empty"            => Empty
+    case "StartCurrentTurn" => StartCurrentTurn
+    case _                  => Empty // Default case
 
-  def random: PlayableStone =
-    PlayableStone(Random.nextInt(6) match
+  def random: PlayerStoneGrid =
+    PlayerStoneGrid(Random.nextInt(6) match
       case 0 => "Red"
       case 1 => "Green"
       case 2 => "Blue"

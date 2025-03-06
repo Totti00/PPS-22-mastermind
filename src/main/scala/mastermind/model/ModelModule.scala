@@ -13,6 +13,8 @@ object ModelModule:
   trait Model:
     def startNewGame(difficulty: String): Game
     def reset(): Game
+    def getPlayableStone(row: Int, col: Int): String
+    def getSizeBoard: (Int, Int)
 
   trait Provider:
     val model: Model
@@ -32,9 +34,16 @@ object ModelModule:
           case _         => throw new IllegalArgumentException("Invalid difficulty")
         currentDifficulty = mode
         currentGame = GameFactory.createGame(currentDifficulty)
+        currentGame = Game(currentGame.board.initializeCurrentTurn(0), currentGame.code, currentGame.currentTurn)
         currentGame
 
       override def reset(): Game =
         startNewGame(currentDifficulty.name)
+
+      override def getPlayableStone(row: Int, col: Int): String =
+        println(row + " " + col + " " + currentGame.board.getPlayableStone(row, col).stringRepresentation)
+        currentGame.board.getPlayableStone(row, col).stringRepresentation
+
+      override def getSizeBoard: (Int, Int) = (currentGame.board.rows, currentGame.board.cols)
 
   trait Interface extends Provider with Component

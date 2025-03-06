@@ -50,7 +50,7 @@ class MatrixTest extends AnyFlatSpec:
   }
 
   "Playable Matrix" should "replace the correct cell value" in {
-    val matrix: Matrix[PlayableStone] = Matrix(3, 3, Empty)
+    val matrix: Matrix[PlayerStoneGrid] = Matrix(3, 3, Empty)
     val updatedMatrix = matrix.replaceCell(1, 1, Red)
 
     assert(updatedMatrix.cell(1, 1) == Red)

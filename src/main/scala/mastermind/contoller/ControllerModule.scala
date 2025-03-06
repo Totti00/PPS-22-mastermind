@@ -13,6 +13,8 @@ object ControllerModule:
     def resetGame(): Unit
     def startGame(difficulty: String): Unit
     def goToPage(path: String, mode: Option[String] = None): Unit
+    def getStone(row: Int, col: Int, typeStone: String): String
+    def getSizeBoard: (Int, Int)
 
   trait Provider:
     val controller: Controller
@@ -33,6 +35,14 @@ object ControllerModule:
         println(s"Avvia il gioco con difficoltà $difficulty -> Codice: ${currentGame.code}")
 
       override def goToPage(path: String, mode: Option[String]): Unit = context.view.loadView(path, mode)
+
+      override def getStone(row: Int, col: Int, typeStone: String): String =
+        typeStone.toLowerCase match
+          case "playable" => context.model.getPlayableStone(row, col)
+          case "hint"     => ???
+          case _          => ???
+
+      override def getSizeBoard: (Int, Int) = context.model.getSizeBoard
 
   trait Interface extends Provider with Component:
     self: Requirements =>
