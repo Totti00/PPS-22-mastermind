@@ -59,14 +59,18 @@ class GameView(context: ControllerModule.Provider):
     context.controller.startGame(difficulty) // Inizializza il gioco con la difficoltà scelta
     initializeGrids(attemptGrid, hintGrid)
 
-    //import scalafx.Includes.*
+    // import scalafx.Includes.*
     stage.scene = new Scene(root)
     setupScrollHandler(stage.scene.value)
     stage.scene.value.setCursor(
       new ImageCursor(
         new Image(
-          getClass.getResource("/img/coursers/courser_" + selectableColors(browseColors) + ".png")
-            .toExternalForm, 32, 32, true, true)
+          getClass.getResource("/img/coursers/courser_" + selectableColors(browseColors) + ".png").toExternalForm,
+          32,
+          32,
+          true,
+          true
+        )
       )
     )
     stage.sizeToScene()
