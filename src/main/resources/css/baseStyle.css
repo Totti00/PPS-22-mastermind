@@ -1,4 +1,19 @@
-.button {
+#mainContainer {
+    -fx-padding: 10;
+    -fx-background-color: #2f3136;
+}
+
+#border {
+    -fx-background-color: #2f3136;
+}
+
+/* Stile delle matrici di gioco */
+#stone_matrix, #hint_stone_matrix {
+    -fx-background-color: #202225;
+    -fx-background-radius: 10;
+}
+
+.button, #labelCurrentTurn, #currentTime {
 -fx-background-color: #202225, linear-gradient(#20262b, #191d22);
 -fx-background-radius: 5,4,3,5;
 -fx-text-fill: linear-gradient(#da1e28, #2625ff);
@@ -49,18 +64,16 @@
 -fx-text-fill: #ffffff; 
 -fx-font-size: 20px; 
 -fx-font-weight: normal;
-
-
 }
 
 #infoContainer {
 -fx-background-color: #202225;
 }
+
 #ruleTitle {
 -fx-text-fill: #ffffff; 
 -fx-font-size: 25px; 
 -fx-font-weight: normal;
-
 }
 
 #gridRule {

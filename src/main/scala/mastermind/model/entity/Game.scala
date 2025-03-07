@@ -1,17 +1,15 @@
 package mastermind.model.entity
 
 trait Game:
-  var board: Board
-  var code: Code
-  var currentTurn: Int
-  def getCode: Code
+  def board: Board
+  def code: Code
+  def currentTurn: Int
   def resetGame(): Game
 
 object Game:
   def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn)
 
-  private case class GameImpl(board: Board, code: Code, var currentTurn: Int) extends Game:
+  private case class GameImpl(override val board: Board, override val code: Code, override val currentTurn: Int)
+      extends Game:
 
-    override def getCode: Code = code
-
-    override def resetGame(): Game = Game(Board(board.getRows, board.getCols), new Code(4), 0)
+    override def resetGame(): Game = Game(Board(board.rows, board.cols), Code(4), 0)

@@ -5,12 +5,23 @@ import mastermind.contoller.ControllerModule
 import scalafx.scene.Scene
 import scalafx.stage.{Popup, Stage}
 import javafx.scene.Parent
-import javafx.scene.image.Image
 
 object ViewModule:
 
   trait View:
+
+    /** Displays the view.
+      * @param stage
+      *   The main window to display the view.
+      */
     def show(stage: Stage): Unit
+
+    /** Loads a view from an FXML file.
+      * @param path
+      *   The path to the FXML file.
+      * @param mode
+      *   An optional parameter specifying the mode (e.g., difficulty level).
+      */
     def loadView(path: String, mode: Option[String] = None): Unit
 
   trait Provider:
@@ -21,9 +32,8 @@ object ViewModule:
   trait Component:
     context: Requirements =>
 
-    private val gameView = new GameView(context)
-
     class ViewImpl extends View:
+      private val gameView = new GameView(context)
       private var stage: Stage = _
 
       override def show(primaryStage: Stage): Unit =
@@ -35,7 +45,7 @@ object ViewModule:
 
         path match
           case "game" => gameView.show(stage, mode.get)
-          case "rule" =>
+          case "Rules" =>
             println("rule")
             val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
             val root: Parent = loader.load()
@@ -59,7 +69,7 @@ object ViewModule:
 
             import scalafx.Includes.*
             namespace.get("rulesButton") match
-              case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("rule"))
+              case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("Rules"))
               case _                                   =>
 
             val difficultyMapping = Map(
