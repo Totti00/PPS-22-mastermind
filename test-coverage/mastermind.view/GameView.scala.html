@@ -4,29 +4,224 @@ import mastermind.contoller.ControllerModule
 import javafx.fxml.FXMLLoader
 import scalafx.scene.Scene
 import scalafx.stage.Stage
-import javafx.scene.Parent
+import javafx.scene.{ImageCursor, Parent}
+import javafx.scene.layout.GridPane
+import javafx.scene.control.{Button, Label, TextField}
+import scalafx.Includes.*
+import scalafx.scene.image.{Image, ImageView}
+import scalafx.scene.input.ScrollEvent
 
-<span class="nc" id="L9">class GameView(context: ControllerModule.Provider):</span>
+import scala.jdk.CollectionConverters.*
 
+<span class="nc" id="L16">class GameView(context: ControllerModule.Provider):</span>
+  private var attemptGrid: javafx.scene.layout.GridPane = _
+  private var hintGrid: javafx.scene.layout.GridPane = _
+<span class="nc" id="L19">  private var browseColors: Int = 0</span>
+<span class="nc" id="L20">  private val selectableColors: Vector[String] = Vector(&quot;Green&quot;, &quot;Red&quot;, &quot;Blue&quot;, &quot;Yellow&quot;, &quot;Purple&quot;, &quot;White&quot;)</span>
+
+  /** Displays the game view, initializing grids, buttons, and setting up the scene.
+    *
+    * @param stage
+    *   The main window to display the game scene.
+    * @param difficulty
+    *   The chosen difficulty level for the game.
+    */
   def show(stage: Stage, difficulty: String): Unit =
-<span class="nc" id="L12">    val loader = new FXMLLoader(getClass.getResource(&quot;/fxml/game.fxml&quot;))</span>
-<span class="nc" id="L13">    loader.setController(this)</span>
-<span class="nc" id="L14">    val root: Parent = loader.load()</span>
+<span class="nc" id="L30">    val loader = new FXMLLoader(getClass.getResource(&quot;/fxml/Game.fxml&quot;))</span>
+<span class="nc" id="L31">    loader.setController(this)</span>
+<span class="nc" id="L32">    val root: Parent = loader.load()</span>
 
-<span class="nc" id="L16">    val namespace = loader.getNamespace</span>
+<span class="nc" id="L34">    val namespace = loader.getNamespace</span>
+<span class="nc" id="L35">    attemptGrid = namespace.get(&quot;stone_matrix&quot;) match</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">      case grid: GridPane =&gt; grid</span>
+<span class="nc" id="L37">      case _              =&gt; throw new ClassCastException</span>
 
-<span class="nc" id="L18">    namespace.get(&quot;resetGameButton&quot;) match</span>
-<span class="nc bnc" id="L19" title="All 2 branches missed.">      case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; context.controller.resetGame())</span>
-<span class="nc" id="L20">      case _                                   =&gt;</span>
+<span class="nc" id="L39">    hintGrid = namespace.get(&quot;hint_stone_matrix&quot;) match</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">      case grid: GridPane =&gt; grid</span>
+<span class="nc" id="L41">      case _              =&gt; throw new ClassCastException</span>
 
-<span class="nc" id="L22">    namespace.get(&quot;backButton&quot;) match</span>
-<span class="nc bnc" id="L23" title="All 2 branches missed.">      case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; context.controller.goToPage(&quot;MenuPage&quot;))</span>
-<span class="nc" id="L24">      case _                                   =&gt;</span>
+<span class="nc" id="L43">    namespace.get(&quot;resetGameButton&quot;) match</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">      case button: Button =&gt; button.setOnAction(_ =&gt; context.controller.resetGame())</span>
+<span class="nc" id="L45">      case _              =&gt;</span>
 
-<span class="nc" id="L26">    context.controller.startGame(difficulty) // Inizializza il gioco con la difficoltà scelta</span>
+<span class="nc" id="L47">    namespace.get(&quot;backButton&quot;) match</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">      case button: Button =&gt; button.setOnAction(_ =&gt; context.controller.goToPage(&quot;MenuPage&quot;))</span>
+<span class="nc" id="L49">      case _              =&gt;</span>
 
-    import scalafx.Includes.*
-<span class="nc" id="L29">    stage.scene = new Scene(root, 800, 500)</span>
-<span class="nc" id="L30">    stage.title = s&quot;Mastermind&quot;</span>
-<span class="nc" id="L31">    stage.show()</span>
+<span class="nc" id="L51">    namespace.get(&quot;checkButton&quot;) match</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">      case button: Button =&gt; button.setOnAction(_ =&gt; submitGuess())</span>
+<span class="nc" id="L53">      case _              =&gt;</span>
+
+<span class="nc" id="L55">    namespace.get(&quot;helpButton&quot;) match</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">      case button: Button =&gt; button.setOnAction(_ =&gt; context.controller.goToPage(&quot;Rules&quot;))</span>
+<span class="nc" id="L57">      case _              =&gt;</span>
+
+<span class="nc" id="L59">    context.controller.startGame(difficulty) // Inizializza il gioco con la difficoltà scelta</span>
+<span class="nc" id="L60">    initializeGrids(attemptGrid, hintGrid)</span>
+
+    // import scalafx.Includes.*
+<span class="nc" id="L63">    stage.scene = new Scene(root)</span>
+<span class="nc" id="L64">    setupScrollHandler(stage.scene.value)</span>
+<span class="nc" id="L65">    stage.scene.value.setCursor(</span>
+<span class="nc" id="L66">      new ImageCursor(</span>
+<span class="nc" id="L67">        new Image(</span>
+<span class="nc" id="L68">          getClass.getResource(&quot;/img/coursers/courser_&quot; + selectableColors(browseColors) + &quot;.png&quot;).toExternalForm,</span>
+<span class="nc" id="L69">          32,</span>
+<span class="nc" id="L70">          32,</span>
+<span class="nc" id="L71">          true,</span>
+<span class="nc" id="L72">          true</span>
+        )
+      )
+    )
+<span class="nc" id="L76">    stage.sizeToScene()</span>
+<span class="nc" id="L77">    stage.title = &quot;Mastermind&quot;</span>
+<span class="nc" id="L78">    stage.show()</span>
+
+  /** Initializes the attempt and hint grids with labels representing stones and hints.
+    *
+    * @param attemptGrid
+    *   The attempt grid to initialize.
+    * @param hintGrid
+    *   The hint grid to initialize.
+    */
+  private def initializeGrids(attemptGrid: GridPane, hintGrid: GridPane): Unit =
+<span class="nc" id="L88">    attemptGrid.getChildren.clear()</span>
+<span class="nc" id="L89">    hintGrid.getChildren.clear()</span>
+<span class="nc" id="L90">    val rows = context.controller.getSizeBoard._1</span>
+<span class="nc" id="L91">    val cols = context.controller.getSizeBoard._2</span>
+
+<span class="nc" id="L93">    val positions = for c &lt;- 0 until cols; r &lt;- 0 until rows yield (c, r)</span>
+<span class="nc" id="L94">    positions.foreach { case (c, r) =&gt;</span>
+      attemptGrid.add(getStone(c, r), c, r)
+      hintGrid.add(getHint(c, r), c, r)
+    }
+
+  /** Handles submitting the user's guess, extracting and processing it if valid.
+    */
+  private def submitGuess(): Unit =
+<span class="nc" id="L102">    val guess = extractGuess()</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">    if guess.nonEmpty then</span>
+<span class="nc" id="L104">      println(&quot;Guess: &quot; + guess)</span>
+      // updateHintGrid(hints)
+
+  /** Extracts the current guess from the attempt grid.
+    *
+    * @return
+    *   A vector of strings representing the user's selected colors.
+    */
+  private def extractGuess(): Vector[String] =
+<span class="nc" id="L113">    attemptGrid.getChildren</span>
+<span class="nc" id="L114">      .filtered(_.isInstanceOf[TextField])</span>
+      .asScala
+<span class="nc" id="L116">      .map(_.asInstanceOf[TextField].getText)</span>
+<span class="nc" id="L117">      .filter(_.nonEmpty)</span>
+      .toVector
+
+  /** Updates the hint grid with feedback from previous guesses.
+    * @param hints
+    *   A vector of strings representing the hints to display.
+    */
+  private def updateHintGrid(hints: Vector[String]): Unit =
+<span class="nc" id="L125">    val labels = hintGrid.getChildren.filtered(_.isInstanceOf[Label])</span>
+<span class="nc" id="L126">    for i &lt;- hints.indices if i &lt; labels.size do labels.get(i).asInstanceOf[Label].setText(hints(i))</span>
+
+  /** Returns a stone label for the given column and row.
+    * @param c
+    *   The column index.
+    * @param r
+    *   The row index.
+    * @return
+    *   A label representing a stone.
+    */
+  private def getStone(c: Int, r: Int): Label =
+<span class="nc" id="L137">    val circle_size = 60</span>
+<span class="nc" id="L138">    val image_size = circle_size - 5</span>
+<span class="nc" id="L139">    val label = new Label(&quot;&quot;)</span>
+<span class="nc" id="L140">    label.setPrefSize(circle_size, circle_size)</span>
+<span class="nc" id="L141">    label.setMinSize(circle_size, circle_size)</span>
+<span class="nc" id="L142">    label.setMaxSize(circle_size, circle_size)</span>
+<span class="nc" id="L143">    label.setGraphic(</span>
+<span class="nc" id="L144">      new ImageView(</span>
+<span class="nc" id="L145">        new Image(</span>
+<span class="nc" id="L146">          getClass</span>
+<span class="nc" id="L147">            .getResource(&quot;/img/stones/stone_&quot; + context.controller.getStone(r, c, &quot;playable&quot;) + &quot;.png&quot;)</span>
+            .toExternalForm,
+<span class="nc" id="L149">          image_size,</span>
+<span class="nc" id="L150">          image_size,</span>
+<span class="nc" id="L151">          true,</span>
+<span class="nc" id="L152">          true</span>
+        )
+      )
+    )
+<span class="nc" id="L156">    label.setOnMouseClicked { _ =&gt;</span>
+      // context.controller.updateCell(r,c,selectableColors(browseColors)))
+
+      label.setGraphic(
+        new ImageView(
+          new Image(
+            getClass
+              .getResource(
+                &quot;/img/stones/stone_&quot; + context.controller.updateColor(r, c, selectableColors(browseColors)) + &quot;.png&quot;
+              )
+              .toExternalForm,
+            image_size,
+            image_size,
+            true,
+            true
+          )
+        )
+      )
+    }
+<span class="nc" id="L175">    label</span>
+
+  /** Returns a hint label for the given column and row.
+    * @param c
+    *   The column index.
+    * @param r
+    *   The row index.
+    * @return
+    *   A label representing a hint.
+    */
+  private def getHint(c: Int, r: Int): Label =
+<span class="nc" id="L186">    val circle_size = 60</span>
+<span class="nc" id="L187">    val image_size = circle_size - 5</span>
+<span class="nc" id="L188">    val label = new Label(&quot;&quot;)</span>
+<span class="nc" id="L189">    label.setPrefSize(circle_size, circle_size)</span>
+<span class="nc" id="L190">    label.setMinSize(circle_size, circle_size)</span>
+<span class="nc" id="L191">    label.setMaxSize(circle_size, circle_size)</span>
+<span class="nc" id="L192">    label.setGraphic(</span>
+<span class="nc" id="L193">      new ImageView(</span>
+<span class="nc" id="L194">        new Image(</span>
+<span class="nc" id="L195">          getClass</span>
+<span class="nc" id="L196">            .getResource(&quot;/img/hintStones/hstone_&quot; + context.controller.getStone(r, c, &quot;hint&quot;) + &quot;.png&quot;)</span>
+            .toExternalForm,
+<span class="nc" id="L198">          image_size,</span>
+<span class="nc" id="L199">          image_size,</span>
+<span class="nc" id="L200">          true,</span>
+<span class="nc" id="L201">          true</span>
+        )
+      )
+    )
+<span class="nc" id="L205">    label</span>
+
+  /** Sets up the scroll handler for the scene, allowing the user to change the cursor color.
+    * @param scene
+    *   The scene to set up the scroll handler for.
+    */
+  private def setupScrollHandler(scene: Scene): Unit =
+<span class="nc" id="L212">    scene.addEventHandler(</span>
+<span class="nc" id="L213">      ScrollEvent.Scroll,</span>
+<span class="nc" id="L214">      (event: ScrollEvent) =&gt;</span>
+        if math.abs(event.deltaY) &gt;= 2 then
+          if event.deltaY &lt; 0 then
+            browseColors = (browseColors + 1) % selectableColors.length
+            val newCursorImage = new Image(
+              getClass.getResource(&quot;/img/coursers/courser_&quot; + selectableColors(browseColors) + &quot;.png&quot;).toExternalForm,
+              32,
+              32,
+              true,
+              true
+            )
+<span class="nc" id="L225">            scene.setCursor(new ImageCursor(newCursorImage))</span>
+    )
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

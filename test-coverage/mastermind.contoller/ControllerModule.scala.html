@@ -13,7 +13,9 @@ import scalafx.event.ActionEvent
     def resetGame(): Unit
     def startGame(difficulty: String): Unit
 <span class="nc" id="L15">    def goToPage(path: String, mode: Option[String] = None): Unit</span>
-
+    def getStone(row: Int, col: Int, typeStone: String): String
+    def getSizeBoard: (Int, Int)
+    def updateColor(row: Int, col: Int, color: String): String
   trait Provider:
     val controller: Controller
 
@@ -21,18 +23,30 @@ import scalafx.event.ActionEvent
 
   trait Component:
     context: Requirements =&gt;
-<span class="nc bnc" id="L24" title="All 2 branches missed.">    class ControllerImpl extends Controller:</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">    class ControllerImpl extends Controller:</span>
       private var currentGame: Game = _
-<span class="nc" id="L26">      override def playGame(event: ActionEvent): Unit = println(&quot;Avvia il gioco!&quot;)</span>
-<span class="nc" id="L27">      override def exitGame(event: ActionEvent): Unit = println(&quot;Esci dal gioco!&quot;)</span>
+<span class="nc" id="L28">      override def playGame(event: ActionEvent): Unit = println(&quot;Avvia il gioco!&quot;)</span>
+<span class="nc" id="L29">      override def exitGame(event: ActionEvent): Unit = println(&quot;Esci dal gioco!&quot;)</span>
       override def resetGame(): Unit =
-<span class="nc" id="L29">        currentGame = context.model.reset()</span>
-<span class="nc" id="L30">        println(&quot;Ricomincia il gioco!&quot;)</span>
+<span class="nc" id="L31">        currentGame = context.model.reset()</span>
+<span class="nc" id="L32">        println(&quot;Ricomincia il gioco!&quot;)</span>
       override def startGame(difficulty: String): Unit =
-<span class="nc" id="L32">        currentGame = context.model.startNewGame(difficulty);</span>
-<span class="nc" id="L33">        println(s&quot;Avvia il gioco con difficoltà $difficulty -&gt; Codice: ${currentGame.code}&quot;)</span>
+<span class="nc" id="L34">        currentGame = context.model.startNewGame(difficulty);</span>
+<span class="nc" id="L35">        println(s&quot;Avvia il gioco con difficoltà $difficulty -&gt; Codice: ${currentGame.code}&quot;)</span>
 
-<span class="nc" id="L35">      override def goToPage(path: String, mode: Option[String]): Unit = context.view.loadView(path, mode)</span>
+<span class="nc" id="L37">      override def goToPage(path: String, mode: Option[String]): Unit = context.view.loadView(path, mode)</span>
+
+      override def getStone(row: Int, col: Int, typeStone: String): String =
+<span class="nc" id="L40">        typeStone.toLowerCase match</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">          case &quot;playable&quot; =&gt; context.model.getPlayableStone(row, col)</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">          case &quot;hint&quot;     =&gt; context.model.getHintStone(row, col)</span>
+<span class="nc" id="L43">          case _          =&gt; ???</span>
+
+<span class="nc" id="L45">      override def getSizeBoard: (Int, Int) = context.model.getSizeBoard</span>
+
+<span class="nc" id="L47">      override def updateColor(row: Int, col: Int, color: String): String = context.model.checkColor(row) match</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        case true  =&gt; color</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        case false =&gt; context.model.getPlayableStone(row, col)</span>
 
   trait Interface extends Provider with Component:
     self: Requirements =&gt;

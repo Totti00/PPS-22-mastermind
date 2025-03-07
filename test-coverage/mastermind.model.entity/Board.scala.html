@@ -1,22 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Board.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.model.entity</a> &gt; <span class="el_source">Board.scala</span></div><h1>Board.scala</h1><pre class="source lang-java linenums">package mastermind.model.entity
 
 trait Board:
-  def placeGuessAndHints(): Unit
-  def getRows: Int
-  def getCols: Int
 
-<span class="nc" id="L8">object Board:</span>
-<span class="nc" id="L9">  def apply(rows: Int, cols: Int, filling: String = &quot;E&quot;, hfilling: String = &quot;E&quot;): Board =</span>
-<span class="nc" id="L10">    BoardImpl(Vector.fill(rows * cols)(5), Vector.fill(rows * cols)(5))</span>
+  def rows: Int
+  def cols: Int
+  def getPlayableStone(row: Int, cols: Int): Stone
+  def getHintStone(row: Int, cols: Int): Stone
+  def placeGuessAndHints(
+      rowPlayableStone: Vector[PlayerStoneGrid],
+      rowHintStone: Vector[HintStone],
+      updateRow: Int
+  ): Board
 
-<span class="nc bnc" id="L12" title="All 28 branches missed.">  private case class BoardImpl(matrix: Vector[Int], hmatrix: Vector[Int]) extends Board:</span>
+  def initializeCurrentTurn(currentTurn: Int): Board
 
-<span class="nc" id="L14">    private val rows: Int = 6</span>
-<span class="nc" id="L15">    private val cols: Int = 4</span>
+<span class="nc" id="L17">object Board:</span>
+<span class="fc" id="L18">  def apply(</span>
+      rows: Int,
+      cols: Int,
+<span class="fc" id="L21">      playableFilling: PlayerStoneGrid = PlayerStoneGrid(&quot;Empty&quot;),</span>
+<span class="fc" id="L22">      hintFilling: HintStone = HintStone(&quot;Empty&quot;)</span>
+  ): Board =
+<span class="fc" id="L24">    BoardImpl(Matrix(rows, cols, playableFilling), Matrix(rows, cols, hintFilling))</span>
 
-<span class="nc" id="L17">    override def placeGuessAndHints(): Unit = println(&quot;ciao&quot;)</span>
+<span class="pc bpc" id="L26" title="18 of 28 branches missed.">  private case class BoardImpl(playableMatrix: Matrix[PlayerStoneGrid], hintMatrix: Matrix[HintStone]) extends Board:</span>
 
-<span class="nc" id="L19">    override def getCols: Int = cols</span>
+    override def placeGuessAndHints(
+        rowPlayableStone: Vector[PlayerStoneGrid],
+        rowHintStone: Vector[HintStone],
+        updateRow: Int
+    ): Board =
+<span class="fc" id="L33">      copy(playableMatrix.replaceRow(updateRow, rowPlayableStone), hintMatrix.replaceRow(updateRow, rowHintStone))</span>
 
-<span class="nc" id="L21">    override def getRows: Int = rows</span>
+<span class="fc" id="L35">    override def rows: Int = playableMatrix.rows</span>
+<span class="fc" id="L36">    override def cols: Int = playableMatrix.cols</span>
+
+<span class="fc" id="L38">    override def getPlayableStone(row: Int, cols: Int): PlayerStoneGrid = playableMatrix.cell(row, cols)</span>
+<span class="fc" id="L39">    override def getHintStone(row: Int, cols: Int): HintStone = hintMatrix.cell(row, cols)</span>
+
+    override def initializeCurrentTurn(currentTurn: Int): Board =
+<span class="nc" id="L42">      copy(playableMatrix.replaceRow(currentTurn, Vector.fill(cols)(PlayerStoneGrid(&quot;StartCurrentTurn&quot;))), hintMatrix)</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
