@@ -1,15 +1,52 @@
 package mastermind.model.entity
 
 trait Game:
+  /** Board of the game
+    * @return
+    *   the board of the game
+    */
   def board: Board
+
+  /** Code to guess
+    * @return
+    *   the code to guess
+    */
   def code: Code
-  def currentTurn: Int
+
+  /** Reset the game
+    * @return
+    *   a new game
+    */
   def resetGame(): Game
+
+  /** Remaining turns
+    * @return
+    *   the remaining turns
+    */
+  def remainingTurns: Int
+
+  /** Current turn
+    * @return
+    *   the current turn
+    */
+  def currentTurn: Int // Getter
+
+  /** Set the current turn
+    */
+  def currentTurn_(): Unit // Setter senza parametri
 
 object Game:
   def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn)
 
-  private case class GameImpl(override val board: Board, override val code: Code, override val currentTurn: Int)
+  private case class GameImpl(override val board: Board, override val code: Code, private var _currentTurn: Int)
       extends Game:
 
     override def resetGame(): Game = Game(Board(board.rows, board.cols), Code(4), 0)
+
+    override def remainingTurns: Int = board.rows - currentTurn
+
+    // Getter
+    override def currentTurn: Int = _currentTurn
+
+    // Setter senza parametri (incrementa il turno)
+    override def currentTurn_(): Unit = _currentTurn += 1

@@ -14,8 +14,9 @@ import scalafx.scene.input.ScrollEvent
 import scala.jdk.CollectionConverters.*
 
 class GameView(context: ControllerModule.Provider):
-  private var attemptGrid: javafx.scene.layout.GridPane = _
-  private var hintGrid: javafx.scene.layout.GridPane = _
+  private var attemptGrid: GridPane = _
+  private var hintGrid: GridPane = _
+  private var turnsLabel: Label = _
   private var browseColors: Int = 0
   private val selectableColors: Vector[String] = Vector("Green", "Red", "Blue", "Yellow", "Purple", "White")
 
@@ -28,7 +29,7 @@ class GameView(context: ControllerModule.Provider):
     */
   def show(stage: Stage, difficulty: String): Unit =
     val loader = new FXMLLoader(getClass.getResource("/fxml/Game.fxml"))
-    loader.setController(this)
+    // loader.setController(this)
     val root: Parent = loader.load()
 
     val namespace = loader.getNamespace
@@ -56,6 +57,10 @@ class GameView(context: ControllerModule.Provider):
       case button: Button => button.setOnAction(_ => context.controller.goToPage("Rules"))
       case _              =>
 
+    turnsLabel = namespace.get("labelCurrentTurn") match
+      case label: Label => label
+      case _            => throw new ClassCastException
+
     context.controller.startGame(difficulty) // Inizializza il gioco con la difficoltà scelta
     initializeGrids(attemptGrid, hintGrid)
 
@@ -73,6 +78,7 @@ class GameView(context: ControllerModule.Provider):
         )
       )
     )
+    turnsLabel.setText("Remaining Turns: " + context.controller.remainingTurns)
     stage.sizeToScene()
     stage.title = "Mastermind"
     stage.show()
@@ -102,7 +108,7 @@ class GameView(context: ControllerModule.Provider):
     val guess = extractGuess()
     if guess.nonEmpty then
       println("Guess: " + guess)
-      // updateHintGrid(hints)
+      // updateView(hints)
 
   /** Extracts the current guess from the attempt grid.
     *
@@ -121,7 +127,8 @@ class GameView(context: ControllerModule.Provider):
     * @param hints
     *   A vector of strings representing the hints to display.
     */
-  private def updateHintGrid(hints: Vector[String]): Unit =
+  private def updateView(hints: Vector[String]): Unit =
+    turnsLabel.setText("Remaining Turns: " + context.controller.remainingTurns)
     val labels = hintGrid.getChildren.filtered(_.isInstanceOf[Label])
     for i <- hints.indices if i < labels.size do labels.get(i).asInstanceOf[Label].setText(hints(i))
 
@@ -154,23 +161,25 @@ class GameView(context: ControllerModule.Provider):
       )
     )
     label.setOnMouseClicked { _ =>
-      // context.controller.updateCell(r,c,selectableColors(browseColors)))
-
-      label.setGraphic(
-        new ImageView(
-          new Image(
-            getClass
-              .getResource(
-                "/img/stones/stone_" + context.controller.updateColor(r, c, selectableColors(browseColors)) + ".png"
-              )
-              .toExternalForm,
-            image_size,
-            image_size,
-            true,
-            true
+      if context.controller.turn == r
+      then // TODO: con questa riga, potremmo risparmiarci i metodi utilizzati in updateColor sotto.
+        // TODO: Te la argomento tramite la frase di Viroli "se le cose si possono fare in modo semplice, facciamole in modo semplice"
+        label.setGraphic(
+          new ImageView(
+            new Image(
+              getClass
+                .getResource(
+                  // "/img/stones/stone_" + context.controller.updateColor(r, c, selectableColors(browseColors)) + ".png"
+                  "/img/stones/stone_" + selectableColors(browseColors) + ".png"
+                )
+                .toExternalForm,
+              image_size,
+              image_size,
+              true,
+              true
+            )
           )
         )
-      )
     }
     label
 

@@ -8,15 +8,39 @@ object ModelModule:
   // Factory per generare il gioco in base alla difficoltà
   private object GameFactory:
     def createGame(mode: GameMode): Game =
-      Game(Board(mode.boardSize._1, mode.boardSize._2), Code(mode.codeLength), 0)
+      Game(Board(mode.boardSize._1, mode.boardSize._2).initializeCurrentTurn(0), Code(mode.codeLength), 0)
 
   trait Model:
+    /** Start a new game
+      * @param difficulty
+      *   the difficulty of the game
+      * @return
+      *   the new game
+      */
     def startNewGame(difficulty: String): Game
+
+    /** Reset the game
+      * @return
+      *   a new game
+      */
     def reset(): Game
+
     def getPlayableStone(row: Int, col: Int): String
     def getHintStone(row: Int, col: Int): String
     def getSizeBoard: (Int, Int)
     def checkColor(row: Int): Boolean
+
+    /** Current turn
+      * @return
+      *   the current turn
+      */
+    def currentTurn: Int
+
+    /** Remaining turns
+      * @return
+      *   the remaining turns
+      */
+    def remainingTurns: Int
 
   trait Provider:
     val model: Model
@@ -36,7 +60,6 @@ object ModelModule:
           case _         => throw new IllegalArgumentException("Invalid difficulty")
         currentDifficulty = mode
         currentGame = GameFactory.createGame(currentDifficulty)
-        currentGame = Game(currentGame.board.initializeCurrentTurn(0), currentGame.code, currentGame.currentTurn)
         currentGame
 
       override def reset(): Game =
@@ -52,6 +75,10 @@ object ModelModule:
 
       override def getSizeBoard: (Int, Int) = (currentGame.board.rows, currentGame.board.cols)
 
-      override def checkColor(row: Int): Boolean = currentGame.currentTurn.==(row)
+      override def checkColor(row: Int): Boolean = currentGame.currentTurn == row
+
+      override def currentTurn: Int = currentGame.currentTurn
+
+      override def remainingTurns: Int = currentGame.remainingTurns
 
   trait Interface extends Provider with Component

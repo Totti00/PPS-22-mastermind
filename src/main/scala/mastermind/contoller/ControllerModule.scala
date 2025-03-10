@@ -8,14 +8,39 @@ import scalafx.event.ActionEvent
 object ControllerModule:
 
   trait Controller:
-    def playGame(event: ActionEvent): Unit
-    def exitGame(event: ActionEvent): Unit
+    /** Reset the game
+      */
     def resetGame(): Unit
+
+    /** Start a new game
+      * @param difficulty
+      *   the difficulty of the game
+      */
     def startGame(difficulty: String): Unit
+
+    /** Go to a specific page
+      * @param path
+      *   the path of the page
+      * @param mode
+      *   the difficulty of the game
+      */
     def goToPage(path: String, mode: Option[String] = None): Unit
+
     def getStone(row: Int, col: Int, typeStone: String): String
     def getSizeBoard: (Int, Int)
     def updateColor(row: Int, col: Int, color: String): String
+
+    /** Current turn
+      * @return
+      *   the current turn
+      */
+    def turn: Int
+
+    /** Remaining turns
+      * @return
+      *   the remaining turns
+      */
+    def remainingTurns: Int
   trait Provider:
     val controller: Controller
 
@@ -25,8 +50,6 @@ object ControllerModule:
     context: Requirements =>
     class ControllerImpl extends Controller:
       private var currentGame: Game = _
-      override def playGame(event: ActionEvent): Unit = println("Avvia il gioco!")
-      override def exitGame(event: ActionEvent): Unit = println("Esci dal gioco!")
       override def resetGame(): Unit =
         currentGame = context.model.reset()
         println("Ricomincia il gioco!")
@@ -47,6 +70,10 @@ object ControllerModule:
       override def updateColor(row: Int, col: Int, color: String): String = context.model.checkColor(row) match
         case true  => color
         case false => context.model.getPlayableStone(row, col)
+
+      override def turn: Int = context.model.currentTurn
+
+      override def remainingTurns: Int = context.model.remainingTurns
 
   trait Interface extends Provider with Component:
     self: Requirements =>
