@@ -11,7 +11,7 @@ nav_order: 3
 |       Come giocatore, voglio iniziare una nuova partita scegliendo tra le modalità di gioco       | 5.2  | Implementazione logica di inizio partita |   Ramzi    |     0     |       0       |
 |       Come giocatore, voglio iniziare una nuova partita scegliendo tra le modalità di gioco       | 5.3  | Gestione pagina di gioco                 |   Ramzi    |     0     |       0       |
 |     Come giocatore, voglio visualizzare il campo di gioco una volta che la partita è iniziata     | 6.1  | Creazione pagina di gioco                |   Totaro   |     4     |       4       |
-| Come giocatore, voglio poter visualizzare le regole del gioco in qualsiasi momento della partita  | 14.3 | Inserimento pagina nella partita         |   Totaro   |     2     |       2       |
+| Come giocatore, voglio poter visualizzare le regole del gioco in qualsiasi momento della partita  | 13.3 | Inserimento pagina nella partita         |   Totaro   |     2     |       2       |
 |     Come giocatore, voglio vedere una lista dei tentativi effettuati e dei feedback associati     | 7.1  | Gestione mouse giocatore                 |   Totaro   |     4     |       4       |
 |     Come giocatore, voglio vedere una lista dei tentativi effettuati e dei feedback associati     | 7.2  | Visualizzazione colori nei tentativi     |   Ramzi    |     0     |       0       |
 |     Come giocatore, voglio vedere una lista dei tentativi effettuati e dei feedback associati     | 7.3  | Visualizzazione colori nei feedback      |   Ramzi    |     0     |       0       |
@@ -20,6 +20,10 @@ nav_order: 3
 ## Sprint goal
 
 Gli obiettivi di questo Sprint sono stati:
+
+- Implementazione della logica di inizio partita
+- Gestione dell'interazione del giocatore con il campo di gioco
+- Visualizzazione dei tentativi effettuati e dei feedback associati
 
 ## Deadline
 

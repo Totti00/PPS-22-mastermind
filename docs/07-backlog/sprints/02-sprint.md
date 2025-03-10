@@ -13,8 +13,8 @@ nav_order: 2
 |                                 Menù principale dell'applicazione                                 | 4.2  | Creazione pagina menù principale                    |   Ramzi    |     2     |       4       |
 |                                 Menù principale dell'applicazione                                 | 4.4  | Doc MVC                                             |   Totaro   |     2     |       2       |
 |       Come giocatore, voglio iniziare una nuova partita scegliendo tra le modalità di gioco       | 5.1  | Controller gestione modalità                        |   Totaro   |     1     |       1       |
-| Come giocatore, voglio poter visualizzare le regole del gioco in qualsiasi momento della partita  | 14.1 | Creazione pagina regole                             |   Ramzi    |     1     |       2       |
-| Come giocatore, voglio poter visualizzare le regole del gioco in qualsiasi momento della partita  | 14.2 | Inserimento pagina nel menu principale              |   Ramzi    |     1     |       1       |
+| Come giocatore, voglio poter visualizzare le regole del gioco in qualsiasi momento della partita  | 13.1 | Creazione pagina regole                             |   Ramzi    |     1     |       2       |
+| Come giocatore, voglio poter visualizzare le regole del gioco in qualsiasi momento della partita  | 13.2 | Inserimento pagina nel menu principale              |   Ramzi    |     1     |       1       |
 |                                                                                                   |      | **TOT**                                             |            |    13     |      18       |
 
 ## Sprint goal
