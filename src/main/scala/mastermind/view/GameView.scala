@@ -7,6 +7,7 @@ import scalafx.stage.Stage
 import javafx.scene.{ImageCursor, Parent}
 import javafx.scene.layout.GridPane
 import javafx.scene.control.{Button, Label, TextField}
+import mastermind.model.entity.{HintStone, PlayerStoneGrid, Stone}
 import scalafx.Includes.*
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.input.ScrollEvent
@@ -102,35 +103,67 @@ class GameView(context: ControllerModule.Provider):
       hintGrid.add(getHint(c, r), c, r)
     }
 
+  def updateView(vectorOfHintStones: Vector[HintStone]): Unit =
+    hintGrid.getChildren
+      .filtered(child => GridPane.getRowIndex(child) == context.controller.turn)
+      .asScala
+      .zip(vectorOfHintStones)
+      .foreach { case (label, hintStone) =>
+        label.asInstanceOf[Label].setGraphic(getGraphic(hintStone))
+        label.asInstanceOf[Label].setText(hintStone.stringRepresentation)
+      }
+
+  def updatePlayableView(): Unit =
+    attemptGrid.getChildren
+      .filtered(child => GridPane.getRowIndex(child) == context.controller.turn)
+      .asScala
+      .map(child => child.asInstanceOf[Label])
+      .zipWithIndex
+      .foreach { case (label, index) =>
+        val newLabel = getStone(index, context.controller.turn)
+        label.setGraphic(newLabel.getGraphic)
+        label.setText(newLabel.getText)
+      }
+
+  private def getGraphic(stone: Stone): ImageView =
+    val urlStone = stone match
+      case stone if stone.isInstanceOf[HintStone] => "/img/hintStones/hstone_" + stone.stringRepresentation + ".png"
+      case _                                      => "/img/stones/stone_" + stone.stringRepresentation + ".png"
+
+    val circle_size = 60
+    val image_size = circle_size - 5
+    new ImageView(
+      new Image(
+        getClass
+          .getResource(urlStone)
+          .toExternalForm,
+        image_size,
+        image_size,
+        true,
+        true
+      )
+    )
+
   /** Handles submitting the user's guess, extracting and processing it if valid.
     */
   private def submitGuess(): Unit =
+    println("checkcode pressed")
     val guess = extractGuess()
     if guess.nonEmpty then
       println("Guess: " + guess)
-      // updateView(hints)
+      context.controller.checkCode(guess)
 
   /** Extracts the current guess from the attempt grid.
     *
     * @return
     *   A vector of strings representing the user's selected colors.
     */
-  private def extractGuess(): Vector[String] =
+  private def extractGuess(): Vector[PlayerStoneGrid] =
     attemptGrid.getChildren
-      .filtered(_.isInstanceOf[TextField])
+      .filtered(child => GridPane.getRowIndex(child) == context.controller.turn)
       .asScala
-      .map(_.asInstanceOf[TextField].getText)
-      .filter(_.nonEmpty)
+      .map(cell => PlayerStoneGrid(cell.asInstanceOf[Label].getText))
       .toVector
-
-  /** Updates the hint grid with feedback from previous guesses.
-    * @param hints
-    *   A vector of strings representing the hints to display.
-    */
-  private def updateView(hints: Vector[String]): Unit =
-    turnsLabel.setText("Remaining Turns: " + context.controller.remainingTurns)
-    val labels = hintGrid.getChildren.filtered(_.isInstanceOf[Label])
-    for i <- hints.indices if i < labels.size do labels.get(i).asInstanceOf[Label].setText(hints(i))
 
   /** Returns a stone label for the given column and row.
     * @param c
@@ -141,25 +174,15 @@ class GameView(context: ControllerModule.Provider):
     *   A label representing a stone.
     */
   private def getStone(c: Int, r: Int): Label =
+    val stone = context.controller.getStone(r, c, "playable")
     val circle_size = 60
     val image_size = circle_size - 5
-    val label = new Label("")
+    val label = new Label(stone.stringRepresentation)
     label.setPrefSize(circle_size, circle_size)
     label.setMinSize(circle_size, circle_size)
     label.setMaxSize(circle_size, circle_size)
-    label.setGraphic(
-      new ImageView(
-        new Image(
-          getClass
-            .getResource("/img/stones/stone_" + context.controller.getStone(r, c, "playable") + ".png")
-            .toExternalForm,
-          image_size,
-          image_size,
-          true,
-          true
-        )
-      )
-    )
+    label.setGraphic(getGraphic(stone))
+
     label.setOnMouseClicked { _ =>
       if context.controller.turn == r
       then
@@ -178,6 +201,7 @@ class GameView(context: ControllerModule.Provider):
             )
           )
         )
+      label.setText(selectableColors(browseColors))
     }
     label
 
@@ -190,25 +214,14 @@ class GameView(context: ControllerModule.Provider):
     *   A label representing a hint.
     */
   private def getHint(c: Int, r: Int): Label =
+    val hintStone = context.controller.getStone(r, c, "hint")
     val circle_size = 60
     val image_size = circle_size - 5
-    val label = new Label("")
+    val label = new Label(hintStone.stringRepresentation)
     label.setPrefSize(circle_size, circle_size)
     label.setMinSize(circle_size, circle_size)
     label.setMaxSize(circle_size, circle_size)
-    label.setGraphic(
-      new ImageView(
-        new Image(
-          getClass
-            .getResource("/img/hintStones/hstone_" + context.controller.getStone(r, c, "hint") + ".png")
-            .toExternalForm,
-          image_size,
-          image_size,
-          true,
-          true
-        )
-      )
-    )
+    label.setGraphic(getGraphic(hintStone))
     label
 
   /** Sets up the scroll handler for the scene, allowing the user to change the cursor color.

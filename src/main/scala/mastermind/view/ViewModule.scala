@@ -5,6 +5,7 @@ import mastermind.contoller.ControllerModule
 import scalafx.scene.Scene
 import scalafx.stage.{Popup, Stage}
 import javafx.scene.Parent
+import mastermind.model.entity.HintStone
 
 object ViewModule:
 
@@ -24,6 +25,9 @@ object ViewModule:
       */
     def loadView(path: String, mode: Option[String] = None): Unit
 
+    def updateHintGrid(hintStones: Vector[HintStone]): Unit
+    def updatePlayableGrid(): Unit
+
   trait Provider:
     val view: View
 
@@ -33,8 +37,14 @@ object ViewModule:
     context: Requirements =>
 
     class ViewImpl extends View:
-      private val gameView = new GameView(context)
       private var stage: Stage = _
+      private val gameView = new GameView(context)
+
+      override def updateHintGrid(hintStones: Vector[HintStone]): Unit =
+        gameView.updateView(hintStones)
+
+      override def updatePlayableGrid(): Unit =
+        gameView.updatePlayableView()
 
       override def show(primaryStage: Stage): Unit =
         stage = primaryStage

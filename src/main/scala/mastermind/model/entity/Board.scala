@@ -4,8 +4,8 @@ trait Board:
 
   def rows: Int
   def cols: Int
-  def getPlayableStone(row: Int, cols: Int): Stone
-  def getHintStone(row: Int, cols: Int): Stone
+  def getPlayableStone(row: Int, cols: Int): PlayerStoneGrid
+  def getHintStone(row: Int, cols: Int): HintStone
   def placeGuessAndHints(
       rowPlayableStone: Vector[PlayerStoneGrid],
       rowHintStone: Vector[HintStone],

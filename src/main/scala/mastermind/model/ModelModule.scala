@@ -1,6 +1,6 @@
 package mastermind.model
 
-import mastermind.model.entity.{Board, Code, Game}
+import mastermind.model.entity.{Board, Code, Game, HintStone, PlayerStoneGrid}
 import mastermind.model.singleton.*
 
 object ModelModule:
@@ -25,9 +25,11 @@ object ModelModule:
       */
     def reset(): Game
 
-    def getPlayableStone(row: Int, col: Int): String
-    def getHintStone(row: Int, col: Int): String
+    def getPlayableStone(row: Int, col: Int): PlayerStoneGrid
+    def getHintStone(row: Int, col: Int): HintStone
     def getSizeBoard: (Int, Int)
+    def submitGuess(userInput: Vector[PlayerStoneGrid]): Vector[HintStone]
+    def startNewTurn(): Unit
 
     /** Current turn
       * @return
@@ -64,18 +66,31 @@ object ModelModule:
       override def reset(): Game =
         startNewGame(currentDifficulty.name)
 
-      override def getPlayableStone(row: Int, col: Int): String =
+      override def getPlayableStone(row: Int, col: Int): PlayerStoneGrid =
         println(row + " " + col + " " + currentGame.board.getPlayableStone(row, col).stringRepresentation)
 
-        currentGame.board.getPlayableStone(row, col).stringRepresentation
+        currentGame.board.getPlayableStone(row, col)
 
-      override def getHintStone(row: Int, col: Int): String =
-        currentGame.board.getHintStone(row, col).stringRepresentation
+      override def getHintStone(row: Int, col: Int): HintStone =
+        currentGame.board.getHintStone(row, col)
 
       override def getSizeBoard: (Int, Int) = (currentGame.board.rows, currentGame.board.cols)
 
       override def currentTurn: Int = currentGame.currentTurn
 
       override def remainingTurns: Int = currentGame.remainingTurns
+
+      override def submitGuess(userInput: Vector[PlayerStoneGrid]): Vector[HintStone] =
+        val vectorOfHintStones = currentGame.code.compareTo(userInput)
+        println("modelModule: currentTurn+1: " + currentTurn)
+        val newBoard = currentGame.board
+          .placeGuessAndHints(userInput, vectorOfHintStones, currentTurn)
+        currentGame.board_(newBoard)
+        vectorOfHintStones
+
+      override def startNewTurn(): Unit =
+        currentGame.currentTurn_()
+        val newBoard = currentGame.board.initializeCurrentTurn(currentTurn)
+        currentGame.board_(newBoard)
 
   trait Interface extends Provider with Component

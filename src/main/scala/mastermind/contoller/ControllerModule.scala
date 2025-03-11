@@ -1,7 +1,7 @@
 package mastermind.contoller
 
 import mastermind.model.ModelModule
-import mastermind.model.entity.Game
+import mastermind.model.entity.{Game, PlayerStoneGrid, Stone}
 import mastermind.view.ViewModule
 import scalafx.event.ActionEvent
 
@@ -26,8 +26,9 @@ object ControllerModule:
       */
     def goToPage(path: String, mode: Option[String] = None): Unit
 
-    def getStone(row: Int, col: Int, typeStone: String): String
+    def getStone(row: Int, col: Int, typeStone: String): Stone
     def getSizeBoard: (Int, Int)
+    def checkCode(userInput: Vector[PlayerStoneGrid]): Unit
 
     /** Current turn
       * @return
@@ -58,17 +59,23 @@ object ControllerModule:
 
       override def goToPage(path: String, mode: Option[String]): Unit = context.view.loadView(path, mode)
 
-      override def getStone(row: Int, col: Int, typeStone: String): String =
+      override def getStone(row: Int, col: Int, typeStone: String): Stone =
         typeStone.toLowerCase match
           case "playable" => context.model.getPlayableStone(row, col)
           case "hint"     => context.model.getHintStone(row, col)
-          case _          => ???
+          case _          => throw new Exception("wrong request!")
 
       override def getSizeBoard: (Int, Int) = context.model.getSizeBoard
 
       override def turn: Int = context.model.currentTurn
 
       override def remainingTurns: Int = context.model.remainingTurns
+
+      override def checkCode(userInput: Vector[PlayerStoneGrid]): Unit =
+        val vectorOfHintStones = context.model.submitGuess(userInput)
+        context.view.updateHintGrid(vectorOfHintStones)
+        context.model.startNewTurn()
+        context.view.updatePlayableGrid()
 
   trait Interface extends Provider with Component:
     self: Requirements =>
