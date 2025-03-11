@@ -41,7 +41,7 @@ object ViewModule:
       private val gameView = new GameView(context)
 
       override def updateHintGrid(hintStones: Vector[HintStone]): Unit =
-        gameView.updateView(hintStones)
+        gameView.updateHintView(hintStones)
 
       override def updatePlayableGrid(): Unit =
         gameView.updatePlayableView()

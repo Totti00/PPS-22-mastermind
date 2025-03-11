@@ -65,7 +65,6 @@ class GameView(context: ControllerModule.Provider):
     context.controller.startGame(difficulty) // Inizializza il gioco con la difficoltà scelta
     initializeGrids(attemptGrid, hintGrid)
 
-    // import scalafx.Includes.*
     stage.scene = new Scene(root)
     setupScrollHandler(stage.scene.value)
     stage.scene.value.setCursor(
@@ -103,7 +102,11 @@ class GameView(context: ControllerModule.Provider):
       hintGrid.add(getHint(c, r), c, r)
     }
 
-  def updateView(vectorOfHintStones: Vector[HintStone]): Unit =
+  /** Updates the hint view, updating the stones in the hint grid.
+    * @param vectorOfHintStones
+    *   The vector of hint stones to update the view with.
+    */
+  def updateHintView(vectorOfHintStones: Vector[HintStone]): Unit =
     hintGrid.getChildren
       .filtered(child => GridPane.getRowIndex(child) == context.controller.turn)
       .asScala
@@ -113,6 +116,8 @@ class GameView(context: ControllerModule.Provider):
         label.asInstanceOf[Label].setText(hintStone.stringRepresentation)
       }
 
+  /** Updates the playable view, updating the stones in the attempt grid.
+    */
   def updatePlayableView(): Unit =
     attemptGrid.getChildren
       .filtered(child => GridPane.getRowIndex(child) == context.controller.turn)
@@ -125,6 +130,12 @@ class GameView(context: ControllerModule.Provider):
         label.setText(newLabel.getText)
       }
 
+  /** Returns the graphic representation of a stone.
+    * @param stone
+    *   The stone to get the graphic for.
+    * @return
+    *   An ImageView representing the stone.
+    */
   private def getGraphic(stone: Stone): ImageView =
     val urlStone = stone match
       case stone if stone.isInstanceOf[HintStone] => "/img/hintStones/hstone_" + stone.stringRepresentation + ".png"
