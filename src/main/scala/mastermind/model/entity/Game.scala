@@ -39,22 +39,27 @@ trait Game:
     */
   def currentTurn_(): Unit
 
-  /**
-   * Game state getter
-   * @return the current game state
-   */
+  /** Game state getter
+    * @return
+    *   the current game state
+    */
   def state: GameState
 
-  /**
-   * Game state setter
-   * @param newState the new game state
-   */
+  /** Game state setter
+    * @param newState
+    *   the new game state
+    */
   def state_(newState: GameState): Unit
 
 object Game:
   def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn, GameState.InGame)
 
-  private case class GameImpl(var board: Board, override val code: Code, private var _currentTurn: Int, private var _state: GameState) extends Game:
+  private case class GameImpl(
+      var board: Board,
+      override val code: Code,
+      private var _currentTurn: Int,
+      private var _state: GameState
+  ) extends Game:
 
     private var startTime = System.currentTimeMillis()
     private val timeFormat = new SimpleDateFormat("HH:mm:ss")

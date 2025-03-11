@@ -43,16 +43,16 @@ object ModelModule:
       */
     def remainingTurns: Int
 
-    /**
-     * Game state getter
-     * @return the current game state
-     */
+    /** Game state getter
+      * @return
+      *   the current game state
+      */
     def gameState: GameState
 
-    /**
-     * Game state setter
-     * @param newState the new game state
-     */
+    /** Game state setter
+      * @param newState
+      *   the new game state
+      */
     def gameState_(newState: GameState): Unit
 
   trait Provider:

@@ -85,7 +85,6 @@ object ControllerModule:
         context.view.updateHintGrid(vectorOfHintStones)
         context.view.updatePlayableGrid()
 
-
       override def gameState: GameState = context.model.gameState
 
       override def gameState_(newState: GameState): Unit = context.model.gameState_(newState)
