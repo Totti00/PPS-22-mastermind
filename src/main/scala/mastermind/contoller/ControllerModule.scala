@@ -1,6 +1,6 @@
 package mastermind.contoller
 
-import mastermind.model.ModelModule
+import mastermind.model.{GameState, ModelModule}
 import mastermind.model.entity.{Game, PlayerStoneGrid, Stone}
 import mastermind.view.ViewModule
 import scalafx.event.ActionEvent
@@ -41,6 +41,11 @@ object ControllerModule:
       *   the remaining turns
       */
     def remainingTurns: Int
+
+    def gameState: GameState
+
+    def gameState_(newState: GameState): Unit
+
   trait Provider:
     val controller: Controller
 
@@ -50,12 +55,13 @@ object ControllerModule:
     context: Requirements =>
     class ControllerImpl extends Controller:
       private var currentGame: Game = _
+
       override def resetGame(): Unit =
         currentGame = context.model.reset()
         println("Ricomincia il gioco!")
+
       override def startGame(difficulty: String): Unit =
         currentGame = context.model.startNewGame(difficulty);
-        println(s"Avvia il gioco con difficoltà $difficulty -> Codice: ${currentGame.code}")
 
       override def goToPage(path: String, mode: Option[String]): Unit = context.view.loadView(path, mode)
 
@@ -73,10 +79,15 @@ object ControllerModule:
 
       override def checkCode(userInput: Vector[PlayerStoneGrid]): Unit =
         val vectorOfHintStones = context.model.submitGuess(userInput)
-        context.view.updateHintGrid(vectorOfHintStones)
         context.model.startNewTurn()
-        context.view.updatePlayableGrid()
         context.view.updateTurns()
+        context.view.updateHintGrid(vectorOfHintStones)
+        context.view.updatePlayableGrid()
+
+
+      override def gameState: GameState = context.model.gameState
+
+      override def gameState_(newState: GameState): Unit = context.model.gameState_(newState)
 
   trait Interface extends Provider with Component:
     self: Requirements =>

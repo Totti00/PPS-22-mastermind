@@ -43,6 +43,18 @@ object ModelModule:
       */
     def remainingTurns: Int
 
+    /**
+     * Game state getter
+     * @return the current game state
+     */
+    def gameState: GameState
+
+    /**
+     * Game state setter
+     * @param newState the new game state
+     */
+    def gameState_(newState: GameState): Unit
+
   trait Provider:
     val model: Model
 
@@ -52,7 +64,6 @@ object ModelModule:
       private var currentDifficulty: GameMode = _
 
       override def startNewGame(difficulty: String): Game =
-        println(difficulty)
         val mode = difficulty.toLowerCase match
           case "easy"    => EasyMode
           case "medium"  => MediumMode
@@ -82,6 +93,7 @@ object ModelModule:
 
       override def submitGuess(userInput: Vector[PlayerStoneGrid]): Vector[HintStone] =
         val vectorOfHintStones = currentGame.code.compareTo(userInput)
+        println("Vector of hint stones: " + vectorOfHintStones)
         println("modelModule: currentTurn+1: " + currentTurn)
         val newBoard = currentGame.board
           .placeGuessAndHints(userInput, vectorOfHintStones, currentTurn)
@@ -90,7 +102,12 @@ object ModelModule:
 
       override def startNewTurn(): Unit =
         currentGame.currentTurn_()
-        val newBoard = currentGame.board.initializeCurrentTurn(currentTurn)
-        currentGame.board_(newBoard)
+        if currentTurn < currentGame.board.rows then
+          val newBoard = currentGame.board.initializeCurrentTurn(currentTurn)
+          currentGame.board_(newBoard)
+
+      override def gameState: GameState = currentGame.state
+
+      override def gameState_(newState: GameState): Unit = currentGame.state_(newState)
 
   trait Interface extends Provider with Component

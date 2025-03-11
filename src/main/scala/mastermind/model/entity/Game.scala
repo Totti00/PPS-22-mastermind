@@ -1,5 +1,7 @@
 package mastermind.model.entity
 
+import mastermind.model.GameState
+
 trait Game:
   /** Board of the game
     * @return
@@ -30,25 +32,39 @@ trait Game:
     * @return
     *   the current turn
     */
-  def currentTurn: Int // Getter
+  def currentTurn: Int
 
   /** Set the current turn
     */
-  def currentTurn_(): Unit // Setter senza parametri
+  def currentTurn_(): Unit
+
+  /**
+   * Game state getter
+   * @return the current game state
+   */
+  def state: GameState
+
+  /**
+   * Game state setter
+   * @param newState the new game state
+   */
+  def state_(newState: GameState): Unit
 
 object Game:
-  def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn)
+  def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn, GameState.InGame)
 
-  private case class GameImpl(var board: Board, override val code: Code, private var _currentTurn: Int) extends Game:
+  private case class GameImpl(var board: Board, override val code: Code, private var _currentTurn: Int, private var _state: GameState) extends Game:
 
     override def resetGame(): Game = Game(Board(board.rows, board.cols), Code(4), 0)
 
     override def remainingTurns: Int = board.rows - currentTurn
 
-    // Getter
     override def currentTurn: Int = _currentTurn
 
-    // Setter senza parametri (incrementa il turno)
     override def currentTurn_(): Unit = _currentTurn += 1
 
     override def board_(newBoard: Board): Unit = this.board = newBoard
+
+    override def state: GameState = _state
+
+    override def state_(newState: GameState): Unit = _state = newState
