@@ -162,14 +162,12 @@ class GameView(context: ControllerModule.Provider):
     )
     label.setOnMouseClicked { _ =>
       if context.controller.turn == r
-      then // TODO: con questa riga, potremmo risparmiarci i metodi utilizzati in updateColor sotto.
-        // TODO: Te la argomento tramite la frase di Viroli "se le cose si possono fare in modo semplice, facciamole in modo semplice"
+      then
         label.setGraphic(
           new ImageView(
             new Image(
               getClass
                 .getResource(
-                  // "/img/stones/stone_" + context.controller.updateColor(r, c, selectableColors(browseColors)) + ".png"
                   "/img/stones/stone_" + selectableColors(browseColors) + ".png"
                 )
                 .toExternalForm,

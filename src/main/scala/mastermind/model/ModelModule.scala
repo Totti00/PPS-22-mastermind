@@ -28,7 +28,6 @@ object ModelModule:
     def getPlayableStone(row: Int, col: Int): String
     def getHintStone(row: Int, col: Int): String
     def getSizeBoard: (Int, Int)
-    def checkColor(row: Int): Boolean
 
     /** Current turn
       * @return
@@ -74,8 +73,6 @@ object ModelModule:
         currentGame.board.getHintStone(row, col).stringRepresentation
 
       override def getSizeBoard: (Int, Int) = (currentGame.board.rows, currentGame.board.cols)
-
-      override def checkColor(row: Int): Boolean = currentGame.currentTurn == row
 
       override def currentTurn: Int = currentGame.currentTurn
 

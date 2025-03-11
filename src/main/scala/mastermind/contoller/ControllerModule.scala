@@ -28,7 +28,6 @@ object ControllerModule:
 
     def getStone(row: Int, col: Int, typeStone: String): String
     def getSizeBoard: (Int, Int)
-    def updateColor(row: Int, col: Int, color: String): String
 
     /** Current turn
       * @return
@@ -66,10 +65,6 @@ object ControllerModule:
           case _          => ???
 
       override def getSizeBoard: (Int, Int) = context.model.getSizeBoard
-
-      override def updateColor(row: Int, col: Int, color: String): String = context.model.checkColor(row) match
-        case true  => color
-        case false => context.model.getPlayableStone(row, col)
 
       override def turn: Int = context.model.currentTurn
 
