@@ -9,15 +9,22 @@ import javafx.scene.layout.GridPane
 import javafx.scene.control.{Button, Label, TextField}
 import mastermind.model.entity.{HintStone, PlayerStoneGrid, Stone}
 import scalafx.Includes.*
+import scalafx.animation.{KeyFrame, Timeline}
+import scalafx.event.ActionEvent
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.input.ScrollEvent
+import scalafx.util.Duration
 
+import java.sql.Date
+import java.text.{DateFormat, SimpleDateFormat}
+import java.util.TimeZone
 import scala.jdk.CollectionConverters.*
 
 class GameView(context: ControllerModule.Provider):
   private var attemptGrid: GridPane = _
   private var hintGrid: GridPane = _
   private var turnsLabel: Label = _
+  private var timeLabel: Label = _
   private var browseColors: Int = 0
   private val selectableColors: Vector[String] = Vector("Green", "Red", "Blue", "Yellow", "Purple", "White")
 
@@ -43,7 +50,7 @@ class GameView(context: ControllerModule.Provider):
       case _              => throw new ClassCastException
 
     namespace.get("resetGameButton") match
-      case button: Button => button.setOnAction(_ => context.controller.resetGame())
+      case button: Button => button.setOnAction(_ => context.controller.resetGame(difficulty))
       case _              =>
 
     namespace.get("backButton") match
@@ -62,6 +69,10 @@ class GameView(context: ControllerModule.Provider):
       case label: Label => label
       case _            => throw new ClassCastException
 
+    timeLabel = namespace.get("currentTime") match
+      case label: Label => label
+      case _            => throw new ClassCastException()
+
     context.controller.startGame(difficulty) // Inizializza il gioco con la difficoltà scelta
     initializeGrids(attemptGrid, hintGrid)
 
@@ -78,10 +89,28 @@ class GameView(context: ControllerModule.Provider):
         )
       )
     )
+
+    initializeTime(timeLabel)
     turnsLabel.setText("Remaining Turns: " + context.controller.remainingTurns)
     stage.sizeToScene()
     stage.title = "Mastermind"
     stage.show()
+
+  private def initializeTime(timeLabel: Label): Unit =
+    timeLabel.setText("Time: 00:00")
+    val startTime = System.currentTimeMillis()
+    val timeFormat: DateFormat = new SimpleDateFormat("mm:ss");
+    val timer = new Timeline:
+      cycleCount = Timeline.Indefinite
+      keyFrames = Seq(
+        KeyFrame(
+          Duration(1000),
+          onFinished = () =>
+            val diff = System.currentTimeMillis() - startTime
+            timeLabel.setText("Time: " concat timeFormat.format(diff))
+        )
+      )
+    timer.play()
 
   /** Initializes the attempt and hint grids with labels representing stones and hints.
     *

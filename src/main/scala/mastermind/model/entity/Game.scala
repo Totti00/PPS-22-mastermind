@@ -1,5 +1,10 @@
 package mastermind.model.entity
 
+import scalafx.animation.{Animation, KeyFrame, Timeline}
+import scalafx.util.Duration
+
+import java.text.SimpleDateFormat
+
 trait Game:
   /** Board of the game
     * @return
@@ -40,6 +45,9 @@ object Game:
   def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn)
 
   private case class GameImpl(var board: Board, override val code: Code, private var _currentTurn: Int) extends Game:
+
+    private var startTime = System.currentTimeMillis()
+    private val timeFormat = new SimpleDateFormat("HH:mm:ss")
 
     override def resetGame(): Game = Game(Board(board.rows, board.cols), Code(4), 0)
 
