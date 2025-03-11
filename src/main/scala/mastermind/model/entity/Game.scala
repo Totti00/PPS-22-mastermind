@@ -6,6 +6,7 @@ trait Game:
     *   the board of the game
     */
   def board: Board
+  def board_(newBoard: Board): Unit
 
   /** Code to guess
     * @return
@@ -38,8 +39,7 @@ trait Game:
 object Game:
   def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn)
 
-  private case class GameImpl(override val board: Board, override val code: Code, private var _currentTurn: Int)
-      extends Game:
+  private case class GameImpl(var board: Board, override val code: Code, private var _currentTurn: Int) extends Game:
 
     override def resetGame(): Game = Game(Board(board.rows, board.cols), Code(4), 0)
 
@@ -50,3 +50,5 @@ object Game:
 
     // Setter senza parametri (incrementa il turno)
     override def currentTurn_(): Unit = _currentTurn += 1
+
+    override def board_(newBoard: Board): Unit = this.board = newBoard
