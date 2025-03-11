@@ -1,6 +1,7 @@
 package mastermind.model.entity
 
 import mastermind.model.GameState
+import java.text.SimpleDateFormat
 
 trait Game:
   /** Board of the game
@@ -54,6 +55,9 @@ object Game:
   def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn, GameState.InGame)
 
   private case class GameImpl(var board: Board, override val code: Code, private var _currentTurn: Int, private var _state: GameState) extends Game:
+
+    private var startTime = System.currentTimeMillis()
+    private val timeFormat = new SimpleDateFormat("HH:mm:ss")
 
     override def resetGame(): Game = Game(Board(board.rows, board.cols), Code(4), 0)
 

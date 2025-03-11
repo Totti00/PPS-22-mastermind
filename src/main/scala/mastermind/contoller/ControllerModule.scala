@@ -10,7 +10,7 @@ object ControllerModule:
   trait Controller:
     /** Reset the game
       */
-    def resetGame(): Unit
+    def resetGame(difficulty: String): Unit
 
     /** Start a new game
       * @param difficulty
@@ -56,8 +56,9 @@ object ControllerModule:
     class ControllerImpl extends Controller:
       private var currentGame: Game = _
 
-      override def resetGame(): Unit =
+      override def resetGame(difficulty: String): Unit =
         currentGame = context.model.reset()
+        context.view.loadView("game", Option(difficulty))
         println("Ricomincia il gioco!")
 
       override def startGame(difficulty: String): Unit =

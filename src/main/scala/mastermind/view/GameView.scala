@@ -6,13 +6,15 @@ import scalafx.scene.Scene
 import scalafx.stage.Stage
 import javafx.scene.{ImageCursor, Parent}
 import javafx.scene.layout.GridPane
-import javafx.scene.control.{Button, Label, TextField}
+import javafx.scene.control.{Button, Label}
 import mastermind.model.GameState
 import mastermind.model.entity.{HintRed, HintStone, PlayerStoneGrid, Stone}
 import scalafx.Includes.*
+import scalafx.animation.{KeyFrame, Timeline}
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.input.ScrollEvent
-
+import scalafx.util.Duration
+import java.text.{DateFormat, SimpleDateFormat}
 import scala.jdk.CollectionConverters.*
 
 sealed trait GridUpdateType
@@ -25,6 +27,7 @@ class GameView(context: ControllerModule.Provider):
   private var hintGrid: GridPane = _
   private var turnsLabel: Label = _
   private var resultGame: Label = _
+  private var timeLabel: Label = _
   private var browseColors: Int = 0
   private val selectableColors: Vector[String] = Vector("Green", "Red", "Blue", "Yellow", "Purple", "White")
 
@@ -37,7 +40,6 @@ class GameView(context: ControllerModule.Provider):
     */
   def show(stage: Stage, difficulty: String): Unit =
     val loader = new FXMLLoader(getClass.getResource("/fxml/Game.fxml"))
-    // loader.setController(this)
     val root: Parent = loader.load()
 
     val namespace = loader.getNamespace
@@ -50,7 +52,7 @@ class GameView(context: ControllerModule.Provider):
       case _              => throw new ClassCastException
 
     namespace.get("resetGameButton") match
-      case button: Button => button.setOnAction(_ => context.controller.resetGame())
+      case button: Button => button.setOnAction(_ => context.controller.resetGame(difficulty))
       case _              =>
 
     namespace.get("backButton") match
@@ -68,10 +70,14 @@ class GameView(context: ControllerModule.Provider):
     turnsLabel = namespace.get("labelCurrentTurn") match
       case label: Label => label
       case _            => throw new ClassCastException
-
+    
     resultGame = namespace.get("resultGame") match
       case label: Label => label
       case _            => throw new ClassCastException
+      
+    timeLabel = namespace.get("currentTime") match
+      case label: Label => label
+      case _            => throw new ClassCastException()
 
     context.controller.startGame(difficulty) // Inizializza il gioco con la difficoltà scelta
     updateGrids(Initialize)
@@ -89,11 +95,29 @@ class GameView(context: ControllerModule.Provider):
         )
       )
     )
+
+    initializeTime(timeLabel)
     turnsLabel.setText("Remaining Turns: " + context.controller.remainingTurns)
     stage.sizeToScene()
     stage.title = "Mastermind"
     stage.show()
-
+  
+  private def initializeTime(timeLabel: Label): Unit =
+    timeLabel.setText("Time: 00:00")
+    val startTime = System.currentTimeMillis()
+    val timeFormat: DateFormat = new SimpleDateFormat("mm:ss");
+    val timer = new Timeline:
+      cycleCount = Timeline.Indefinite
+      keyFrames = Seq(
+        KeyFrame(
+          Duration(1000),
+          onFinished = () =>
+            val diff = System.currentTimeMillis() - startTime
+            timeLabel.setText("Time: " concat timeFormat.format(diff))
+        )
+      )
+    timer.play()
+  
   /** Updates the hint view, updating the stones in the hint grid.
     * @param vectorOfHintStones
     *   The vector of hint stones to update the view with.
@@ -138,8 +162,7 @@ class GameView(context: ControllerModule.Provider):
       case _ => stone match
         case stone if stone.isInstanceOf[HintStone] => "/img/hintStones/hstone_" + stone.stringRepresentation + ".png"
         case _                                      => "/img/stones/stone_" + stone.stringRepresentation + ".png"
-
-
+    
     val circle_size = 60
     val image_size = circle_size - 5
     new ImageView(

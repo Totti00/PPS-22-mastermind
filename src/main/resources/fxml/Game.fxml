@@ -12,7 +12,7 @@
         <VBox fx:id="controlsBox" spacing="10" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1"
               GridPane.rowSpan="4">
 
-            <Label fx:id="currentTime" text="Time:" alignment="CENTER" minWidth="200"/>
+            <Label fx:id="currentTime" text="Time: 00:00" alignment="CENTER" minWidth="200"/>
 
             <Label fx:id="labelCurrentTurn" alignment="CENTER" minWidth="200"/>
 
