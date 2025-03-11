@@ -130,6 +130,11 @@ class GameView(context: ControllerModule.Provider):
         label.setText(newLabel.getText)
       }
 
+  /** Updates the remaining turns label.
+    */
+  def updateTurns(): Unit =
+    turnsLabel.setText("Remaining Turns: " + context.controller.remainingTurns)
+
   /** Returns the graphic representation of a stone.
     * @param stone
     *   The stone to get the graphic for.

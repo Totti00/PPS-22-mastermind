@@ -27,6 +27,7 @@ object ViewModule:
 
     def updateHintGrid(hintStones: Vector[HintStone]): Unit
     def updatePlayableGrid(): Unit
+    def updateTurns(): Unit
 
   trait Provider:
     val view: View
@@ -45,6 +46,8 @@ object ViewModule:
 
       override def updatePlayableGrid(): Unit =
         gameView.updatePlayableView()
+
+      override def updateTurns(): Unit = gameView.updateTurns()
 
       override def show(primaryStage: Stage): Unit =
         stage = primaryStage

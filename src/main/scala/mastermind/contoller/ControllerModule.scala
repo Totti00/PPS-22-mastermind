@@ -76,6 +76,7 @@ object ControllerModule:
         context.view.updateHintGrid(vectorOfHintStones)
         context.model.startNewTurn()
         context.view.updatePlayableGrid()
+        context.view.updateTurns()
 
   trait Interface extends Provider with Component:
     self: Requirements =>
