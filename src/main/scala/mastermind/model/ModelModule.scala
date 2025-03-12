@@ -4,7 +4,6 @@ import mastermind.model.entity.{Board, Code, Game, HintStone, PlayerStoneGrid}
 import mastermind.model.strategy.*
 
 object ModelModule:
-
   trait Model:
     /** Start a new game
       * @param difficulty
