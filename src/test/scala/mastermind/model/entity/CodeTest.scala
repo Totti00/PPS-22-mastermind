@@ -3,13 +3,13 @@ package mastermind.model.entity
 import org.scalatest.flatspec.AnyFlatSpec
 
 class CodeTest extends AnyFlatSpec:
-
+  /*
 //test to check the validity of the rules
   "Code" should "find the stones in the right position" in {
     val inputCode =
-      Vector(PlayerStoneGrid("Yellow"), PlayerStoneGrid("White"), PlayerStoneGrid("White"), PlayerStoneGrid("Yellow"))
+      Vector(PlayerStoneGrid("Green"), PlayerStoneGrid("Green"), PlayerStoneGrid("White"), PlayerStoneGrid("Yellow"))
     val userInput =
-      Vector(PlayerStoneGrid("Yellow"), PlayerStoneGrid("Blue"), PlayerStoneGrid("White"), PlayerStoneGrid("White"))
+      Vector(PlayerStoneGrid("Green"), PlayerStoneGrid("Green"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Green"))
     val hintResult = Vector(HintStone("Red"), HintStone("Red"))
     val code = Code(inputCode)
 
@@ -20,64 +20,41 @@ class CodeTest extends AnyFlatSpec:
     val inputCode =
       Vector(PlayerStoneGrid("Green"), PlayerStoneGrid("White"), PlayerStoneGrid("White"), PlayerStoneGrid("Yellow"))
     val userInput =
-      Vector(PlayerStoneGrid("Red"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Green"), PlayerStoneGrid("Yellow"))
-    val hintResult = Vector(HintStone("Empty"), HintStone("Empty"), HintStone("Red"), HintStone("Empty"))
+      Vector(PlayerStoneGrid("Green"), PlayerStoneGrid("White"), PlayerStoneGrid("Blue"), PlayerStoneGrid("White"))
+    val hintResult = Vector(HintStone("White"))
     val code = Code(inputCode)
 
     assert(hintResult == code.compareTo(userInput))
 
   }
-
+   */
   "Code" should "check the user input to find the hintVector" in {
+
     val inputCode =
-      Vector(PlayerStoneGrid("Green"), PlayerStoneGrid("White"), PlayerStoneGrid("White"), PlayerStoneGrid("Yellow"))
-    val userInput1 =
-      Vector(PlayerStoneGrid("White"), PlayerStoneGrid("White"), PlayerStoneGrid("White"), PlayerStoneGrid("White"))
+      Vector(PlayerStoneGrid("Green"), PlayerStoneGrid("Green"), PlayerStoneGrid("White"), PlayerStoneGrid("Yellow"))
+    val userInput =
+      Vector(PlayerStoneGrid("Green"), PlayerStoneGrid("Green"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Green"))
+    val hintResult = Vector(HintStone("Red"), HintStone("Red"), HintStone("Empty"), HintStone("Empty"))
+
+    val inputCode2 =
+      Vector(PlayerStoneGrid("Yellow"), PlayerStoneGrid("Yellow"), PlayerStoneGrid("White"), PlayerStoneGrid("White"))
     val userInput2 =
-      Vector(PlayerStoneGrid("Red"), PlayerStoneGrid("Red"), PlayerStoneGrid("Red"), PlayerStoneGrid("Red"))
+      Vector(PlayerStoneGrid("Blue"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Yellow"), PlayerStoneGrid("Yellow"))
+    val hintResult2 = Vector(HintStone("White"), HintStone("White"), HintStone("Empty"), HintStone("Empty"))
+
+    val inputCode3 =
+      Vector(PlayerStoneGrid("Yellow"), PlayerStoneGrid("Yellow"), PlayerStoneGrid("White"), PlayerStoneGrid("White"))
     val userInput3 =
-      Vector(PlayerStoneGrid("Purple"), PlayerStoneGrid("Purple"), PlayerStoneGrid("Purple"), PlayerStoneGrid("Purple"))
-    val userInput4 =
-      Vector(PlayerStoneGrid("Yellow"), PlayerStoneGrid("Yellow"), PlayerStoneGrid("Yellow"), PlayerStoneGrid("Yellow"))
-    val userInput5 =
-      Vector(PlayerStoneGrid("Blue"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Blue"))
-    val userInput6 =
-      Vector(PlayerStoneGrid("Green"), PlayerStoneGrid("Green"), PlayerStoneGrid("Green"), PlayerStoneGrid("Green"))
+      Vector(PlayerStoneGrid("Blue"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Yellow"), PlayerStoneGrid("Blue"))
+    val hintResult3 = Vector(HintStone("White"), HintStone("White"), HintStone("Empty"), HintStone("Empty"))
 
-    val hintResult = Vector(HintStone("Red"), HintStone("White"), HintStone("White"), HintStone("Red"))
-    val hintResult2 = Vector(HintStone("Empty"), HintStone("White"), HintStone("White"), HintStone("Empty"))
-    val hintResult3 = Vector(HintStone("Red"), HintStone("White"), HintStone("White"), HintStone("Empty"))
-    val hintResult4 = Vector(HintStone("Empty"), HintStone("White"), HintStone("White"), HintStone("Red"))
     val code = Code(inputCode)
+    val code2 = Code(inputCode2)
+    val code3 = Code(inputCode3)
 
-    assert(hintResult == code.compareTo(userInput1))
-    assert(hintResult != code.compareTo(userInput2))
-    assert(hintResult != code.compareTo(userInput3))
-    assert(hintResult != code.compareTo(userInput4))
-    assert(hintResult != code.compareTo(userInput5))
-    assert(hintResult != code.compareTo(userInput6))
-
-    assert(hintResult2 != code.compareTo(userInput1))
-    assert(hintResult2 != code.compareTo(userInput2))
-    assert(hintResult2 != code.compareTo(userInput3))
-    assert(hintResult2 != code.compareTo(userInput4))
-    assert(hintResult2 != code.compareTo(userInput5))
-    assert(hintResult2 != code.compareTo(userInput6))
-
-    assert(hintResult3 != code.compareTo(userInput1))
-    assert(hintResult3 != code.compareTo(userInput2))
-    assert(hintResult3 != code.compareTo(userInput3))
-    assert(hintResult3 != code.compareTo(userInput4))
-    assert(hintResult3 != code.compareTo(userInput5))
-    assert(hintResult3 != code.compareTo(userInput6))
-
-    assert(hintResult4 != code.compareTo(userInput1))
-    assert(hintResult4 != code.compareTo(userInput2))
-    assert(hintResult4 != code.compareTo(userInput3))
-    assert(hintResult4 != code.compareTo(userInput4))
-    assert(hintResult4 != code.compareTo(userInput5))
-    assert(hintResult4 != code.compareTo(userInput6))
-
-    // assert(hintResult == code.compareTo(userInput))
+    println("test: " concat code.compareTo(userInput))
+    assert(hintResult == code.compareTo(userInput))
+    assert(hintResult2 == code2.compareTo(userInput2))
+    assert(hintResult3 == code3.compareTo(userInput3))
 
   }

@@ -16,11 +16,10 @@ object Code:
 
   private case class CodeImpl(code: PlayableStones) extends Code:
     override def compareTo(userInput: PlayableStones): HintStones =
-      val firstRuleVector = compareToEqual(userInput)
-      val secondRuleVector = compareToPresent(firstRuleVector._2)
-      firstRuleVector._1
-      // val rulesJoinedVector = joinVectors(firstRuleVector, secondRuleVector)
-      // rulesJoinedVector
+      val firstRuleVectors = compareToEqual(userInput)
+      val secondRuleVector = compareToPresent(firstRuleVectors._2, userInput)
+      val rulesJoinedVector = joinVectors(firstRuleVectors._1, secondRuleVector)
+      rulesJoinedVector
 
     private def compareToEqual(inputUser: PlayableStones): (HintStones, PlayableStones) =
       code.zip(inputUser).zipWithIndex.foldLeft(Vector.empty: HintStones, Vector.empty: PlayableStones) {
@@ -30,16 +29,14 @@ object Code:
         case ((res, res2), ((stoneCode, stoneUser), index)) => (res, res2 :+ stoneCode)
       }
 
-    private def compareToPresent(inputFirstRule: PlayableStones): HintStones =
-      inputFirstRule.zipWithIndex.foldLeft(Vector.empty: HintStones) {
-        case (res, (stoneUser, index))
-            if code.contains(stoneUser) && !code(index).stringRepresentation.equals(stoneUser.stringRepresentation) =>
-          res :+ HintStone("White")
-        case (res, (stoneUser, index)) => res :+ HintStone("Empty")
+    private def compareToPresent(stonesToCheck: PlayableStones, userInput: PlayableStones): HintStones =
+      stonesToCheck.foldLeft(Vector.empty: HintStones) {
+        case (res, codeStone) if userInput.distinct.contains(codeStone) => res :+ HintStone("White")
+        case (res, codeStone)                                           => res
       }
 
     private def joinVectors(hintStonesVector: HintStones, hintStonesVector2: HintStones): HintStones =
-      hintStonesVector.zip(hintStonesVector2).foldLeft(Vector.empty: HintStones) {
-        case (res, (hintStone, hintStone2)) if hintStone.stringRepresentation.equals("Empty") => res :+ hintStone2
-        case (res, (hintStone, hintStone2))                                                   => res :+ hintStone
-      }
+      val missingPositions = code.size - (hintStonesVector.size + hintStonesVector2.size)
+      val joinedVectors: HintStones =
+        hintStonesVector ++ hintStonesVector2 ++ Vector.fill(missingPositions)(HintStone("Empty"))
+      joinedVectors
