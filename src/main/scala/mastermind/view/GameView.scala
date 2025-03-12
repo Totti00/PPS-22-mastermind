@@ -124,7 +124,6 @@ class GameView(context: ControllerModule.Provider):
     *   The vector of hint stones to update the view with.
     */
   def updateHintView(vectorOfHintStones: Option[Vector[HintStone]] = None): Unit =
-    
     if vectorOfHintStones.isDefined && vectorOfHintStones.forall(_ == HintRed) then
       context.controller.gameState_(GameState.PlayerWin)
       resultGame.setText("You Win!")
@@ -186,6 +185,7 @@ class GameView(context: ControllerModule.Provider):
   private def submitGuess(): Unit =
     val guess = extractGuess()
     if guess.nonEmpty then
+
       context.controller.checkCode(guess)
 
   /** Extracts the current guess from the attempt grid.
