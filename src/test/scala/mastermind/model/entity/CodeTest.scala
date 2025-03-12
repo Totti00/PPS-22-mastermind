@@ -1,5 +1,6 @@
 package mastermind.model.entity
 
+import mastermind.model.entity.HintStone.*
 import org.scalatest.flatspec.AnyFlatSpec
 
 class CodeTest extends AnyFlatSpec:
@@ -31,28 +32,68 @@ class CodeTest extends AnyFlatSpec:
   "Code" should "check the user input to find the hintVector" in {
 
     val inputCode =
-      Vector(PlayerStoneGrid("Green"), PlayerStoneGrid("Green"), PlayerStoneGrid("White"), PlayerStoneGrid("Yellow"))
+      Vector(
+        PlayerStoneGrid.fromString("Green"),
+        PlayerStoneGrid.fromString("Green"),
+        PlayerStoneGrid.fromString("White"),
+        PlayerStoneGrid.fromString("Yellow")
+      )
     val userInput =
-      Vector(PlayerStoneGrid("Green"), PlayerStoneGrid("Green"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Green"))
-    val hintResult = Vector(HintStone("Red"), HintStone("Red"), HintStone("Empty"), HintStone("Empty"))
+      Vector(
+        PlayerStoneGrid.fromString("Green"),
+        PlayerStoneGrid.fromString("Green"),
+        PlayerStoneGrid.fromString("Blue"),
+        PlayerStoneGrid.fromString("Green")
+      )
+    val hintResult = Vector(HintRed, HintRed, HintEmpty, HintEmpty)
 
     val inputCode2 =
-      Vector(PlayerStoneGrid("Yellow"), PlayerStoneGrid("Yellow"), PlayerStoneGrid("White"), PlayerStoneGrid("White"))
+      Vector(
+        PlayerStoneGrid.fromString("Yellow"),
+        PlayerStoneGrid.fromString("Yellow"),
+        PlayerStoneGrid.fromString("White"),
+        PlayerStoneGrid.fromString("White")
+      )
     val userInput2 =
-      Vector(PlayerStoneGrid("Blue"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Yellow"), PlayerStoneGrid("Yellow"))
-    val hintResult2 = Vector(HintStone("White"), HintStone("White"), HintStone("Empty"), HintStone("Empty"))
+      Vector(
+        PlayerStoneGrid.fromString("Blue"),
+        PlayerStoneGrid.fromString("Blue"),
+        PlayerStoneGrid.fromString("Yellow"),
+        PlayerStoneGrid.fromString("Yellow")
+      )
+    val hintResult2 = Vector(HintWhite, HintWhite, HintEmpty, HintEmpty)
 
     val inputCode3 =
-      Vector(PlayerStoneGrid("Yellow"), PlayerStoneGrid("Yellow"), PlayerStoneGrid("White"), PlayerStoneGrid("White"))
+      Vector(
+        PlayerStoneGrid.fromString("Yellow"),
+        PlayerStoneGrid.fromString("Yellow"),
+        PlayerStoneGrid.fromString("White"),
+        PlayerStoneGrid.fromString("White")
+      )
     val userInput3 =
-      Vector(PlayerStoneGrid("Blue"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Yellow"), PlayerStoneGrid("Blue"))
-    val hintResult3 = Vector(HintStone("White"), HintStone("White"), HintStone("Empty"), HintStone("Empty"))
+      Vector(
+        PlayerStoneGrid.fromString("Blue"),
+        PlayerStoneGrid.fromString("Blue"),
+        PlayerStoneGrid.fromString("Yellow"),
+        PlayerStoneGrid.fromString("Blue")
+      )
+    val hintResult3 = Vector(HintWhite, HintWhite, HintEmpty, HintEmpty)
 
     val inputCode4 =
-      Vector(PlayerStoneGrid("Yellow"), PlayerStoneGrid("Yellow"), PlayerStoneGrid("White"), PlayerStoneGrid("White"))
+      Vector(
+        PlayerStoneGrid.fromString("Yellow"),
+        PlayerStoneGrid.fromString("Yellow"),
+        PlayerStoneGrid.fromString("White"),
+        PlayerStoneGrid.fromString("White")
+      )
     val userInput4 =
-      Vector(PlayerStoneGrid("Yellow"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Blue"))
-    val hintResult4 = Vector(HintStone("Red"), HintStone("Empty"), HintStone("Empty"), HintStone("Empty"))
+      Vector(
+        PlayerStoneGrid.fromString("Yellow"),
+        PlayerStoneGrid.fromString("Blue"),
+        PlayerStoneGrid.fromString("Blue"),
+        PlayerStoneGrid.fromString("Blue")
+      )
+    val hintResult4 = Vector(HintRed, HintEmpty, HintEmpty, HintEmpty)
 
     val code = Code(inputCode)
     val code2 = Code(inputCode2)

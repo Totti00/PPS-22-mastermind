@@ -8,16 +8,18 @@ import javafx.scene.{ImageCursor, Parent}
 import javafx.scene.layout.GridPane
 import javafx.scene.control.{Button, Label}
 import mastermind.model.GameState
-import mastermind.model.entity.{HintRed, HintStone, PlayerStoneGrid, Stone}
+import mastermind.model.entity.{HintStone, PlayerStoneGrid, Stone}
 import mastermind.utils.*
 import scalafx.Includes.*
 import scalafx.animation.{KeyFrame, Timeline}
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.input.ScrollEvent
 import scalafx.util.Duration
+
 import java.text.{DateFormat, SimpleDateFormat}
 import scala.jdk.CollectionConverters.*
 import javafx.collections.ObservableMap
+import mastermind.model.entity.HintStone.HintRed
 
 class GameView(context: ControllerModule.Provider):
   private var attemptGrid: GridPane = _
@@ -144,8 +146,8 @@ class GameView(context: ControllerModule.Provider):
       case GameState.PlayerLose =>
         if stone.isInstanceOf[HintStone] then "/img/hintStones/hstone_Empty.png" else "/img/stones/stone_Empty.png"
       case _ =>
-        if stone.isInstanceOf[HintStone] then s"/img/hintStones/hstone_${stone.stringRepresentation}.png"
-        else s"/img/stones/stone_${stone.stringRepresentation}.png"
+        if stone.isInstanceOf[HintStone] then s"/img/hintStones/hstone_${stone.toString}.png"
+        else s"/img/stones/stone_${stone.toString}.png"
     val circle_size = 60
     val image_size = circle_size - 5
     new ImageView(new Image(getClass.getResource(urlStone).toExternalForm, image_size, image_size, true, true))
@@ -165,7 +167,7 @@ class GameView(context: ControllerModule.Provider):
     attemptGrid.getChildren
       .filtered(child => GridPane.getRowIndex(child) == context.controller.turn)
       .asScala
-      .map(cell => PlayerStoneGrid(cell.asInstanceOf[Label].getText))
+      .map(cell => PlayerStoneGrid.fromString(cell.asInstanceOf[Label].getText))
       .toVector
 
   /** Returns a playable stone label.
@@ -200,7 +202,7 @@ class GameView(context: ControllerModule.Provider):
     */
   private def createStoneLabel(c: Int, r: Int, stoneType: String): Label =
     val stone = context.controller.getStone(r, c, stoneType)
-    val label = new Label(stone.stringRepresentation)
+    val label = new Label(stone.toString)
     label.setPrefSize(60, 60)
     label.setMinSize(60, 60)
     label.setMaxSize(60, 60)

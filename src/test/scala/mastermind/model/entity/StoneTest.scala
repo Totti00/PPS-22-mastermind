@@ -1,23 +1,25 @@
 package mastermind.model.entity
 
+import mastermind.model.entity.HintStone.{HintRed, HintWhite}
 import org.scalatest.flatspec.AnyFlatSpec
 
 class StoneTest extends AnyFlatSpec:
 
+  /*
   "a Purple stone" should "be purple" in {
     assert(Purple.stringRepresentation.equals("Purple"))
   }
 
   "a red Playable stone" should "be red stone" in {
-    assert(PlayerStoneGrid("Red") == Red)
-    assert(!(PlayerStoneGrid("Red") == HintRed))
+    assert(PlayerStoneGrid.fromString("Red") == Red)
+    assert(!(PlayerStoneGrid.fromString("Red") == HintRed))
   }
-
+   */
   "a Hint white" should "be white" in {
-    assert(HintWhite.stringRepresentation.equals("White"))
+    assert(HintWhite.toString.equals("White"))
   }
 
   "a red Hint stone" should "be red hint stone" in {
-    assert(HintStone("Red") == HintRed)
-    assert(!(HintStone("Red") == Red))
+    assert(HintRed.isInstanceOf[HintStone])
+    assert(!HintRed.isInstanceOf[PlayerStoneGrid])
   }

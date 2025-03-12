@@ -61,9 +61,6 @@ object Game:
       private var _state: GameState
   ) extends Game:
 
-    private var startTime = System.currentTimeMillis()
-    private val timeFormat = new SimpleDateFormat("HH:mm:ss")
-
     override def resetGame(): Game = Game(Board(board.rows, board.cols), Code(4), 0)
 
     override def remainingTurns: Int = board.rows - currentTurn

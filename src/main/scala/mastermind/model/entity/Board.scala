@@ -1,5 +1,8 @@
 package mastermind.model.entity
 
+import mastermind.model.entity.HintStone.HintEmpty
+import mastermind.model.entity.PlayerStoneGrid.{Empty, StartCurrentTurn}
+
 trait Board:
 
   def rows: Int
@@ -18,8 +21,8 @@ object Board:
   def apply(
       rows: Int,
       cols: Int,
-      playableFilling: PlayerStoneGrid = PlayerStoneGrid("Empty"),
-      hintFilling: HintStone = HintStone("Empty")
+      playableFilling: PlayerStoneGrid = Empty,
+      hintFilling: HintStone = HintEmpty
   ): Board =
     BoardImpl(Matrix(rows, cols, playableFilling), Matrix(rows, cols, hintFilling))
 
@@ -39,4 +42,4 @@ object Board:
     override def getHintStone(row: Int, cols: Int): HintStone = hintMatrix.cell(row, cols)
 
     override def initializeCurrentTurn(currentTurn: Int): Board =
-      copy(playableMatrix.replaceRow(currentTurn, Vector.fill(cols)(PlayerStoneGrid("StartCurrentTurn"))), hintMatrix)
+      copy(playableMatrix.replaceRow(currentTurn, Vector.fill(cols)(StartCurrentTurn)), hintMatrix)
