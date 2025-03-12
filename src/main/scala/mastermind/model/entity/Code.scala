@@ -16,8 +16,9 @@ object Code:
 
   private case class CodeImpl(code: PlayableStones) extends Code:
     override def compareTo(userInput: PlayableStones): HintStones =
-      val firstRuleVectors = compareToEqual(userInput)
-      val secondRuleVector = compareToPresent(firstRuleVectors._2, userInput)
+      // val firstRuleVectors = compareToEqual(userInput)
+      val firstRuleVectors = compareToEqual2(userInput)
+      val secondRuleVector = compareToPresent(firstRuleVectors._2, firstRuleVectors._3)
       val rulesJoinedVector = joinVectors(firstRuleVectors._1, secondRuleVector)
       rulesJoinedVector
 
@@ -29,6 +30,37 @@ object Code:
         case ((res, res2), ((stoneCode, stoneUser), index)) => (res, res2 :+ stoneCode)
       }
 
+    private def compareToEqual2(inputUser: PlayableStones): (HintStones, PlayableStones, PlayableStones) =
+      code
+        .zip(inputUser)
+        .zipWithIndex
+        .foldLeft(Vector.empty: HintStones, Vector.empty: PlayableStones, Vector.empty: PlayableStones) {
+          case ((res, res2, res3), ((stoneCode, stoneUser), index))
+              if stoneCode.stringRepresentation.equals(stoneUser.stringRepresentation) =>
+            (res :+ HintStone("Red"), res2, res3)
+          case ((res, res2, res3), ((stoneCode, stoneUser), index)) => (res, res2 :+ stoneCode, res3 :+ stoneUser)
+        }
+
+    private def compareToEqual3(inputUser: PlayableStones): List[Int] =
+      code.zip(inputUser).zipWithIndex.foldLeft(List.empty: List[Int]) {
+        case (res, ((stoneCode, stoneUser), index))
+            if stoneCode.stringRepresentation.equals(stoneUser.stringRepresentation) =>
+          res :+ index
+        case (res, ((stoneCode, stoneUser), index)) => res
+      }
+    /*
+    private def compareToPresent3(indicies: List[Int], userInput: PlayableStones): HintStones =
+      code.zip(userInput).zipWithIndex.filter(indicies.contains(_1.)).foldLeft(List.empty: List[Int]) {
+        case (res, ((stoneCode, stoneUser), index))
+          if stoneCode.stringRepresentation.equals(stoneUser.stringRepresentation) => res :+ index
+        case (res, ((stoneCode, stoneUser), index)) => res
+      }
+
+      stonesToCheck.foldLeft(Vector.empty: HintStones) {
+        case (res, codeStone) if userInput.distinct.contains(codeStone) => res :+ HintStone("White")
+        case (res, codeStone) => res
+      }
+     */
     private def compareToPresent(stonesToCheck: PlayableStones, userInput: PlayableStones): HintStones =
       stonesToCheck.foldLeft(Vector.empty: HintStones) {
         case (res, codeStone) if userInput.distinct.contains(codeStone) => res :+ HintStone("White")

@@ -48,13 +48,20 @@ class CodeTest extends AnyFlatSpec:
       Vector(PlayerStoneGrid("Blue"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Yellow"), PlayerStoneGrid("Blue"))
     val hintResult3 = Vector(HintStone("White"), HintStone("White"), HintStone("Empty"), HintStone("Empty"))
 
+    val inputCode4 =
+      Vector(PlayerStoneGrid("Yellow"), PlayerStoneGrid("Yellow"), PlayerStoneGrid("White"), PlayerStoneGrid("White"))
+    val userInput4 =
+      Vector(PlayerStoneGrid("Yellow"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Blue"), PlayerStoneGrid("Blue"))
+    val hintResult4 = Vector(HintStone("Red"), HintStone("Empty"), HintStone("Empty"), HintStone("Empty"))
+
     val code = Code(inputCode)
     val code2 = Code(inputCode2)
     val code3 = Code(inputCode3)
+    val code4 = Code(inputCode4)
 
-    println("test: " concat code.compareTo(userInput))
     assert(hintResult == code.compareTo(userInput))
     assert(hintResult2 == code2.compareTo(userInput2))
     assert(hintResult3 == code3.compareTo(userInput3))
+    assert(hintResult4 == code4.compareTo(userInput4))
 
   }
