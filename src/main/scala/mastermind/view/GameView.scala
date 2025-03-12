@@ -140,6 +140,7 @@ class GameView(context: ControllerModule.Provider):
   def updateTurns(): Unit =
     val remainingTurns = context.controller.remainingTurns
     if remainingTurns == 0 then
+      timer.stop()
       context.controller.gameState_(GameState.PlayerLose)
       resultGame.setText("You Lose!")
     turnsLabel.setText("Remaining Turns: " + remainingTurns)
