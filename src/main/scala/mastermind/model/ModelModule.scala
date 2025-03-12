@@ -1,14 +1,9 @@
 package mastermind.model
 
 import mastermind.model.entity.{Board, Code, Game, HintStone, PlayerStoneGrid}
-import mastermind.model.singleton.*
+import mastermind.model.strategy.*
 
 object ModelModule:
-
-  // Factory per generare il gioco in base alla difficoltà
-  private object GameFactory:
-    def createGame(mode: GameMode): Game =
-      Game(Board(mode.boardSize._1, mode.boardSize._2).initializeCurrentTurn(0), Code(mode.codeLength), 0)
 
   trait Model:
     /** Start a new game
@@ -61,21 +56,24 @@ object ModelModule:
   trait Component:
     class ModelImpl extends Model:
       private var currentGame: Game = _
-      private var currentDifficulty: GameMode = _
+      private var currentMode: GameMode = MediumMode()
 
       override def startNewGame(difficulty: String): Game =
-        val mode = difficulty.toLowerCase match
-          case "easy"    => EasyMode
-          case "medium"  => MediumMode
-          case "hard"    => HardMode
-          case "extreme" => ExtremeMode
+        currentMode = difficulty.toLowerCase match
+          case "easy"    => EasyMode()
+          case "medium"  => MediumMode()
+          case "hard"    => HardMode()
+          case "extreme" => ExtremeMode()
           case _         => throw new IllegalArgumentException("Invalid difficulty")
-        currentDifficulty = mode
-        currentGame = GameFactory.createGame(currentDifficulty)
+        currentGame = Game(
+          Board(currentMode.boardSize._1, currentMode.boardSize._2).initializeCurrentTurn(0),
+          Code(currentMode.codeLength),
+          0
+        )
         currentGame
 
       override def reset(): Game =
-        startNewGame(currentDifficulty.name)
+        startNewGame(currentMode.name)
 
       override def getPlayableStone(row: Int, col: Int): PlayerStoneGrid =
         currentGame.board.getPlayableStone(row, col)
