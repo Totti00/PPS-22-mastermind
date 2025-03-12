@@ -48,6 +48,8 @@ class CodeTest extends AnyFlatSpec:
 
     val hintResult = Vector(HintStone("Red"), HintStone("White"), HintStone("White"), HintStone("Red"))
     val hintResult2 = Vector(HintStone("Empty"), HintStone("White"), HintStone("White"), HintStone("Empty"))
+    val hintResult3 = Vector(HintStone("Red"), HintStone("White"), HintStone("White"), HintStone("Empty"))
+    val hintResult4 = Vector(HintStone("Empty"), HintStone("White"), HintStone("White"), HintStone("Red"))
     val code = Code(inputCode)
 
     assert(hintResult == code.compareTo(userInput1))
@@ -56,12 +58,27 @@ class CodeTest extends AnyFlatSpec:
     assert(hintResult != code.compareTo(userInput4))
     assert(hintResult != code.compareTo(userInput5))
     assert(hintResult != code.compareTo(userInput6))
+
     assert(hintResult2 != code.compareTo(userInput1))
     assert(hintResult2 != code.compareTo(userInput2))
     assert(hintResult2 != code.compareTo(userInput3))
     assert(hintResult2 != code.compareTo(userInput4))
     assert(hintResult2 != code.compareTo(userInput5))
     assert(hintResult2 != code.compareTo(userInput6))
+
+    assert(hintResult3 != code.compareTo(userInput1))
+    assert(hintResult3 != code.compareTo(userInput2))
+    assert(hintResult3 != code.compareTo(userInput3))
+    assert(hintResult3 != code.compareTo(userInput4))
+    assert(hintResult3 != code.compareTo(userInput5))
+    assert(hintResult3 != code.compareTo(userInput6))
+
+    assert(hintResult4 != code.compareTo(userInput1))
+    assert(hintResult4 != code.compareTo(userInput2))
+    assert(hintResult4 != code.compareTo(userInput3))
+    assert(hintResult4 != code.compareTo(userInput4))
+    assert(hintResult4 != code.compareTo(userInput5))
+    assert(hintResult4 != code.compareTo(userInput6))
 
     // assert(hintResult == code.compareTo(userInput))
 
