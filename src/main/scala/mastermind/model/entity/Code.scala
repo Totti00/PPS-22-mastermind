@@ -17,23 +17,24 @@ object Code:
   private case class CodeImpl(code: PlayableStones) extends Code:
     override def compareTo(userInput: PlayableStones): HintStones =
       val firstRuleVector = compareToEqual(userInput)
-      val secondRuleVector = compareToPresent(userInput)
-      val rulesJoinedVector = joinVectors(firstRuleVector, secondRuleVector)
-      rulesJoinedVector
+      val secondRuleVector = compareToPresent(firstRuleVector._2)
+      firstRuleVector._1
+      // val rulesJoinedVector = joinVectors(firstRuleVector, secondRuleVector)
+      // rulesJoinedVector
 
-    private def compareToEqual(inputUser: PlayableStones): HintStones =
-      code.zip(inputUser).zipWithIndex.foldLeft(Vector.empty: Vector[HintStone]) {
-        case (res, ((stoneCode, stoneUser), index))
+    private def compareToEqual(inputUser: PlayableStones): (HintStones, PlayableStones) =
+      code.zip(inputUser).zipWithIndex.foldLeft(Vector.empty: HintStones, Vector.empty: PlayableStones) {
+        case ((res, res2), ((stoneCode, stoneUser), index))
             if stoneCode.stringRepresentation.equals(stoneUser.stringRepresentation) =>
-          res :+ HintStone("White")
-        case (res, ((stoneCode, stoneUser), index)) => res :+ HintStone("Empty")
+          (res :+ HintStone("Red"), res2)
+        case ((res, res2), ((stoneCode, stoneUser), index)) => (res, res2 :+ stoneCode)
       }
 
-    private def compareToPresent(inputUser: PlayableStones): HintStones =
-      inputUser.zipWithIndex.foldLeft(Vector.empty: HintStones) {
+    private def compareToPresent(inputFirstRule: PlayableStones): HintStones =
+      inputFirstRule.zipWithIndex.foldLeft(Vector.empty: HintStones) {
         case (res, (stoneUser, index))
             if code.contains(stoneUser) && !code(index).stringRepresentation.equals(stoneUser.stringRepresentation) =>
-          res :+ HintStone("Red")
+          res :+ HintStone("White")
         case (res, (stoneUser, index)) => res :+ HintStone("Empty")
       }
 

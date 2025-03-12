@@ -30,6 +30,7 @@ class GameView(context: ControllerModule.Provider):
   private var timeLabel: Label = _
   private var browseColors: Int = 0
   private val selectableColors: Vector[String] = Vector("Green", "Red", "Blue", "Yellow", "Purple", "White")
+  private var timer: Timeline = _
 
   /** Displays the game view, initializing grids, buttons, and setting up the scene.
     *
@@ -106,7 +107,7 @@ class GameView(context: ControllerModule.Provider):
     timeLabel.setText("Time: 00:00")
     val startTime = System.currentTimeMillis()
     val timeFormat: DateFormat = new SimpleDateFormat("mm:ss");
-    val timer = new Timeline:
+    timer = new Timeline:
       cycleCount = Timeline.Indefinite
       keyFrames = Seq(
         KeyFrame(
@@ -294,6 +295,7 @@ class GameView(context: ControllerModule.Provider):
       case UpdateHint =>
         hintStones.foreach { stones =>
           if stones.forall(_ == HintRed) then
+            timer.stop()
             context.controller.gameState_(GameState.PlayerWin)
             resultGame.setText("You Win!")
           for c <- 0 until cols; r <- 0 until rows do
