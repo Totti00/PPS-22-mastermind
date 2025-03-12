@@ -123,12 +123,13 @@ class GameView(context: ControllerModule.Provider):
     * @param vectorOfHintStones
     *   The vector of hint stones to update the view with.
     */
-  def updateHintView(vectorOfHintStones: Vector[HintStone]): Unit =
-    if vectorOfHintStones.forall(_ == HintRed) then
+  def updateHintView(vectorOfHintStones: Option[Vector[HintStone]] = None): Unit =
+    
+    if vectorOfHintStones.isDefined && vectorOfHintStones.forall(_ == HintRed) then
       context.controller.gameState_(GameState.PlayerWin)
       resultGame.setText("You Win!")
       updateGrids(Initialize) // Aggiorna tutte le celle con le pietre dorate
-    else updateGrids(UpdateHint, Some(vectorOfHintStones))
+    else updateGrids(UpdateHint, vectorOfHintStones)
 
   /** Updates the playable view, updating the stones in the attempt grid.
     */
@@ -183,10 +184,8 @@ class GameView(context: ControllerModule.Provider):
   /** Handles submitting the user's guess, extracting and processing it if valid.
     */
   private def submitGuess(): Unit =
-    println("checkcode pressed")
     val guess = extractGuess()
     if guess.nonEmpty then
-      println("Guess: " + guess)
       context.controller.checkCode(guess)
 
   /** Extracts the current guess from the attempt grid.

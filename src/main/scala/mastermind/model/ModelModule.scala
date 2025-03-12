@@ -78,8 +78,6 @@ object ModelModule:
         startNewGame(currentDifficulty.name)
 
       override def getPlayableStone(row: Int, col: Int): PlayerStoneGrid =
-        println(row + " " + col + " " + currentGame.board.getPlayableStone(row, col).stringRepresentation)
-
         currentGame.board.getPlayableStone(row, col)
 
       override def getHintStone(row: Int, col: Int): HintStone =
@@ -93,8 +91,6 @@ object ModelModule:
 
       override def submitGuess(userInput: Vector[PlayerStoneGrid]): Vector[HintStone] =
         val vectorOfHintStones = currentGame.code.compareTo(userInput)
-        println("Vector of hint stones: " + vectorOfHintStones)
-        println("modelModule: currentTurn+1: " + currentTurn)
         val newBoard = currentGame.board
           .placeGuessAndHints(userInput, vectorOfHintStones, currentTurn)
         currentGame.board_(newBoard)

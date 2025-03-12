@@ -25,7 +25,7 @@ object ViewModule:
       */
     def loadView(path: String, mode: Option[String] = None): Unit
 
-    def updateHintGrid(hintStones: Vector[HintStone]): Unit
+    def updateHintGrid(hintStones: Option[Vector[HintStone]]): Unit
     def updatePlayableGrid(): Unit
     def updateTurns(): Unit
 
@@ -41,7 +41,7 @@ object ViewModule:
       private var stage: Stage = _
       private val gameView = new GameView(context)
 
-      override def updateHintGrid(hintStones: Vector[HintStone]): Unit =
+      override def updateHintGrid(hintStones: Option[Vector[HintStone]] = None): Unit =
         gameView.updateHintView(hintStones)
 
       override def updatePlayableGrid(): Unit =
@@ -54,12 +54,9 @@ object ViewModule:
         loadView("MenuPage")
 
       override def loadView(path: String, mode: Option[String] = None): Unit =
-        println("loadView")
-
         path match
           case "game" => gameView.show(stage, mode.get)
           case "Rules" =>
-            println("rule")
             val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
             val root: Parent = loader.load()
             val popup = new Popup()

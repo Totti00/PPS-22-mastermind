@@ -1,7 +1,7 @@
 package mastermind.contoller
 
 import mastermind.model.{GameState, ModelModule}
-import mastermind.model.entity.{Game, PlayerStoneGrid, Stone}
+import mastermind.model.entity.{Game, HintStone, PlayerStoneGrid, Stone}
 import mastermind.view.ViewModule
 import scalafx.event.ActionEvent
 
@@ -58,8 +58,9 @@ object ControllerModule:
 
       override def resetGame(difficulty: String): Unit =
         currentGame = context.model.reset()
-        context.view.loadView("game", Option(difficulty))
-        println("Ricomincia il gioco!")
+        update()
+        //context.view.loadView("game", Option(difficulty))
+        //println("Ricomincia il gioco!")
 
       override def startGame(difficulty: String): Unit =
         currentGame = context.model.startNewGame(difficulty);
@@ -81,9 +82,13 @@ object ControllerModule:
       override def checkCode(userInput: Vector[PlayerStoneGrid]): Unit =
         val vectorOfHintStones = context.model.submitGuess(userInput)
         context.model.startNewTurn()
+        update(Some(vectorOfHintStones))
+
+      private def update(vectorOfHintStones: Option[Vector[HintStone]] = None): Unit = {
         context.view.updateTurns()
         context.view.updateHintGrid(vectorOfHintStones)
         context.view.updatePlayableGrid()
+      }
 
       override def gameState: GameState = context.model.gameState
 
