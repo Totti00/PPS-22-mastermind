@@ -25,9 +25,11 @@ object ViewModule:
       */
     def loadView(path: String, mode: Option[String] = None): Unit
 
-    def updateHintGrid(hintStones: Option[Vector[HintStone]]): Unit
-    def updatePlayableGrid(): Unit
-    def updateTurns(): Unit
+    /** Update the game view
+      * @param hintStones
+      *   Optional parameter to update the view with the hint stones
+      */
+    def updateGameView(hintStones: Option[Vector[HintStone]]): Unit
 
   trait Provider:
     val view: View
@@ -41,13 +43,8 @@ object ViewModule:
       private var stage: Stage = _
       private val gameView = new GameView(context)
 
-      override def updateHintGrid(hintStones: Option[Vector[HintStone]] = None): Unit =
-        gameView.updateHintView(hintStones)
-
-      override def updatePlayableGrid(): Unit =
-        gameView.updatePlayableView()
-
-      override def updateTurns(): Unit = gameView.updateTurns()
+      override def updateGameView(hintStones: Option[Vector[HintStone]] = None): Unit =
+        gameView.updateView(hintStones)
 
       override def show(primaryStage: Stage): Unit =
         stage = primaryStage

@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane
 import javafx.scene.control.{Button, Label}
 import mastermind.model.GameState
 import mastermind.model.entity.{HintRed, HintStone, PlayerStoneGrid, Stone}
+import mastermind.utils.*
 import scalafx.Includes.*
 import scalafx.animation.{KeyFrame, Timeline}
 import scalafx.scene.image.{Image, ImageView}
@@ -16,11 +17,6 @@ import scalafx.scene.input.ScrollEvent
 import scalafx.util.Duration
 import java.text.{DateFormat, SimpleDateFormat}
 import scala.jdk.CollectionConverters.*
-
-sealed trait GridUpdateType
-case object Initialize extends GridUpdateType
-case object UpdateHint extends GridUpdateType
-case object UpdatePlayable extends GridUpdateType
 
 class GameView(context: ControllerModule.Provider):
   private var attemptGrid: GridPane = _
@@ -97,13 +93,13 @@ class GameView(context: ControllerModule.Provider):
       )
     )
 
-    initializeTime(timeLabel)
     turnsLabel.setText("Remaining Turns: " + context.controller.remainingTurns)
     stage.sizeToScene()
     stage.title = "Mastermind"
     stage.show()
 
   private def initializeTime(timeLabel: Label): Unit =
+    if timer != null then timer.stop() // Ferma il vecchio timer prima di crearne uno nuovo
     timeLabel.setText("Time: 00:00")
     val startTime = System.currentTimeMillis()
     val timeFormat: DateFormat = new SimpleDateFormat("mm:ss");
@@ -119,31 +115,23 @@ class GameView(context: ControllerModule.Provider):
       )
     timer.play()
 
-  /** Updates the hint view, updating the stones in the hint grid.
+  /** Updates the view based on the given hint stones.
     * @param vectorOfHintStones
-    *   The vector of hint stones to update the view with.
+    *   Optional vector of hint stones to update the view with.
     */
-  def updateHintView(vectorOfHintStones: Option[Vector[HintStone]] = None): Unit =
-    if vectorOfHintStones.isDefined && vectorOfHintStones.forall(_ == HintRed) then
-      context.controller.gameState_(GameState.PlayerWin)
-      resultGame.setText("You Win!")
-      updateGrids(Initialize) // Aggiorna tutte le celle con le pietre dorate
-    else updateGrids(UpdateHint, vectorOfHintStones)
-
-  /** Updates the playable view, updating the stones in the attempt grid.
-    */
-  def updatePlayableView(): Unit =
-    updateGrids(UpdatePlayable)
-
-  /** Updates the remaining turns label.
-    */
-  def updateTurns(): Unit =
+  def updateView(vectorOfHintStones: Option[Vector[HintStone]] = None): Unit =
     val remainingTurns = context.controller.remainingTurns
     if remainingTurns == 0 then
       timer.stop()
       context.controller.gameState_(GameState.PlayerLose)
       resultGame.setText("You Lose!")
     turnsLabel.setText("Remaining Turns: " + remainingTurns)
+
+    vectorOfHintStones match
+      case None => updateGrids(Initialize)
+      case _    => updateGrids(UpdateHint, vectorOfHintStones)
+
+    updateGrids(UpdatePlayable)
 
   /** Returns the graphic representation of a stone.
     * @param stone
@@ -280,30 +268,35 @@ class GameView(context: ControllerModule.Provider):
             scene.setCursor(new ImageCursor(newCursorImage))
     )
 
+  /** Updates the grids based on the given update type.
+    * @param updateType
+    *   The type of update to perform.
+    * @param hintStones
+    *   The hint stones to update the hint grid with.
+    */
   private def updateGrids(updateType: GridUpdateType, hintStones: Option[Vector[HintStone]] = None): Unit =
     attemptGrid.getChildren.clear()
     hintGrid.getChildren.clear()
-
-    val (rows, cols) = context.controller.getSizeBoard
-
     updateType match
       case Initialize =>
-        for c <- 0 until cols; r <- 0 until rows do
-          attemptGrid.add(getStone(c, r), c, r)
-          hintGrid.add(getHint(c, r), c, r)
-
+        initializeTime(timeLabel)
+        resultGame.setText("")
+        fillGrid()
       case UpdateHint =>
         hintStones.foreach { stones =>
           if stones.forall(_ == HintRed) then
             timer.stop()
             context.controller.gameState_(GameState.PlayerWin)
             resultGame.setText("You Win!")
-          for c <- 0 until cols; r <- 0 until rows do
-            attemptGrid.add(getStone(c, r), c, r)
-            hintGrid.add(getHint(c, r), c, r)
+          fillGrid()
         }
-
       case UpdatePlayable =>
-        for c <- 0 until cols; r <- 0 until rows do
-          attemptGrid.add(getStone(c, r), c, r)
-          hintGrid.add(getHint(c, r), c, r)
+        fillGrid()
+
+  /** Fills the grids with stones.
+    */
+  private def fillGrid(): Unit =
+    val (rows, cols) = context.controller.getSizeBoard
+    for c <- 0 until cols; r <- 0 until rows do
+      attemptGrid.add(getStone(c, r), c, r)
+      hintGrid.add(getHint(c, r), c, r)

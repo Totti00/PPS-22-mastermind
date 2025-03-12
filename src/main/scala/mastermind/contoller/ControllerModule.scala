@@ -58,9 +58,7 @@ object ControllerModule:
 
       override def resetGame(difficulty: String): Unit =
         currentGame = context.model.reset()
-        update()
-        // context.view.loadView("game", Option(difficulty))
-        // println("Ricomincia il gioco!")
+        updateView()
 
       override def startGame(difficulty: String): Unit =
         currentGame = context.model.startNewGame(difficulty);
@@ -82,12 +80,10 @@ object ControllerModule:
       override def checkCode(userInput: Vector[PlayerStoneGrid]): Unit =
         val vectorOfHintStones = context.model.submitGuess(userInput)
         context.model.startNewTurn()
-        update(Some(vectorOfHintStones))
+        updateView(Some(vectorOfHintStones))
 
-      private def update(vectorOfHintStones: Option[Vector[HintStone]] = None): Unit =
-        context.view.updateTurns()
-        context.view.updateHintGrid(vectorOfHintStones)
-        context.view.updatePlayableGrid()
+      private def updateView(vectorOfHintStones: Option[Vector[HintStone]] = None): Unit =
+        context.view.updateGameView(vectorOfHintStones)
 
       override def gameState: GameState = context.model.gameState
 
