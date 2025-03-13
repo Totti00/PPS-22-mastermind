@@ -103,7 +103,7 @@ object ModelModule:
         currentGame.get.board_(newBoard)
         if checkWin(vectorOfHintStones) then
           gameState_(PlayerWin)
-          currentGame.get.board.winBoard()
+          currentGame.get.board_(currentGame.get.board.winBoard())
         vectorOfHintStones
 
       private def checkWin(hintStonesFeedback: Vector[HintStone]): Boolean =
@@ -111,9 +111,9 @@ object ModelModule:
 
       override def startNewTurn(): Unit =
         currentGame.get.currentTurn_()
-        if currentGame.get.remainingTurns == 0 then gameState_(PlayerLose)
+        // TODO chiedere se gli va bene fare qui il controllo. Io personalmente farei il controllo dello stato prima di chiamare startNewTurn()
+        if currentGame.get.remainingTurns == 0 && gameState == InGame then gameState_(PlayerLose)
         if gameState == InGame && currentTurn < currentGame.get.board.rows then
-          println("ModelModule: start new turn")
           val newBoard = currentGame.get.board.initializeCurrentTurn(currentTurn)
           currentGame.get.board_(newBoard)
 

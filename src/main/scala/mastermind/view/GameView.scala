@@ -24,7 +24,7 @@ import mastermind.model.entity.PlayerStoneGrid.StartCurrentTurn
 
 class GameView(context: ControllerModule.Provider):
   private var attemptGrid: Option[GridPane] = None
-  private var hintGrid: GridPane = _
+  private var hintGrid: Option[GridPane] = None
   private var turnsLabel: Option[Label] = None
   private var resultGame: Option[Label] = None
   private var timeLabel: Option[Label] = None
@@ -44,7 +44,7 @@ class GameView(context: ControllerModule.Provider):
     val root: Parent = loader.load()
     val namespace = loader.getNamespace
     attemptGrid = Some(namespace.get("stone_matrix").asInstanceOf[GridPane])
-    hintGrid = namespace.get("hint_stone_matrix").asInstanceOf[GridPane]
+    hintGrid = Some(namespace.get("hint_stone_matrix").asInstanceOf[GridPane])
     turnsLabel = Some(namespace.get("labelCurrentTurn").asInstanceOf[Label])
     resultGame = Some(namespace.get("resultGame").asInstanceOf[Label])
     timeLabel = Some(namespace.get("currentTime").asInstanceOf[Label])
@@ -235,7 +235,6 @@ class GameView(context: ControllerModule.Provider):
       case PlayerWin =>
         timer.get.stop()
         setLabelText(resultGame.get, "You Win!")
-        println("GameView: before fillGrid")
         fillGrid(rows, cols)
       case PlayerLose =>
         timer.get.stop()
@@ -244,12 +243,12 @@ class GameView(context: ControllerModule.Provider):
         updateType match
           case Initialize =>
             attemptGrid.get.getChildren.clear()
-            hintGrid.getChildren.clear()
+            hintGrid.get.getChildren.clear()
             initializeTime(timeLabel.get)
             setLabelText(resultGame.get, "")
             fillGrid(rows, cols)
           case UpdateHint =>
-            updateGrid(hintGrid, hintStones.getOrElse(Vector.empty), getGraphicLabel)
+            updateGrid(hintGrid.get, hintStones.getOrElse(Vector.empty), getGraphicLabel)
           case UpdatePlayable =>
             val newCurrentTurnStones = (for (i <- 0 until cols) yield getStone(i, context.controller.turn)).toVector
             updateGrid(attemptGrid.get, newCurrentTurnStones, identity)
@@ -258,9 +257,8 @@ class GameView(context: ControllerModule.Provider):
     */
   private def fillGrid(rows: Int, cols: Int): Unit =
     for c <- 0 until cols; r <- 0 until rows do
-      println("Game view: " + getStone(c, r).getText)
       attemptGrid.get.add(getStone(c, r), c, r)
-      hintGrid.add(getHint(c, r), c, r)
+      hintGrid.get.add(getHint(c, r), c, r)
 
   /** Updates the turns label with the remaining turns.
     */

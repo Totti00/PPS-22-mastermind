@@ -14,7 +14,7 @@ trait Board:
       rowHintStone: Vector[HintStone],
       updateRow: Int
   ): Board
-  def winBoard(): Unit
+  def winBoard(): Board
 
   def initializeCurrentTurn(currentTurn: Int): Board
 
@@ -45,6 +45,6 @@ object Board:
     override def initializeCurrentTurn(currentTurn: Int): Board =
       copy(playableMatrix.replaceRow(currentTurn, Vector.fill(cols)(StartCurrentTurn)), hintMatrix)
 
-    override def winBoard(): Unit =
+    override def winBoard(): Board =
       println("Entro in winBoard")
       copy(Matrix(rows, cols, Win), Matrix(rows, cols, HintRed))
