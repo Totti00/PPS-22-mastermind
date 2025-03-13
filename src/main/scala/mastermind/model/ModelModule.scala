@@ -4,6 +4,7 @@ import mastermind.model.entity.{Board, Code, Game, HintStone, PlayerStoneGrid}
 import mastermind.model.strategy.*
 
 object ModelModule:
+
   trait Model:
     /** Start a new game
       * @param difficulty
@@ -11,19 +12,20 @@ object ModelModule:
       * @return
       *   the new game
       */
-    def startNewGame(difficulty: String): Game
+    def startNewGame(difficulty: String): Option[Game]
 
     /** Reset the game
       * @return
       *   a new game
       */
-    def reset(): Game
+    def reset(): Option[Game]
 
     def getPlayableStone(row: Int, col: Int): PlayerStoneGrid
     def getHintStone(row: Int, col: Int): HintStone
     def getSizeBoard: (Int, Int)
-    def submitGuess(userInput: Vector[PlayerStoneGrid]): Vector[HintStone]
+    def submitGuess(userInput: Vector[PlayerStoneGrid]): (Vector[HintStone], Boolean)
     def startNewTurn(): Unit
+    def deleteGame(): Option[Game]
 
     /** Current turn
       * @return
@@ -54,53 +56,62 @@ object ModelModule:
 
   trait Component:
     class ModelImpl extends Model:
-      private var currentGame: Game = _
+      private var currentGame: Option[Game] = None
       private var currentMode: GameMode = MediumMode()
 
-      override def startNewGame(difficulty: String): Game =
+      override def startNewGame(difficulty: String): Option[Game] =
         currentMode = difficulty.toLowerCase match
           case "easy"    => EasyMode()
           case "medium"  => MediumMode()
           case "hard"    => HardMode()
           case "extreme" => ExtremeMode()
           case _         => throw new IllegalArgumentException("Invalid difficulty")
-        currentGame = Game(
-          Board(currentMode.boardSize._1, currentMode.boardSize._2).initializeCurrentTurn(0),
-          Code(currentMode.codeLength),
-          0
+        currentGame = Some(
+          Game(
+            Board(currentMode.boardSize._1, currentMode.boardSize._2).initializeCurrentTurn(0),
+            Code(currentMode.codeLength),
+            0
+          )
         )
         currentGame
 
-      override def reset(): Game =
+      override def reset(): Option[Game] =
         startNewGame(currentMode.name)
 
+      override def deleteGame(): Option[Game] =
+        currentGame = None
+        currentGame
+
       override def getPlayableStone(row: Int, col: Int): PlayerStoneGrid =
-        currentGame.board.getPlayableStone(row, col)
+        currentGame.get.board.getPlayableStone(row, col)
 
       override def getHintStone(row: Int, col: Int): HintStone =
-        currentGame.board.getHintStone(row, col)
+        currentGame.get.board.getHintStone(row, col)
 
-      override def getSizeBoard: (Int, Int) = (currentGame.board.rows, currentGame.board.cols)
+      override def getSizeBoard: (Int, Int) = (currentGame.get.board.rows, currentGame.get.board.cols)
 
-      override def currentTurn: Int = currentGame.currentTurn
+      override def currentTurn: Int = currentGame.get.currentTurn
 
-      override def remainingTurns: Int = currentGame.remainingTurns
+      override def remainingTurns: Int = currentGame.get.remainingTurns
 
-      override def submitGuess(userInput: Vector[PlayerStoneGrid]): Vector[HintStone] =
-        val vectorOfHintStones = currentGame.code.compareTo(userInput)
-        val newBoard = currentGame.board
+      override def submitGuess(userInput: Vector[PlayerStoneGrid]): (Vector[HintStone], Boolean) =
+        val vectorOfHintStones = currentGame.get.code.compareTo(userInput)
+        val newBoard = currentGame.get.board
           .placeGuessAndHints(userInput, vectorOfHintStones, currentTurn)
-        currentGame.board_(newBoard)
-        vectorOfHintStones
+        currentGame.get.board_(newBoard)
+        (vectorOfHintStones, checkWin(vectorOfHintStones))
+
+      private def checkWin(hintStonesFeedback: Vector[HintStone]): Boolean =
+        hintStonesFeedback.forall(_ == HintStone.HintRed)
 
       override def startNewTurn(): Unit =
-        currentGame.currentTurn_()
-        if currentTurn < currentGame.board.rows then
-          val newBoard = currentGame.board.initializeCurrentTurn(currentTurn)
-          currentGame.board_(newBoard)
+        currentGame.get.currentTurn_()
+        if currentTurn < currentGame.get.board.rows then
+          val newBoard = currentGame.get.board.initializeCurrentTurn(currentTurn)
+          currentGame.get.board_(newBoard)
 
-      override def gameState: GameState = currentGame.state
+      override def gameState: GameState = currentGame.get.state
 
-      override def gameState_(newState: GameState): Unit = currentGame.state_(newState)
+      override def gameState_(newState: GameState): Unit = currentGame.get.state_(newState)
 
   trait Interface extends Provider with Component

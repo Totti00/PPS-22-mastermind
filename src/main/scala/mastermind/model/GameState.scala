@@ -16,7 +16,3 @@ object GameState:
   /** The player has lost the game.
     */
   case object PlayerLose extends GameState
-
-  /** The player has quit the game.
-    */
-  case object MainMenu extends GameState

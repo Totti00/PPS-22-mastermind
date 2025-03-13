@@ -4,7 +4,7 @@ import mastermind.contoller.ControllerModule
 import javafx.fxml.FXMLLoader
 import scalafx.scene.Scene
 import scalafx.stage.Stage
-import javafx.scene.{ImageCursor, Parent}
+import javafx.scene.{ImageCursor, Parent, control, layout}
 import javafx.scene.layout.GridPane
 import javafx.scene.control.{Button, Label}
 import mastermind.model.GameState
@@ -15,6 +15,7 @@ import scalafx.animation.{KeyFrame, Timeline}
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.input.ScrollEvent
 import scalafx.util.Duration
+
 import java.text.{DateFormat, SimpleDateFormat}
 import scala.jdk.CollectionConverters.*
 import javafx.collections.ObservableMap
@@ -40,16 +41,14 @@ class GameView(context: ControllerModule.Provider):
   def show(stage: Stage, difficulty: String): Unit =
     val loader = new FXMLLoader(getClass.getResource("/fxml/Game.fxml"))
     val root: Parent = loader.load()
-
     val namespace = loader.getNamespace
-
     attemptGrid = namespace.get("stone_matrix").asInstanceOf[GridPane]
     hintGrid = namespace.get("hint_stone_matrix").asInstanceOf[GridPane]
     turnsLabel = namespace.get("labelCurrentTurn").asInstanceOf[Label]
     resultGame = namespace.get("resultGame").asInstanceOf[Label]
     timeLabel = namespace.get("currentTime").asInstanceOf[Label]
     setupButton(namespace, "resetGameButton", () => context.controller.resetGame(difficulty))
-    setupButton(namespace, "backButton", () => context.controller.goToPage("MenuPage"))
+    setupButton(namespace, "backButton", () => context.controller.backToMenu("MenuPage"))
     setupButton(namespace, "checkButton", () => submitGuess())
     setupButton(namespace, "helpButton", () => context.controller.goToPage("Rules"))
 
@@ -226,6 +225,7 @@ class GameView(context: ControllerModule.Provider):
     *   The hint stones to update the hint grid with.
     */
   def updateGrids(updateType: GridUpdateType, hintStones: Option[Vector[HintStone]] = None): Unit =
+    updateRemainingTurns()
     val (rows, cols) = context.controller.getSizeBoard
     updateType match
       case Initialize =>
@@ -233,30 +233,29 @@ class GameView(context: ControllerModule.Provider):
         hintGrid.getChildren.clear()
         initializeTime(timeLabel)
         setLabelText(resultGame, "")
-        for c <- 0 until cols; r <- 0 until rows do
-          attemptGrid.add(getStone(c, r), c, r)
-          hintGrid.add(getHint(c, r), c, r)
-
+        fillGrid(rows, cols)
       case UpdateHint =>
-        hintStones.foreach { stones =>
-          if stones.forall(_ == HintRed) then
-            timer.stop()
-            context.controller.gameState_(GameState.PlayerWin)
-            setLabelText(resultGame, "You Win!")
-        }
         updateGrid(hintGrid, hintStones.getOrElse(Vector.empty), getGraphicLabel)
-
       case UpdatePlayable =>
-        checkDefeat()
         val newCurrentTurnStones = (for (i <- 0 until cols) yield getStone(i, context.controller.turn)).toVector
         updateGrid(attemptGrid, newCurrentTurnStones, identity)
+      case UpdateWinning =>
+        timer.stop()
+        setLabelText(resultGame, "You Win!")
+        fillGrid(rows, cols)
+      case UpdateLosing =>
+        timer.stop()
+        setLabelText(resultGame, "You Lose!")
 
-  private def checkDefeat(): Unit =
+  private def fillGrid(rows: Int, cols: Int): Unit =
+    for c <- 0 until cols; r <- 0 until rows do
+      attemptGrid.add(getStone(c, r), c, r)
+      hintGrid.add(getHint(c, r), c, r)
+
+  /** Updates the turns label with the remaining turns.
+    */
+  private def updateRemainingTurns(): Unit =
     val remainingTurns = context.controller.remainingTurns
-    if remainingTurns == 0 then
-      timer.stop()
-      context.controller.gameState_(GameState.PlayerLose)
-      setLabelText(resultGame, "You Lose!")
     setLabelText(turnsLabel, s"Remaining Turns: $remainingTurns")
 
   /** Sets the text of a label.
@@ -269,6 +268,15 @@ class GameView(context: ControllerModule.Provider):
   private def setLabelText(label: Label, text: String): Unit =
     label.setText(text)
 
+  /** Updates the given grid with new values.
+    *
+    * @param grid
+    *   The `GridPane` to update.
+    * @param newValues
+    *   A vector containing the new values to display.
+    * @param labelTransformer
+    *   A function that transforms a value into a `Label`.
+    */
   private def updateGrid[T](grid: GridPane, newValues: Vector[T], labelTransformer: T => Label): Unit =
     grid.getChildren
       .filtered(child => GridPane.getRowIndex(child) == context.controller.turn)
@@ -280,6 +288,13 @@ class GameView(context: ControllerModule.Provider):
         label.asInstanceOf[Label].setText(newLabel.getText)
       }
 
+  /** Creates a label representing a hint stone.
+    *
+    * @param hintStone
+    *   The `HintStone` to represent.
+    * @return
+    *   A `Label` with the hint stone's text and corresponding graphic.
+    */
   private def getGraphicLabel(hintStone: HintStone): Label =
     val label = new Label(hintStone.toString)
     label.setGraphic(getGraphic(hintStone))

@@ -1,5 +1,6 @@
 package mastermind.contoller
 
+import mastermind.model.GameState.{PlayerLose, PlayerWin}
 import mastermind.model.{GameState, ModelModule}
 import mastermind.model.entity.{Game, HintStone, PlayerStoneGrid, Stone}
 import mastermind.utils.*
@@ -11,6 +12,8 @@ object ControllerModule:
     /** Reset the game
       */
     def resetGame(difficulty: String): Unit
+
+    def backToMenu(path: String): Unit
 
     /** Start a new game
       * @param difficulty
@@ -42,8 +45,18 @@ object ControllerModule:
       */
     def remainingTurns: Int
 
+    /** Gets the current game state.
+      *
+      * @return
+      *   The current `GameState` of the game.
+      */
     def gameState: GameState
 
+    /** Sets a new game state.
+      *
+      * @param newState
+      *   The new `GameState` to be set.
+      */
     def gameState_(newState: GameState): Unit
 
   trait Provider:
@@ -54,11 +67,15 @@ object ControllerModule:
   trait Component:
     context: Requirements =>
     class ControllerImpl extends Controller:
-      private var currentGame: Game = _
+      private var currentGame: Option[Game] = _
 
       override def resetGame(difficulty: String): Unit =
         currentGame = context.model.reset()
         updateView(Initialize)
+
+      override def backToMenu(path: String): Unit =
+        currentGame = context.model.deleteGame()
+        goToPage(path)
 
       override def startGame(difficulty: String): Unit =
         currentGame = context.model.startNewGame(difficulty);
@@ -78,10 +95,17 @@ object ControllerModule:
       override def remainingTurns: Int = context.model.remainingTurns
 
       override def checkCode(userInput: Vector[PlayerStoneGrid]): Unit =
-        val vectorOfHintStones = context.model.submitGuess(userInput)
-        updateView(UpdateHint, Some(vectorOfHintStones))
-        context.model.startNewTurn()
-        updateView(UpdatePlayable)
+        val (vectorOfHintStones, winBoolean) = context.model.submitGuess(userInput)
+        if winBoolean then
+          gameState_(PlayerWin)
+          updateView(UpdateWinning)
+        else
+          updateView(UpdateHint, Some(vectorOfHintStones))
+          context.model.startNewTurn()
+          if context.model.remainingTurns == 0 then
+            gameState_(PlayerLose)
+            updateView(UpdateLosing)
+          else updateView(UpdatePlayable)
 
       private def updateView(gameMode: GridUpdateType, vectorOfHintStones: Option[Vector[HintStone]] = None): Unit =
         context.view.updateGameView(gameMode, vectorOfHintStones)
