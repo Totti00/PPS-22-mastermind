@@ -1,5 +1,6 @@
 package mastermind.model
 
+import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
 import mastermind.model.entity.HintStone.HintRed
 import mastermind.model.entity.{Board, Code, Game, HintStone, PlayerStoneGrid}
 import mastermind.model.strategy.*
@@ -24,7 +25,7 @@ object ModelModule:
     def getPlayableStone(row: Int, col: Int): PlayerStoneGrid
     def getHintStone(row: Int, col: Int): HintStone
     def getSizeBoard: (Int, Int)
-    def submitGuess(userInput: Vector[PlayerStoneGrid]): (Vector[HintStone], Boolean)
+    def submitGuess(userInput: Vector[PlayerStoneGrid]): Vector[HintStone]
     def startNewTurn(): Unit
     def deleteGame(): Option[Game]
 
@@ -95,19 +96,24 @@ object ModelModule:
 
       override def remainingTurns: Int = currentGame.get.remainingTurns
 
-      override def submitGuess(userInput: Vector[PlayerStoneGrid]): (Vector[HintStone], Boolean) =
+      override def submitGuess(userInput: Vector[PlayerStoneGrid]): Vector[HintStone] =
         val vectorOfHintStones = currentGame.get.code.compareTo(userInput)
         val newBoard = currentGame.get.board
           .placeGuessAndHints(userInput, vectorOfHintStones, currentTurn)
         currentGame.get.board_(newBoard)
-        (vectorOfHintStones, checkWin(vectorOfHintStones))
+        if (checkWin(vectorOfHintStones))
+          gameState_(PlayerWin)
+          currentGame.get.board.winBoard()
+        vectorOfHintStones
 
       private def checkWin(hintStonesFeedback: Vector[HintStone]): Boolean =
         hintStonesFeedback.forall(_ == HintRed)
 
       override def startNewTurn(): Unit =
         currentGame.get.currentTurn_()
-        if currentTurn < currentGame.get.board.rows then
+        if (currentGame.get.remainingTurns == 0) gameState_(PlayerLose)
+        if gameState == InGame && currentTurn < currentGame.get.board.rows then
+          println("ModelModule: start new turn")
           val newBoard = currentGame.get.board.initializeCurrentTurn(currentTurn)
           currentGame.get.board_(newBoard)
 

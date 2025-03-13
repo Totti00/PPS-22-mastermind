@@ -5,7 +5,7 @@ import scala.util.Random
 sealed trait Stone
 
 enum PlayerStoneGrid extends Stone:
-  case StartCurrentTurn, Empty
+  case StartCurrentTurn, Empty, Win
   private case Red, Green, Blue, Yellow, White, Purple
 
   override def toString: String = this match
@@ -16,6 +16,7 @@ enum PlayerStoneGrid extends Stone:
     case Yellow           => "Yellow"
     case White            => "White"
     case Purple           => "Purple"
+    case Win              => "Win"
     case Empty            => "Empty"
 
 object PlayerStoneGrid:

@@ -19,18 +19,18 @@ import scalafx.util.Duration
 import java.text.{DateFormat, SimpleDateFormat}
 import scala.jdk.CollectionConverters.*
 import javafx.collections.ObservableMap
-import mastermind.model.entity.HintStone.HintRed
+import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
 import mastermind.model.entity.PlayerStoneGrid.StartCurrentTurn
 
 class GameView(context: ControllerModule.Provider):
-  private var attemptGrid: GridPane = _
+  private var attemptGrid: Option[GridPane] = None
   private var hintGrid: GridPane = _
-  private var turnsLabel: Label = _
-  private var resultGame: Label = _
-  private var timeLabel: Label = _
+  private var turnsLabel: Option[Label] = None
+  private var resultGame: Option[Label] = None
+  private var timeLabel: Option[Label] = None
   private var browseColors: Int = 0
   private val selectableColors: Vector[String] = Vector("Green", "Red", "Blue", "Yellow", "Purple", "White")
-  private var timer: Timeline = _
+  private var timer: Option[Timeline] = None
 
   /** Displays the game view, initializing grids, buttons, and setting up the scene.
     *
@@ -43,23 +43,23 @@ class GameView(context: ControllerModule.Provider):
     val loader = new FXMLLoader(getClass.getResource("/fxml/Game.fxml"))
     val root: Parent = loader.load()
     val namespace = loader.getNamespace
-    attemptGrid = namespace.get("stone_matrix").asInstanceOf[GridPane]
+    attemptGrid = Some(namespace.get("stone_matrix").asInstanceOf[GridPane])
     hintGrid = namespace.get("hint_stone_matrix").asInstanceOf[GridPane]
-    turnsLabel = namespace.get("labelCurrentTurn").asInstanceOf[Label]
-    resultGame = namespace.get("resultGame").asInstanceOf[Label]
-    timeLabel = namespace.get("currentTime").asInstanceOf[Label]
+    turnsLabel = Some(namespace.get("labelCurrentTurn").asInstanceOf[Label])
+    resultGame = Some(namespace.get("resultGame").asInstanceOf[Label])
+    timeLabel = Some(namespace.get("currentTime").asInstanceOf[Label])
     setupButton(namespace, "resetGameButton", () => context.controller.resetGame(difficulty))
     setupButton(namespace, "backButton", () => context.controller.backToMenu("MenuPage"))
     setupButton(namespace, "checkButton", () => submitGuess())
     setupButton(namespace, "helpButton", () => context.controller.goToPage("Rules"))
 
-    context.controller.startGame(difficulty) // Inizializza il gioco con la difficoltà scelta
+    context.controller.startGame(difficulty)
     updateGrids(Initialize)
 
     stage.scene = new Scene(root)
     setupScrollHandler(stage.scene.value)
     setCustomCursor(stage.scene.value)
-    setLabelText(turnsLabel, s"Remaining Turns: ${context.controller.remainingTurns}")
+    setLabelText(turnsLabel.get, s"Remaining Turns: ${context.controller.remainingTurns}")
     stage.sizeToScene()
     stage.title = "Mastermind"
     stage.show()
@@ -73,8 +73,7 @@ class GameView(context: ControllerModule.Provider):
     *   The action to perform
     */
   private def setupButton(namespace: ObservableMap[String, Object], buttonId: String, action: () => Unit): Unit =
-    val button = namespace.get(buttonId).asInstanceOf[Button]
-    button.setOnAction(_ => action())
+    namespace.get(buttonId).asInstanceOf[Button].setOnAction(_ => action())
 
   /** Sets the custom cursor.
     * @param scene
@@ -98,21 +97,23 @@ class GameView(context: ControllerModule.Provider):
     *   The time label to initialize.
     */
   private def initializeTime(timeLabel: Label): Unit =
-    if timer != null then timer.stop()
+    if timer.isDefined then timer.get.stop()
     setLabelText(timeLabel, "Time: 00:00")
     val startTime = System.currentTimeMillis()
     val timeFormat: DateFormat = new SimpleDateFormat("mm:ss")
-    timer = new Timeline:
-      cycleCount = Timeline.Indefinite
-      keyFrames = Seq(
-        KeyFrame(
-          Duration(1000),
-          onFinished = () =>
-            val diff = System.currentTimeMillis() - startTime
-            setLabelText(timeLabel, s"Time: ${timeFormat.format(diff)}")
+    timer = Some(
+      new Timeline:
+        cycleCount = Timeline.Indefinite
+        keyFrames = Seq(
+          KeyFrame(
+            Duration(1000),
+            onFinished = () =>
+              val diff = System.currentTimeMillis() - startTime
+              setLabelText(timeLabel, s"Time: ${timeFormat.format(diff)}")
+          )
         )
-      )
-    timer.play()
+    )
+    timer.get.play()
 
   /** Returns the graphic representation of a stone.
     * @param stone
@@ -121,14 +122,15 @@ class GameView(context: ControllerModule.Provider):
     *   An ImageView representing the stone.
     */
   private def getGraphic(stone: Stone): ImageView =
-    val urlStone = context.controller.gameState match
+    /*val urlStone = context.controller.gameState match
       case GameState.PlayerWin =>
         if stone.isInstanceOf[HintStone] then "/img/hintStones/hstone_Red.png" else "/img/stones/stone_Win.png"
-      case GameState.PlayerLose =>
-        if stone.isInstanceOf[HintStone] then "/img/hintStones/hstone_Empty.png" else "/img/stones/stone_Empty.png"
       case _ =>
         if stone.isInstanceOf[HintStone] then s"/img/hintStones/hstone_${stone.toString}.png"
-        else s"/img/stones/stone_${stone.toString}.png"
+        else s"/img/stones/stone_${stone.toString}.png"*/
+
+    val urlStone = if stone.isInstanceOf[HintStone] then s"/img/hintStones/hstone_${stone.toString}.png"
+    else s"/img/stones/stone_${stone.toString}.png"
     val circle_size = 60
     val image_size = circle_size - 5
     new ImageView(new Image(getClass.getResource(urlStone).toExternalForm, image_size, image_size, true, true))
@@ -145,7 +147,7 @@ class GameView(context: ControllerModule.Provider):
     *   A vector of strings representing the user's selected colors.
     */
   private def extractGuess(): Vector[PlayerStoneGrid] =
-    attemptGrid.getChildren
+    attemptGrid.get.getChildren
       .filtered(child => GridPane.getRowIndex(child) == context.controller.turn)
       .asScala
       .map(cell => PlayerStoneGrid.fromString(cell.asInstanceOf[Label].getText))
@@ -228,36 +230,42 @@ class GameView(context: ControllerModule.Provider):
   def updateGrids(updateType: GridUpdateType, hintStones: Option[Vector[HintStone]] = None): Unit =
     updateRemainingTurns()
     val (rows, cols) = context.controller.getSizeBoard
-    updateType match
-      case Initialize =>
-        attemptGrid.getChildren.clear()
-        hintGrid.getChildren.clear()
-        initializeTime(timeLabel)
-        setLabelText(resultGame, "")
+    context.controller.gameState match
+      case PlayerWin =>
+        timer.get.stop()
+        setLabelText(resultGame.get, "You Win!")
+        println("GameView: before fillGrid")
         fillGrid(rows, cols)
-      case UpdateHint =>
-        updateGrid(hintGrid, hintStones.getOrElse(Vector.empty), getGraphicLabel)
-      case UpdatePlayable =>
-        val newCurrentTurnStones = (for (i <- 0 until cols) yield getStone(i, context.controller.turn)).toVector
-        updateGrid(attemptGrid, newCurrentTurnStones, identity)
-      case UpdateWinning =>
-        timer.stop()
-        setLabelText(resultGame, "You Win!")
-        fillGrid(rows, cols)
-      case UpdateLosing =>
-        timer.stop()
-        setLabelText(resultGame, "You Lose!")
+      case PlayerLose =>
+        timer.get.stop()
+        setLabelText(resultGame.get, "You Lose!")
+      case InGame =>
+        updateType match
+          case Initialize =>
+            attemptGrid.get.getChildren.clear()
+            hintGrid.getChildren.clear()
+            initializeTime(timeLabel.get)
+            setLabelText(resultGame.get, "")
+            fillGrid(rows, cols)
+          case UpdateHint =>
+            updateGrid(hintGrid, hintStones.getOrElse(Vector.empty), getGraphicLabel)
+          case UpdatePlayable =>
+            val newCurrentTurnStones = (for (i <- 0 until cols) yield getStone(i, context.controller.turn)).toVector
+            updateGrid(attemptGrid.get, newCurrentTurnStones, identity)
 
+  /** Fills the grids with stones.
+   */
   private def fillGrid(rows: Int, cols: Int): Unit =
     for c <- 0 until cols; r <- 0 until rows do
-      attemptGrid.add(getStone(c, r), c, r)
+      println("Game view: "+ getStone(c, r).getText)
+      attemptGrid.get.add(getStone(c, r), c, r)
       hintGrid.add(getHint(c, r), c, r)
 
   /** Updates the turns label with the remaining turns.
     */
   private def updateRemainingTurns(): Unit =
     val remainingTurns = context.controller.remainingTurns
-    setLabelText(turnsLabel, s"Remaining Turns: $remainingTurns")
+    setLabelText(turnsLabel.get, s"Remaining Turns: $remainingTurns")
 
   /** Sets the text of a label.
     *

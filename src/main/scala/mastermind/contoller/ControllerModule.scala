@@ -95,17 +95,10 @@ object ControllerModule:
       override def remainingTurns: Int = context.model.remainingTurns
 
       override def checkCode(userInput: Vector[PlayerStoneGrid]): Unit =
-        val (vectorOfHintStones, winBoolean) = context.model.submitGuess(userInput)
-        if winBoolean then
-          gameState_(PlayerWin)
-          updateView(UpdateWinning)
-        else
-          updateView(UpdateHint, Some(vectorOfHintStones))
-          context.model.startNewTurn()
-          if context.model.remainingTurns == 0 then
-            gameState_(PlayerLose)
-            updateView(UpdateLosing)
-          else updateView(UpdatePlayable)
+        val vectorOfHintStones = context.model.submitGuess(userInput)
+        updateView(UpdateHint, Some(vectorOfHintStones))
+        context.model.startNewTurn()
+        updateView(UpdatePlayable)
 
       private def updateView(gameMode: GridUpdateType, vectorOfHintStones: Option[Vector[HintStone]] = None): Unit =
         context.view.updateGameView(gameMode, vectorOfHintStones)
