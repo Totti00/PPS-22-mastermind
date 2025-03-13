@@ -6,6 +6,7 @@ import scalafx.scene.Scene
 import scalafx.stage.{Popup, Stage}
 import javafx.scene.Parent
 import mastermind.model.entity.HintStone
+import mastermind.utils.GridUpdateType
 
 object ViewModule:
 
@@ -25,11 +26,13 @@ object ViewModule:
       */
     def loadView(path: String, mode: Option[String] = None): Unit
 
-    /** Update the game view
+    /** Updates the game view based on the specified game mode
+      * @param gameMode
+      *   The type of update to be applied to the game grid
       * @param hintStones
       *   Optional parameter to update the view with the hint stones
       */
-    def updateGameView(hintStones: Option[Vector[HintStone]]): Unit
+    def updateGameView(gameMode: GridUpdateType, hintStones: Option[Vector[HintStone]]): Unit
 
   trait Provider:
     val view: View
@@ -43,8 +46,8 @@ object ViewModule:
       private var stage: Stage = _
       private val gameView = new GameView(context)
 
-      override def updateGameView(hintStones: Option[Vector[HintStone]] = None): Unit =
-        gameView.updateView(hintStones)
+      override def updateGameView(gameMode: GridUpdateType, hintStones: Option[Vector[HintStone]] = None): Unit =
+        gameView.updateGrids(gameMode, hintStones)
 
       override def show(primaryStage: Stage): Unit =
         stage = primaryStage

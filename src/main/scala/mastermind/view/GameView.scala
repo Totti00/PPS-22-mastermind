@@ -15,7 +15,6 @@ import scalafx.animation.{KeyFrame, Timeline}
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.input.ScrollEvent
 import scalafx.util.Duration
-
 import java.text.{DateFormat, SimpleDateFormat}
 import scala.jdk.CollectionConverters.*
 import javafx.collections.ObservableMap
@@ -114,24 +113,6 @@ class GameView(context: ControllerModule.Provider):
         )
       )
     timer.play()
-
-  /** Updates the view based on the given hint stones.
-    * @param vectorOfHintStones
-    *   Optional vector of hint stones to update the view with.
-    */
-  def updateView(vectorOfHintStones: Option[Vector[HintStone]] = None): Unit =
-    val remainingTurns = context.controller.remainingTurns
-    if remainingTurns == 0 then
-      timer.stop()
-      context.controller.gameState_(GameState.PlayerLose)
-      setLabelText(resultGame, "You Lose!")
-    setLabelText(turnsLabel, s"Remaining Turns: $remainingTurns")
-
-    vectorOfHintStones match
-      case None => updateGrids(Initialize)
-      case _    => updateGrids(UpdateHint, vectorOfHintStones)
-
-    updateGrids(UpdatePlayable)
 
   /** Returns the graphic representation of a stone.
     * @param stone
@@ -244,34 +225,42 @@ class GameView(context: ControllerModule.Provider):
     * @param hintStones
     *   The hint stones to update the hint grid with.
     */
-  private def updateGrids(updateType: GridUpdateType, hintStones: Option[Vector[HintStone]] = None): Unit =
-    attemptGrid.getChildren.clear()
-    hintGrid.getChildren.clear()
+  def updateGrids(updateType: GridUpdateType, hintStones: Option[Vector[HintStone]] = None): Unit =
+    val (rows, cols) = context.controller.getSizeBoard
     updateType match
       case Initialize =>
+        attemptGrid.getChildren.clear()
+        hintGrid.getChildren.clear()
         initializeTime(timeLabel)
         setLabelText(resultGame, "")
-        fillGrid()
+        for c <- 0 until cols; r <- 0 until rows do
+          attemptGrid.add(getStone(c, r), c, r)
+          hintGrid.add(getHint(c, r), c, r)
+
       case UpdateHint =>
         hintStones.foreach { stones =>
           if stones.forall(_ == HintRed) then
             timer.stop()
             context.controller.gameState_(GameState.PlayerWin)
             setLabelText(resultGame, "You Win!")
-          fillGrid()
         }
-      case UpdatePlayable =>
-        fillGrid()
+        updateGrid(hintGrid, hintStones.getOrElse(Vector.empty), getGraphicLabel)
 
-  /** Fills the grids with stones.
-    */
-  private def fillGrid(): Unit =
-    val (rows, cols) = context.controller.getSizeBoard
-    for c <- 0 until cols; r <- 0 until rows do
-      attemptGrid.add(getStone(c, r), c, r)
-      hintGrid.add(getHint(c, r), c, r)
+      case UpdatePlayable =>
+        checkDefeat()
+        val newCurrentTurnStones = (for (i <- 0 until cols) yield getStone(i, context.controller.turn)).toVector
+        updateGrid(attemptGrid, newCurrentTurnStones, identity)
+
+  private def checkDefeat(): Unit =
+    val remainingTurns = context.controller.remainingTurns
+    if remainingTurns == 0 then
+      timer.stop()
+      context.controller.gameState_(GameState.PlayerLose)
+      setLabelText(resultGame, "You Lose!")
+    setLabelText(turnsLabel, s"Remaining Turns: $remainingTurns")
 
   /** Sets the text of a label.
+    *
     * @param label
     *   The label to set the text of.
     * @param text
@@ -279,3 +268,19 @@ class GameView(context: ControllerModule.Provider):
     */
   private def setLabelText(label: Label, text: String): Unit =
     label.setText(text)
+
+  private def updateGrid[T](grid: GridPane, newValues: Vector[T], labelTransformer: T => Label): Unit =
+    grid.getChildren
+      .filtered(child => GridPane.getRowIndex(child) == context.controller.turn)
+      .asScala
+      .zip(newValues)
+      .foreach { case (label, newValue) =>
+        val newLabel = labelTransformer(newValue)
+        label.asInstanceOf[Label].setGraphic(newLabel.getGraphic)
+        label.asInstanceOf[Label].setText(newLabel.getText)
+      }
+
+  private def getGraphicLabel(hintStone: HintStone): Label =
+    val label = new Label(hintStone.toString)
+    label.setGraphic(getGraphic(hintStone))
+    label
