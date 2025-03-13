@@ -20,6 +20,7 @@ import java.text.{DateFormat, SimpleDateFormat}
 import scala.jdk.CollectionConverters.*
 import javafx.collections.ObservableMap
 import mastermind.model.entity.HintStone.HintRed
+import mastermind.model.entity.PlayerStoneGrid.StartCurrentTurn
 
 class GameView(context: ControllerModule.Provider):
   private var attemptGrid: GridPane = _
@@ -136,7 +137,7 @@ class GameView(context: ControllerModule.Provider):
     */
   private def submitGuess(): Unit =
     val guess = extractGuess()
-    if guess.nonEmpty then context.controller.checkCode(guess)
+    if !guess.contains(StartCurrentTurn) then context.controller.checkCode(guess)
 
   /** Extracts the current guess from the attempt grid.
     *

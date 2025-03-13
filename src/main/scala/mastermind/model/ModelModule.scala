@@ -1,5 +1,6 @@
 package mastermind.model
 
+import mastermind.model.entity.HintStone.HintRed
 import mastermind.model.entity.{Board, Code, Game, HintStone, PlayerStoneGrid}
 import mastermind.model.strategy.*
 
@@ -102,7 +103,7 @@ object ModelModule:
         (vectorOfHintStones, checkWin(vectorOfHintStones))
 
       private def checkWin(hintStonesFeedback: Vector[HintStone]): Boolean =
-        hintStonesFeedback.forall(_ == HintStone.HintRed)
+        hintStonesFeedback.forall(_ == HintRed)
 
       override def startNewTurn(): Unit =
         currentGame.get.currentTurn_()
