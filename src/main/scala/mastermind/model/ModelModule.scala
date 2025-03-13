@@ -101,7 +101,7 @@ object ModelModule:
         val newBoard = currentGame.get.board
           .placeGuessAndHints(userInput, vectorOfHintStones, currentTurn)
         currentGame.get.board_(newBoard)
-        if (checkWin(vectorOfHintStones))
+        if checkWin(vectorOfHintStones) then
           gameState_(PlayerWin)
           currentGame.get.board.winBoard()
         vectorOfHintStones
@@ -111,7 +111,7 @@ object ModelModule:
 
       override def startNewTurn(): Unit =
         currentGame.get.currentTurn_()
-        if (currentGame.get.remainingTurns == 0) gameState_(PlayerLose)
+        if currentGame.get.remainingTurns == 0 then gameState_(PlayerLose)
         if gameState == InGame && currentTurn < currentGame.get.board.rows then
           println("ModelModule: start new turn")
           val newBoard = currentGame.get.board.initializeCurrentTurn(currentTurn)

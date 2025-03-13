@@ -129,8 +129,9 @@ class GameView(context: ControllerModule.Provider):
         if stone.isInstanceOf[HintStone] then s"/img/hintStones/hstone_${stone.toString}.png"
         else s"/img/stones/stone_${stone.toString}.png"*/
 
-    val urlStone = if stone.isInstanceOf[HintStone] then s"/img/hintStones/hstone_${stone.toString}.png"
-    else s"/img/stones/stone_${stone.toString}.png"
+    val urlStone =
+      if stone.isInstanceOf[HintStone] then s"/img/hintStones/hstone_${stone.toString}.png"
+      else s"/img/stones/stone_${stone.toString}.png"
     val circle_size = 60
     val image_size = circle_size - 5
     new ImageView(new Image(getClass.getResource(urlStone).toExternalForm, image_size, image_size, true, true))
@@ -254,10 +255,10 @@ class GameView(context: ControllerModule.Provider):
             updateGrid(attemptGrid.get, newCurrentTurnStones, identity)
 
   /** Fills the grids with stones.
-   */
+    */
   private def fillGrid(rows: Int, cols: Int): Unit =
     for c <- 0 until cols; r <- 0 until rows do
-      println("Game view: "+ getStone(c, r).getText)
+      println("Game view: " + getStone(c, r).getText)
       attemptGrid.get.add(getStone(c, r), c, r)
       hintGrid.add(getHint(c, r), c, r)
 
