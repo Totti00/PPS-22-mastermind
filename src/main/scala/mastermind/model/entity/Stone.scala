@@ -20,9 +20,18 @@ enum PlayerStoneGrid extends Stone:
     case Empty            => "Empty"
 
 object PlayerStoneGrid:
+  /** @return
+    *   Provides a random color from those that the user can choose
+    */
   def random: PlayerStoneGrid =
     val stones = Seq(Red, Green, Blue, Yellow, White, Purple)
     stones(Random.nextInt(stones.length))
+
+  /** @param stoneColor
+    *   The color of the stone
+    * @return
+    *   Gives the requested color or an empty color in case the requested color is not found
+    */
   def fromString(stoneColor: String): PlayerStoneGrid =
     values.find(_.toString.equalsIgnoreCase(stoneColor)).getOrElse(Empty)
 

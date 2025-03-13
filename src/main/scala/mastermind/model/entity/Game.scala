@@ -9,6 +9,11 @@ trait Game:
     *   the board of the game
     */
   def board: Board
+
+  /** Set the board with the newBoard
+    * @param newBoard
+    *   the board to use
+    */
   def board_(newBoard: Board): Unit
 
   /** Code to guess

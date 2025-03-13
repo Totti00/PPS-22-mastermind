@@ -7,15 +7,52 @@ trait Board:
 
   def rows: Int
   def cols: Int
+
+  /** @param row
+    * @param cols
+    * @return
+    *   Gives the PlayableStoneGrid requested
+    */
   def getPlayableStone(row: Int, cols: Int): PlayerStoneGrid
+
+  /** @param row
+    * @param cols
+    * @return
+    *   Gives the HintStone requested
+    */
   def getHintStone(row: Int, cols: Int): HintStone
+
+  /** Create a new board with the user's guess and the feedback associated with it.
+    *
+    * @param rowPlayableStone
+    *   Guess of the user
+    * @param rowHintStone
+    *   Feedback associated to the guess
+    * @param updateRow
+    *   The row that need to be updated
+    * @return
+    *   The new board of the game
+    */
   def placeGuessAndHints(
       rowPlayableStone: Vector[PlayerStoneGrid],
       rowHintStone: Vector[HintStone],
       updateRow: Int
   ): Board
+
+  /** Creates the board of gold and red stones if the player win
+    *
+    * @return
+    *   The new board of the game
+    */
   def winBoard(): Board
 
+  /** Creates a visualisation indicating the stones playable in the turn, using a colour.
+    *
+    * @param currentTurn
+    *   The turn that need to be initialized
+    * @return
+    *   The new board of the game
+    */
   def initializeCurrentTurn(currentTurn: Int): Board
 
 object Board:
@@ -46,5 +83,4 @@ object Board:
       copy(playableMatrix.replaceRow(currentTurn, Vector.fill(cols)(StartCurrentTurn)), hintMatrix)
 
     override def winBoard(): Board =
-      println("Entro in winBoard")
       copy(Matrix(rows, cols, Win), Matrix(rows, cols, HintRed))
