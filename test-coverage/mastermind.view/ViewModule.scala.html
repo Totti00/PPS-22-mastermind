@@ -5,10 +5,12 @@ import mastermind.contoller.ControllerModule
 import scalafx.scene.Scene
 import scalafx.stage.{Popup, Stage}
 import javafx.scene.Parent
+import mastermind.model.entity.HintStone
+import mastermind.utils.GridUpdateType
 
-<span class="nc" id="L9">object ViewModule:</span>
+<span class="nc" id="L11">object ViewModule:</span>
 
-<span class="nc" id="L11">  trait View:</span>
+<span class="nc" id="L13">  trait View:</span>
 
     /** Displays the view.
       * @param stage
@@ -22,7 +24,15 @@ import javafx.scene.Parent
       * @param mode
       *   An optional parameter specifying the mode (e.g., difficulty level).
       */
-<span class="nc" id="L25">    def loadView(path: String, mode: Option[String] = None): Unit</span>
+<span class="nc" id="L27">    def loadView(path: String, mode: Option[String] = None): Unit</span>
+
+    /** Updates the game view based on the specified game mode
+      * @param gameMode
+      *   The type of update to be applied to the game grid
+      * @param hintStones
+      *   Optional parameter to update the view with the hint stones
+      */
+    def updateGameView(gameMode: GridUpdateType, hintStones: Option[Vector[HintStone]]): Unit
 
   trait Provider:
     val view: View
@@ -32,61 +42,61 @@ import javafx.scene.Parent
   trait Component:
     context: Requirements =&gt;
 
-<span class="nc bnc" id="L35" title="All 2 branches missed.">    class ViewImpl extends View:</span>
-<span class="nc" id="L36">      private val gameView = new GameView(context)</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">    class ViewImpl extends View:</span>
       private var stage: Stage = _
+<span class="nc" id="L47">      private val gameView = new GameView(context)</span>
+
+<span class="nc" id="L49">      override def updateGameView(gameMode: GridUpdateType, hintStones: Option[Vector[HintStone]] = None): Unit =</span>
+<span class="nc" id="L50">        gameView.updateGrids(gameMode, hintStones)</span>
 
       override def show(primaryStage: Stage): Unit =
-<span class="nc" id="L40">        stage = primaryStage</span>
-<span class="nc" id="L41">        loadView(&quot;MenuPage&quot;)</span>
+<span class="nc" id="L53">        stage = primaryStage</span>
+<span class="nc" id="L54">        loadView(&quot;MenuPage&quot;)</span>
 
-<span class="nc" id="L43">      override def loadView(path: String, mode: Option[String] = None): Unit =</span>
-<span class="nc" id="L44">        println(&quot;loadView&quot;)</span>
-
-<span class="nc" id="L46">        path match</span>
-<span class="nc bnc" id="L47" title="All 2 branches missed.">          case &quot;game&quot; =&gt; gameView.show(stage, mode.get)</span>
-<span class="nc bnc" id="L48" title="All 2 branches missed.">          case &quot;Rules&quot; =&gt;</span>
-<span class="nc" id="L49">            println(&quot;rule&quot;)</span>
-<span class="nc" id="L50">            val loader = new FXMLLoader(getClass.getResource(s&quot;/fxml/$path.fxml&quot;))</span>
-<span class="nc" id="L51">            val root: Parent = loader.load()</span>
-<span class="nc" id="L52">            val popup = new Popup()</span>
-<span class="nc" id="L53">            popup.getContent.clear()</span>
-<span class="nc" id="L54">            popup.getContent.add(root)</span>
-<span class="nc" id="L55">            popup.show(stage)</span>
-<span class="nc" id="L56">            val namespace = loader.getNamespace</span>
+<span class="nc" id="L56">      override def loadView(path: String, mode: Option[String] = None): Unit =</span>
+<span class="nc" id="L57">        path match</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">          case &quot;game&quot; =&gt; gameView.show(stage, mode.get)</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">          case &quot;Rules&quot; =&gt;</span>
+<span class="nc" id="L60">            val loader = new FXMLLoader(getClass.getResource(s&quot;/fxml/$path.fxml&quot;))</span>
+<span class="nc" id="L61">            val root: Parent = loader.load()</span>
+<span class="nc" id="L62">            val popup = new Popup()</span>
+<span class="nc" id="L63">            popup.getContent.clear()</span>
+<span class="nc" id="L64">            popup.getContent.add(root)</span>
+<span class="nc" id="L65">            popup.show(stage)</span>
+<span class="nc" id="L66">            val namespace = loader.getNamespace</span>
 
             import scalafx.Includes.*
 
-<span class="nc" id="L60">            namespace.get(&quot;ruleExitButton&quot;) match</span>
-<span class="nc bnc" id="L61" title="All 2 branches missed.">              case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; popup.hide())</span>
-<span class="nc" id="L62">              case _                                   =&gt;</span>
+<span class="nc" id="L70">            namespace.get(&quot;ruleExitButton&quot;) match</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">              case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; popup.hide())</span>
+<span class="nc" id="L72">              case _                                   =&gt;</span>
 
           case _ =&gt;
-<span class="nc" id="L65">            val loader = new FXMLLoader(getClass.getResource(s&quot;/fxml/$path.fxml&quot;))</span>
-<span class="nc" id="L66">            loader.setController(context.controller)</span>
-<span class="nc" id="L67">            val root: Parent = loader.load()</span>
-<span class="nc" id="L68">            val namespace = loader.getNamespace</span>
+<span class="nc" id="L75">            val loader = new FXMLLoader(getClass.getResource(s&quot;/fxml/$path.fxml&quot;))</span>
+<span class="nc" id="L76">            loader.setController(context.controller)</span>
+<span class="nc" id="L77">            val root: Parent = loader.load()</span>
+<span class="nc" id="L78">            val namespace = loader.getNamespace</span>
 
             import scalafx.Includes.*
-<span class="nc" id="L71">            namespace.get(&quot;rulesButton&quot;) match</span>
-<span class="nc bnc" id="L72" title="All 2 branches missed.">              case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; context.controller.goToPage(&quot;Rules&quot;))</span>
-<span class="nc" id="L73">              case _                                   =&gt;</span>
+<span class="nc" id="L81">            namespace.get(&quot;rulesButton&quot;) match</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">              case button: javafx.scene.control.Button =&gt; button.setOnAction(_ =&gt; context.controller.goToPage(&quot;Rules&quot;))</span>
+<span class="nc" id="L83">              case _                                   =&gt;</span>
 
-<span class="nc" id="L75">            val difficultyMapping = Map(</span>
-<span class="nc" id="L76">              &quot;easyModeButton&quot; -&gt; &quot;easy&quot;,</span>
-<span class="nc" id="L77">              &quot;mediumModeButton&quot; -&gt; &quot;medium&quot;,</span>
-<span class="nc" id="L78">              &quot;hardModeButton&quot; -&gt; &quot;hard&quot;,</span>
-<span class="nc" id="L79">              &quot;extremeModeButton&quot; -&gt; &quot;extreme&quot;</span>
+<span class="nc" id="L85">            val difficultyMapping = Map(</span>
+<span class="nc" id="L86">              &quot;easyModeButton&quot; -&gt; &quot;easy&quot;,</span>
+<span class="nc" id="L87">              &quot;mediumModeButton&quot; -&gt; &quot;medium&quot;,</span>
+<span class="nc" id="L88">              &quot;hardModeButton&quot; -&gt; &quot;hard&quot;,</span>
+<span class="nc" id="L89">              &quot;extremeModeButton&quot; -&gt; &quot;extreme&quot;</span>
             )
-<span class="nc" id="L81">            difficultyMapping.foreach { case (buttonId, difficulty) =&gt;</span>
+<span class="nc" id="L91">            difficultyMapping.foreach { case (buttonId, difficulty) =&gt;</span>
               namespace.get(buttonId) match
                 case button: javafx.scene.control.Button =&gt;
                   button.setOnAction(_ =&gt; context.controller.goToPage(&quot;game&quot;, Some(difficulty)))
                 case _ =&gt;
             }
-<span class="nc" id="L87">            stage.scene = new Scene(root, 800, 500)</span>
-<span class="nc" id="L88">            stage.title = &quot;Mastermind&quot;</span>
-<span class="nc" id="L89">            stage.show()</span>
+<span class="nc" id="L97">            stage.scene = new Scene(root, 800, 500)</span>
+<span class="nc" id="L98">            stage.title = &quot;Mastermind&quot;</span>
+<span class="nc" id="L99">            stage.show()</span>
 
   trait Interface extends Provider with Component:
     self: Requirements =&gt;

@@ -1,16 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Game.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.model.entity</a> &gt; <span class="el_source">Game.scala</span></div><h1>Game.scala</h1><pre class="source lang-java linenums">package mastermind.model.entity
 
+import mastermind.model.GameState
+import java.text.SimpleDateFormat
+
 trait Game:
+  /** Board of the game
+    * @return
+    *   the board of the game
+    */
   def board: Board
+
+  /** Set the board with the newBoard
+    * @param newBoard
+    *   the board to use
+    */
+  def board_(newBoard: Board): Unit
+
+  /** Code to guess
+    * @return
+    *   the code to guess
+    */
   def code: Code
-  def currentTurn: Int
+
+  /** Reset the game
+    * @return
+    *   a new game
+    */
   def resetGame(): Game
 
-<span class="nc" id="L9">object Game:</span>
-<span class="nc" id="L10">  def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn)</span>
+  /** Remaining turns
+    * @return
+    *   the remaining turns
+    */
+  def remainingTurns: Int
 
-<span class="nc bnc" id="L12" title="All 30 branches missed.">  private case class GameImpl(override val board: Board, override val code: Code, override val currentTurn: Int)</span>
-      extends Game:
+  /** Current turn
+    * @return
+    *   the current turn
+    */
+  def currentTurn: Int
 
-<span class="nc" id="L15">    override def resetGame(): Game = Game(Board(board.rows, board.cols), Code(4), 0)</span>
+  /** Set the current turn
+    */
+  def currentTurn_(): Unit
+
+  /** Game state getter
+    * @return
+    *   the current game state
+    */
+  def state: GameState
+
+  /** Game state setter
+    * @param newState
+    *   the new game state
+    */
+  def state_(newState: GameState): Unit
+
+<span class="nc" id="L59">object Game:</span>
+<span class="nc" id="L60">  def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn, GameState.InGame)</span>
+
+<span class="nc bnc" id="L62" title="All 38 branches missed.">  private case class GameImpl(</span>
+<span class="nc" id="L63">      var board: Board,</span>
+<span class="nc" id="L64">      override val code: Code,</span>
+<span class="nc" id="L65">      private var _currentTurn: Int,</span>
+<span class="nc" id="L66">      private var _state: GameState</span>
+  ) extends Game:
+
+<span class="nc" id="L69">    override def resetGame(): Game = Game(Board(board.rows, board.cols), Code(4), 0)</span>
+
+<span class="nc" id="L71">    override def remainingTurns: Int = board.rows - currentTurn</span>
+
+<span class="nc" id="L73">    override def currentTurn: Int = _currentTurn</span>
+
+<span class="nc" id="L75">    override def currentTurn_(): Unit = _currentTurn += 1</span>
+
+<span class="nc" id="L77">    override def board_(newBoard: Board): Unit = this.board = newBoard</span>
+
+<span class="nc" id="L79">    override def state: GameState = _state</span>
+
+<span class="nc" id="L81">    override def state_(newState: GameState): Unit = _state = newState</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

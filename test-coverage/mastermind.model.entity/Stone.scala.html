@@ -2,64 +2,44 @@
 
 import scala.util.Random
 
-sealed trait Stone:
-  def stringRepresentation: String
+sealed trait Stone
 
-sealed trait PlayerStoneGrid extends Stone
+<span class="fc" id="L7">enum PlayerStoneGrid extends Stone:</span>
+<span class="fc" id="L8">  case StartCurrentTurn, Empty, Win</span>
+<span class="pc bnc" id="L9" title="All 30 branches missed.">  private case Red, Green, Blue, Yellow, White, Purple</span>
 
-<span class="nc" id="L10">case object StartCurrentTurn extends PlayerStoneGrid:</span>
-<span class="nc" id="L11">  override def stringRepresentation: String = &quot;StartCurrentTurn&quot;</span>
-<span class="pc" id="L12">case object Red extends PlayerStoneGrid:</span>
-<span class="nc" id="L13">  override def stringRepresentation: String = &quot;Red&quot;</span>
-<span class="pc" id="L14">case object Green extends PlayerStoneGrid:</span>
-<span class="nc" id="L15">  override def stringRepresentation: String = &quot;Green&quot;</span>
-<span class="pc" id="L16">case object Blue extends PlayerStoneGrid:</span>
-<span class="nc" id="L17">  override def stringRepresentation: String = &quot;Blue&quot;</span>
-<span class="pc" id="L18">case object Yellow extends PlayerStoneGrid:</span>
-<span class="nc" id="L19">  override def stringRepresentation: String = &quot;Yellow&quot;</span>
-<span class="nc" id="L20">case object White extends PlayerStoneGrid:</span>
-<span class="nc" id="L21">  override def stringRepresentation: String = &quot;White&quot;</span>
-<span class="pc" id="L22">case object Purple extends PlayerStoneGrid:</span>
-<span class="fc" id="L23">  override def stringRepresentation: String = &quot;Purple&quot;</span>
-<span class="pc" id="L24">case object Empty extends PlayerStoneGrid:</span>
-<span class="nc" id="L25">  override def stringRepresentation: String = &quot;Empty&quot;</span>
+<span class="fc" id="L11">  override def toString: String = this match</span>
+<span class="pc bpc" id="L12" title="3 of 6 branches missed.">    case StartCurrentTurn =&gt; &quot;StartCurrentTurn&quot;</span>
+<span class="pc bpc" id="L13" title="3 of 6 branches missed.">    case Red              =&gt; &quot;Red&quot;</span>
+<span class="pc bpc" id="L14" title="3 of 6 branches missed.">    case Green            =&gt; &quot;Green&quot;</span>
+<span class="pc bpc" id="L15" title="3 of 6 branches missed.">    case Blue             =&gt; &quot;Blue&quot;</span>
+<span class="pc bpc" id="L16" title="3 of 6 branches missed.">    case Yellow           =&gt; &quot;Yellow&quot;</span>
+<span class="pc bpc" id="L17" title="3 of 6 branches missed.">    case White            =&gt; &quot;White&quot;</span>
+<span class="pc bpc" id="L18" title="4 of 6 branches missed.">    case Purple           =&gt; &quot;Purple&quot;</span>
+<span class="pc bpc" id="L19" title="3 of 6 branches missed.">    case Win              =&gt; &quot;Win&quot;</span>
+<span class="pc bpc" id="L20" title="4 of 6 branches missed.">    case Empty            =&gt; &quot;Empty&quot;</span>
 
-<span class="nc bnc" id="L27" title="All 16 branches missed.">object PlayerStoneGrid:</span>
-<span class="fc" id="L28">  def apply(stringRepresentation: String): PlayerStoneGrid = stringRepresentation match</span>
-<span class="pc bpc" id="L29" title="16 of 27 branches missed.">    case &quot;Red&quot;              =&gt; Red</span>
-<span class="pc" id="L30">    case &quot;Green&quot;            =&gt; Green</span>
-<span class="pc" id="L31">    case &quot;Blue&quot;             =&gt; Blue</span>
-<span class="pc" id="L32">    case &quot;Yellow&quot;           =&gt; Yellow</span>
-<span class="nc" id="L33">    case &quot;White&quot;            =&gt; White</span>
-<span class="nc" id="L34">    case &quot;Purple&quot;           =&gt; Purple</span>
-<span class="pc" id="L35">    case &quot;Empty&quot;            =&gt; Empty</span>
-<span class="nc" id="L36">    case &quot;StartCurrentTurn&quot; =&gt; StartCurrentTurn</span>
-<span class="pc" id="L37">    case _                  =&gt; Empty // Default case</span>
-
+<span class="nc" id="L22">object PlayerStoneGrid:</span>
+  /** @return
+    *   Provides a random color from those that the user can choose
+    */
   def random: PlayerStoneGrid =
-<span class="nc" id="L40">    PlayerStoneGrid(Random.nextInt(6) match</span>
-<span class="nc bnc" id="L41" title="All 7 branches missed.">      case 0 =&gt; &quot;Red&quot;</span>
-<span class="nc" id="L42">      case 1 =&gt; &quot;Green&quot;</span>
-<span class="nc" id="L43">      case 2 =&gt; &quot;Blue&quot;</span>
-<span class="nc" id="L44">      case 3 =&gt; &quot;Yellow&quot;</span>
-<span class="nc" id="L45">      case 4 =&gt; &quot;White&quot;</span>
-<span class="nc" id="L46">      case 5 =&gt; &quot;Purple&quot;</span>
-<span class="nc" id="L47">      case _ =&gt; &quot;Empty&quot;</span>
-    )
+<span class="nc" id="L27">    val stones = Seq(Red, Green, Blue, Yellow, White, Purple)</span>
+<span class="nc" id="L28">    stones(Random.nextInt(stones.length))</span>
 
-sealed trait HintStone extends Stone
+  /** @param stoneColor
+    *   The color of the stone
+    * @return
+    *   Gives the requested color or an empty color in case the requested color is not found
+    */
+  def fromString(stoneColor: String): PlayerStoneGrid =
+<span class="pc" id="L36">    values.find(_.toString.equalsIgnoreCase(stoneColor)).getOrElse(Empty)</span>
 
-<span class="pc" id="L52">case object HintRed extends HintStone:</span>
-<span class="nc" id="L53">  override def stringRepresentation = &quot;Red&quot;</span>
-<span class="pc" id="L54">case object HintWhite extends HintStone:</span>
-<span class="fc" id="L55">  override def stringRepresentation = &quot;White&quot;</span>
-<span class="pc" id="L56">case object HintEmpty extends HintStone:</span>
-<span class="nc" id="L57">  override def stringRepresentation = &quot;Empty&quot;</span>
+<span class="pc" id="L38">enum HintStone extends Stone:</span>
+<span class="pc bnc" id="L39" title="All 12 branches missed.">  case HintRed, HintWhite, HintEmpty</span>
 
-<span class="nc bnc" id="L59" title="All 6 branches missed.">object HintStone:</span>
-<span class="fc" id="L60">  def apply(stringRepresentation: String): HintStone = stringRepresentation match</span>
-<span class="pc bpc" id="L61" title="5 of 12 branches missed.">    case &quot;Red&quot;   =&gt; HintRed</span>
-<span class="pc" id="L62">    case &quot;White&quot; =&gt; HintWhite</span>
-<span class="pc" id="L63">    case &quot;Empty&quot; =&gt; HintEmpty</span>
-<span class="pc" id="L64">    case _       =&gt; HintEmpty // Default case</span>
+<span class="fc" id="L41">  override def toString: String = this match</span>
+<span class="pc bpc" id="L42" title="4 of 6 branches missed.">    case HintRed   =&gt; &quot;Red&quot;</span>
+<span class="pc bpc" id="L43" title="4 of 6 branches missed.">    case HintWhite =&gt; &quot;White&quot;</span>
+<span class="nc bnc" id="L44" title="All 6 branches missed.">    case HintEmpty =&gt; &quot;Empty&quot;</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

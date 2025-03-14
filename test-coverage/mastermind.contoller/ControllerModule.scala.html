@@ -1,21 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ControllerModule.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.contoller</a> &gt; <span class="el_source">ControllerModule.scala</span></div><h1>ControllerModule.scala</h1><pre class="source lang-java linenums">package mastermind.contoller
 
-import mastermind.model.ModelModule
-import mastermind.model.entity.Game
+import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
+import mastermind.model.{GameState, ModelModule}
+import mastermind.model.entity.{Game, HintStone, PlayerStoneGrid, Stone}
+import mastermind.utils.*
 import mastermind.view.ViewModule
-import scalafx.event.ActionEvent
 
-<span class="nc" id="L8">object ControllerModule:</span>
+<span class="nc" id="L9">object ControllerModule:</span>
 
-<span class="nc" id="L10">  trait Controller:</span>
-    def playGame(event: ActionEvent): Unit
-    def exitGame(event: ActionEvent): Unit
-    def resetGame(): Unit
+<span class="nc" id="L11">  trait Controller:</span>
+    /** Reset the game
+      */
+    def resetGame(difficulty: String): Unit
+
+    def backToMenu(path: String): Unit
+
+    /** Start a new game
+      * @param difficulty
+      *   the difficulty of the game
+      */
     def startGame(difficulty: String): Unit
-<span class="nc" id="L15">    def goToPage(path: String, mode: Option[String] = None): Unit</span>
-    def getStone(row: Int, col: Int, typeStone: String): String
+
+    /** Go to a specific page
+      * @param path
+      *   the path of the page
+      * @param mode
+      *   the difficulty of the game
+      */
+<span class="nc" id="L30">    def goToPage(path: String, mode: Option[String] = None): Unit</span>
+
+    def getStone(row: Int, col: Int, typeStone: String): Stone
     def getSizeBoard: (Int, Int)
-    def updateColor(row: Int, col: Int, color: String): String
+    def checkCode(userInput: Vector[PlayerStoneGrid]): Unit
+
+    /** Current turn
+      * @return
+      *   the current turn
+      */
+    def turn: Int
+
+    /** Remaining turns
+      * @return
+      *   the remaining turns
+      */
+    def remainingTurns: Int
+
+    /** Gets the current game state.
+      *
+      * @return
+      *   The current `GameState` of the game.
+      */
+    def gameState: GameState
+
+    /** Sets a new game state.
+      *
+      * @param newState
+      *   The new `GameState` to be set.
+      */
+    def gameState_(newState: GameState): Unit
+
   trait Provider:
     val controller: Controller
 
@@ -23,30 +66,46 @@ import scalafx.event.ActionEvent
 
   trait Component:
     context: Requirements =&gt;
-<span class="nc bnc" id="L26" title="All 2 branches missed.">    class ControllerImpl extends Controller:</span>
-      private var currentGame: Game = _
-<span class="nc" id="L28">      override def playGame(event: ActionEvent): Unit = println(&quot;Avvia il gioco!&quot;)</span>
-<span class="nc" id="L29">      override def exitGame(event: ActionEvent): Unit = println(&quot;Esci dal gioco!&quot;)</span>
-      override def resetGame(): Unit =
-<span class="nc" id="L31">        currentGame = context.model.reset()</span>
-<span class="nc" id="L32">        println(&quot;Ricomincia il gioco!&quot;)</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">    class ControllerImpl extends Controller:</span>
+      private var currentGame: Option[Game] = _
+
+      override def resetGame(difficulty: String): Unit =
+<span class="nc" id="L73">        currentGame = context.model.reset()</span>
+<span class="nc" id="L74">        updateView(Initialize)</span>
+
+      override def backToMenu(path: String): Unit =
+<span class="nc" id="L77">        currentGame = context.model.deleteGame()</span>
+<span class="nc" id="L78">        goToPage(path)</span>
+
       override def startGame(difficulty: String): Unit =
-<span class="nc" id="L34">        currentGame = context.model.startNewGame(difficulty);</span>
-<span class="nc" id="L35">        println(s&quot;Avvia il gioco con difficoltà $difficulty -&gt; Codice: ${currentGame.code}&quot;)</span>
+<span class="nc" id="L81">        currentGame = context.model.startNewGame(difficulty);</span>
 
-<span class="nc" id="L37">      override def goToPage(path: String, mode: Option[String]): Unit = context.view.loadView(path, mode)</span>
+<span class="nc" id="L83">      override def goToPage(path: String, mode: Option[String]): Unit = context.view.loadView(path, mode)</span>
 
-      override def getStone(row: Int, col: Int, typeStone: String): String =
-<span class="nc" id="L40">        typeStone.toLowerCase match</span>
-<span class="nc bnc" id="L41" title="All 2 branches missed.">          case &quot;playable&quot; =&gt; context.model.getPlayableStone(row, col)</span>
-<span class="nc bnc" id="L42" title="All 2 branches missed.">          case &quot;hint&quot;     =&gt; context.model.getHintStone(row, col)</span>
-<span class="nc" id="L43">          case _          =&gt; ???</span>
+      override def getStone(row: Int, col: Int, typeStone: String): Stone =
+<span class="nc" id="L86">        typeStone.toLowerCase match</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">          case &quot;playable&quot; =&gt; context.model.getPlayableStone(row, col)</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">          case &quot;hint&quot;     =&gt; context.model.getHintStone(row, col)</span>
+<span class="nc" id="L89">          case _          =&gt; throw new Exception(&quot;wrong request!&quot;)</span>
 
-<span class="nc" id="L45">      override def getSizeBoard: (Int, Int) = context.model.getSizeBoard</span>
+<span class="nc" id="L91">      override def getSizeBoard: (Int, Int) = context.model.getSizeBoard</span>
 
-<span class="nc" id="L47">      override def updateColor(row: Int, col: Int, color: String): String = context.model.checkColor(row) match</span>
-<span class="nc bnc" id="L48" title="All 2 branches missed.">        case true  =&gt; color</span>
-<span class="nc bnc" id="L49" title="All 2 branches missed.">        case false =&gt; context.model.getPlayableStone(row, col)</span>
+<span class="nc" id="L93">      override def turn: Int = context.model.currentTurn</span>
+
+<span class="nc" id="L95">      override def remainingTurns: Int = context.model.remainingTurns</span>
+
+      override def checkCode(userInput: Vector[PlayerStoneGrid]): Unit =
+<span class="nc" id="L98">        val vectorOfHintStones = context.model.submitGuess(userInput)</span>
+<span class="nc" id="L99">        updateView(UpdateHint, Some(vectorOfHintStones))</span>
+<span class="nc bnc" id="L100" title="All 6 branches missed.">        if context.model.gameState == InGame then context.model.startNewTurn()</span>
+<span class="nc" id="L101">        updateView(UpdatePlayable)</span>
+
+<span class="nc" id="L103">      private def updateView(gameMode: GridUpdateType, vectorOfHintStones: Option[Vector[HintStone]] = None): Unit =</span>
+<span class="nc" id="L104">        context.view.updateGameView(gameMode, vectorOfHintStones)</span>
+
+<span class="nc" id="L106">      override def gameState: GameState = context.model.gameState</span>
+
+<span class="nc" id="L108">      override def gameState_(newState: GameState): Unit = context.model.gameState_(newState)</span>
 
   trait Interface extends Provider with Component:
     self: Requirements =&gt;

@@ -1,23 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Matrix.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.model.entity</a> &gt; <span class="el_source">Matrix.scala</span></div><h1>Matrix.scala</h1><pre class="source lang-java linenums">package mastermind.model.entity
 
 <span class="fc" id="L3">trait Matrix[T]:</span>
+  /** @return
+    *   The matrix composed by the elements
+    */
   def elements: Vector[Vector[T]]
-<span class="fc" id="L5">  def rows: Int = elements.size</span>
-<span class="pc bpc" id="L6" title="1 of 2 branches missed.">  def cols: Int = if elements.nonEmpty then elements.head.size else 0</span>
-<span class="fc" id="L7">  def cell(row: Int, col: Int): T = elements(row)(col)</span>
-<span class="fc" id="L8">  def row(row: Int): Seq[T] = elements(row)</span>
+
+  /** @return
+    *   The rows of the matrix
+    */
+<span class="fc" id="L12">  def rows: Int = elements.size</span>
+
+  /** @return
+    *   The columns of the matrix
+    */
+<span class="fc" id="L17">  def cols: Int = elements.head.size</span>
+
+  /** @param row
+    * @param col
+    * @return
+    *   The element of the matrix requested
+    */
+<span class="fc" id="L24">  def cell(row: Int, col: Int): T = elements(row)(col)</span>
+
+  /** @param row
+    * @return
+    *   The row of matrix requested
+    */
+<span class="fc" id="L30">  def row(row: Int): Seq[T] = elements(row)</span>
+
+  /** Replace of an element in the matrix
+    *
+    * @param row
+    * @param col
+    * @param cell
+    *   The element to be inserted in the matrix
+    * @return
+    *   New matrix with the element replaced by the new one
+    */
   def replaceCell(row: Int, col: Int, cell: T): Matrix[T]
+
+  /** Replace an entire row of the matrix
+    *
+    * @param row
+    * @param vec
+    *   The row to be inserted in the matrix
+    * @return
+    *   New matrix with the row replaced by the new one
+    */
   def replaceRow(row: Int, vec: Vector[T]): Matrix[T]
 
-<span class="nc" id="L12">object Matrix:</span>
+<span class="nc" id="L53">object Matrix:</span>
 
-<span class="fc" id="L14">  def apply[T](rows: Int, cols: Int, filling: T): Matrix[T] =</span>
-<span class="fc" id="L15">    MatrixImpl(Vector.fill(rows, cols)(filling))</span>
+<span class="fc" id="L55">  def apply[T](rows: Int, cols: Int, filling: T): Matrix[T] = (rows, cols, filling) match</span>
+<span class="pc bpc" id="L56" title="3 of 8 branches missed.">    case (rows, cols, filling) if (rows &gt; 0 || cols &gt; 0) &amp;&amp; filling != null =&gt;</span>
+<span class="fc" id="L57">      MatrixImpl(Vector.fill(rows, cols)(filling))</span>
+<span class="fc" id="L58">    case _ =&gt; throw new Error(&quot;matrix empty or null&quot;)</span>
 
-<span class="pc bpc" id="L17" title="10 of 18 branches missed.">  private case class MatrixImpl[T](override val elements: Vector[Vector[T]]) extends Matrix[T]:</span>
-<span class="pc bpc" id="L18" title="1 of 4 branches missed.">    assert(elements != null &amp;&amp; elements.nonEmpty, &quot;matrix empty or null&quot;)</span>
-<span class="fc" id="L19">    override def replaceRow(row: Int, vec: Vector[T]): Matrix[T] = copy(elements.updated(row, vec))</span>
-<span class="fc" id="L20">    override def replaceCell(row: Int, col: Int, cell: T): Matrix[T] = copy(</span>
-<span class="fc" id="L21">      elements.updated(row, elements(row).updated(col, cell))</span>
+<span class="pc bpc" id="L60" title="10 of 18 branches missed.">  private case class MatrixImpl[T](override val elements: Vector[Vector[T]]) extends Matrix[T]:</span>
+<span class="fc" id="L61">    override def replaceRow(row: Int, vec: Vector[T]): Matrix[T] = copy(elements.updated(row, vec))</span>
+<span class="fc" id="L62">    override def replaceCell(row: Int, col: Int, cell: T): Matrix[T] = copy(</span>
+<span class="fc" id="L63">      elements.updated(row, elements(row).updated(col, cell))</span>
     )
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

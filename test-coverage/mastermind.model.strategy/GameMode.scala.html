@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameMode.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.model.strategy</a> &gt; <span class="el_source">GameMode.scala</span></div><h1>GameMode.scala</h1><pre class="source lang-java linenums">package mastermind.model.strategy
+
+trait GameMode:
+  def boardSize: (Int, Int)
+  def codeLength: Int
+  def name: String
+
+<span class="nc" id="L8">class EasyMode extends GameMode:</span>
+<span class="nc" id="L9">  override def boardSize: (Int, Int) = (10, 4)</span>
+<span class="nc" id="L10">  override def codeLength: Int = 4</span>
+<span class="nc" id="L11">  override def name: String = &quot;Easy&quot;</span>
+
+<span class="nc" id="L13">class MediumMode extends GameMode:</span>
+<span class="nc" id="L14">  override def boardSize: (Int, Int) = (8, 5)</span>
+<span class="nc" id="L15">  override def codeLength: Int = 5</span>
+<span class="nc" id="L16">  override def name: String = &quot;Medium&quot;</span>
+
+<span class="nc" id="L18">class HardMode extends GameMode:</span>
+<span class="nc" id="L19">  override def boardSize: (Int, Int) = (6, 5)</span>
+<span class="nc" id="L20">  override def codeLength: Int = 5</span>
+<span class="nc" id="L21">  override def name: String = &quot;Hard&quot;</span>
+
+<span class="nc" id="L23">class ExtremeMode extends GameMode:</span>
+<span class="nc" id="L24">  override def boardSize: (Int, Int) = (6, 6)</span>
+<span class="nc" id="L25">  override def codeLength: Int = 6</span>
+<span class="nc" id="L26">  override def name: String = &quot;Extreme&quot;</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
