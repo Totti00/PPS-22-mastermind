@@ -122,13 +122,6 @@ class GameView(context: ControllerModule.Provider):
     *   An ImageView representing the stone.
     */
   private def getGraphic(stone: Stone): ImageView =
-    /*val urlStone = context.controller.gameState match
-      case GameState.PlayerWin =>
-        if stone.isInstanceOf[HintStone] then "/img/hintStones/hstone_Red.png" else "/img/stones/stone_Win.png"
-      case _ =>
-        if stone.isInstanceOf[HintStone] then s"/img/hintStones/hstone_${stone.toString}.png"
-        else s"/img/stones/stone_${stone.toString}.png"*/
-
     val urlStone =
       if stone.isInstanceOf[HintStone] then s"/img/hintStones/hstone_${stone.toString}.png"
       else s"/img/stones/stone_${stone.toString}.png"
@@ -218,8 +211,12 @@ class GameView(context: ControllerModule.Provider):
       (event: ScrollEvent) =>
         if math.abs(event.deltaY) >= 2 then
           if event.deltaY < 0 then
+            // Scroll avanti → aumenta l'indice
             browseColors = (browseColors + 1) % selectableColors.length
-            setCustomCursor(scene)
+          else if event.deltaY > 0 then
+            // Scroll indietro → diminuisci l'indice, assicurandoti che sia positivo
+            browseColors = (browseColors - 1 + selectableColors.length) % selectableColors.length
+        setCustomCursor(scene)
     )
 
   /** Updates the grids based on the given update type.
