@@ -132,8 +132,9 @@ class GameView(context: ControllerModule.Provider):
   /** Handles submitting the user's guess, extracting and processing it if valid.
     */
   private def submitGuess(): Unit =
-    val guess = extractGuess()
-    if !guess.contains(StartCurrentTurn) then context.controller.checkCode(guess)
+    if context.controller.gameState == InGame then
+      val guess = extractGuess()
+      if !guess.contains(StartCurrentTurn) then context.controller.checkCode(guess)
 
   /** Extracts the current guess from the attempt grid.
     *
@@ -185,7 +186,7 @@ class GameView(context: ControllerModule.Provider):
     label.setMaxSize(60, 60)
     label.setGraphic(getGraphic(stone))
     label.setOnMouseClicked { _ =>
-      if context.controller.turn == r then
+      if context.controller.turn == r && stoneType == "playable" then
         label.setGraphic(
           new ImageView(
             new Image(
