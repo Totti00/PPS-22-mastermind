@@ -1,21 +1,64 @@
 package mastermind.contoller
 
-import mastermind.model.ModelModule
-import mastermind.model.entity.Game
+import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
+import mastermind.model.{GameState, ModelModule}
+import mastermind.model.entity.{Game, HintStone, PlayerStoneGrid, Stone}
+import mastermind.utils.*
 import mastermind.view.ViewModule
-import scalafx.event.ActionEvent
 
 object ControllerModule:
 
   trait Controller:
-    def playGame(event: ActionEvent): Unit
-    def exitGame(event: ActionEvent): Unit
-    def resetGame(): Unit
+    /** Reset the game
+      */
+    def resetGame(difficulty: String): Unit
+
+    def backToMenu(path: String): Unit
+
+    /** Start a new game
+      * @param difficulty
+      *   the difficulty of the game
+      */
     def startGame(difficulty: String): Unit
+
+    /** Go to a specific page
+      * @param path
+      *   the path of the page
+      * @param mode
+      *   the difficulty of the game
+      */
     def goToPage(path: String, mode: Option[String] = None): Unit
-    def getStone(row: Int, col: Int, typeStone: String): String
+
+    def getStone(row: Int, col: Int, typeStone: String): Stone
     def getSizeBoard: (Int, Int)
-    def updateColor(row: Int, col: Int, color: String): String
+    def checkCode(userInput: Vector[PlayerStoneGrid]): Unit
+
+    /** Current turn
+      * @return
+      *   the current turn
+      */
+    def turn: Int
+
+    /** Remaining turns
+      * @return
+      *   the remaining turns
+      */
+    def remainingTurns: Int
+
+    /** Gets the current game state.
+      *
+      * @return
+      *   The current `GameState` of the game.
+      */
+    def gameState: GameState
+
+    /** Sets a new game state.
+      *
+      * @param newState
+      *   The new `GameState` to be set.
+      */
+    def gameState_(newState: GameState): Unit
+
   trait Provider:
     val controller: Controller
 
@@ -24,29 +67,45 @@ object ControllerModule:
   trait Component:
     context: Requirements =>
     class ControllerImpl extends Controller:
-      private var currentGame: Game = _
-      override def playGame(event: ActionEvent): Unit = println("Avvia il gioco!")
-      override def exitGame(event: ActionEvent): Unit = println("Esci dal gioco!")
-      override def resetGame(): Unit =
+      private var currentGame: Option[Game] = _
+
+      override def resetGame(difficulty: String): Unit =
         currentGame = context.model.reset()
-        println("Ricomincia il gioco!")
+        updateView(Initialize)
+
+      override def backToMenu(path: String): Unit =
+        currentGame = context.model.deleteGame()
+        goToPage(path)
+
       override def startGame(difficulty: String): Unit =
         currentGame = context.model.startNewGame(difficulty);
-        println(s"Avvia il gioco con difficoltà $difficulty -> Codice: ${currentGame.code}")
 
       override def goToPage(path: String, mode: Option[String]): Unit = context.view.loadView(path, mode)
 
-      override def getStone(row: Int, col: Int, typeStone: String): String =
+      override def getStone(row: Int, col: Int, typeStone: String): Stone =
         typeStone.toLowerCase match
           case "playable" => context.model.getPlayableStone(row, col)
           case "hint"     => context.model.getHintStone(row, col)
-          case _          => ???
+          case _          => throw new Exception("wrong request!")
 
       override def getSizeBoard: (Int, Int) = context.model.getSizeBoard
 
-      override def updateColor(row: Int, col: Int, color: String): String = context.model.checkColor(row) match
-        case true  => color
-        case false => context.model.getPlayableStone(row, col)
+      override def turn: Int = context.model.currentTurn
+
+      override def remainingTurns: Int = context.model.remainingTurns
+
+      override def checkCode(userInput: Vector[PlayerStoneGrid]): Unit =
+        val vectorOfHintStones = context.model.submitGuess(userInput)
+        updateView(UpdateHint, Some(vectorOfHintStones))
+        if context.model.gameState == InGame then context.model.startNewTurn()
+        updateView(UpdatePlayable)
+
+      private def updateView(gameMode: GridUpdateType, vectorOfHintStones: Option[Vector[HintStone]] = None): Unit =
+        context.view.updateGameView(gameMode, vectorOfHintStones)
+
+      override def gameState: GameState = context.model.gameState
+
+      override def gameState_(newState: GameState): Unit = context.model.gameState_(newState)
 
   trait Interface extends Provider with Component:
     self: Requirements =>

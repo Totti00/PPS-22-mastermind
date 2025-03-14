@@ -1,11 +1,13 @@
 package mastermind.model.entity
 
+import mastermind.model.entity.HintStone.{HintEmpty, HintWhite}
+import mastermind.model.entity.PlayerStoneGrid.Empty
 import org.scalatest.flatspec.AnyFlatSpec
 
 class MatrixTest extends AnyFlatSpec:
 
   "Matrix" should "be created with specified dimensions and filling value" in {
-    val matrix = Matrix(3, 3, Empty)
+    val matrix = Matrix(3, 3, PlayerStoneGrid.Empty)
 
     assert(matrix.rows == 3)
     assert(matrix.cols == 3)
@@ -45,15 +47,15 @@ class MatrixTest extends AnyFlatSpec:
 
   // Test per la sostituzione di una cella in una matrice vuota
   "Matrix" should "handle replaceCell on an empty matrix correctly" in {
-    assertThrows[AssertionError]:
+    assertThrows[Error]:
       val matrix = Matrix(0, 0, 0)
   }
 
   "Playable Matrix" should "replace the correct cell value" in {
     val matrix: Matrix[PlayerStoneGrid] = Matrix(3, 3, Empty)
-    val updatedMatrix = matrix.replaceCell(1, 1, Red)
+    val updatedMatrix = matrix.replaceCell(1, 1, PlayerStoneGrid.fromString("Red"))
 
-    assert(updatedMatrix.cell(1, 1) == Red)
+    assert(updatedMatrix.cell(1, 1) == PlayerStoneGrid.fromString("Red"))
     assert(updatedMatrix.cell(0, 0) == Empty)
     assert(updatedMatrix.cell(2, 2) == Empty)
   }

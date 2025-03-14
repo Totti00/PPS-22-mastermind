@@ -5,6 +5,8 @@ import mastermind.contoller.ControllerModule
 import scalafx.scene.Scene
 import scalafx.stage.{Popup, Stage}
 import javafx.scene.Parent
+import mastermind.model.entity.HintStone
+import mastermind.utils.GridUpdateType
 
 object ViewModule:
 
@@ -24,6 +26,14 @@ object ViewModule:
       */
     def loadView(path: String, mode: Option[String] = None): Unit
 
+    /** Updates the game view based on the specified game mode
+      * @param gameMode
+      *   The type of update to be applied to the game grid
+      * @param hintStones
+      *   Optional parameter to update the view with the hint stones
+      */
+    def updateGameView(gameMode: GridUpdateType, hintStones: Option[Vector[HintStone]]): Unit
+
   trait Provider:
     val view: View
 
@@ -33,20 +43,20 @@ object ViewModule:
     context: Requirements =>
 
     class ViewImpl extends View:
-      private val gameView = new GameView(context)
       private var stage: Stage = _
+      private val gameView = new GameView(context)
+
+      override def updateGameView(gameMode: GridUpdateType, hintStones: Option[Vector[HintStone]] = None): Unit =
+        gameView.updateGrids(gameMode, hintStones)
 
       override def show(primaryStage: Stage): Unit =
         stage = primaryStage
         loadView("MenuPage")
 
       override def loadView(path: String, mode: Option[String] = None): Unit =
-        println("loadView")
-
         path match
           case "game" => gameView.show(stage, mode.get)
           case "Rules" =>
-            println("rule")
             val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
             val root: Parent = loader.load()
             val popup = new Popup()
