@@ -1,6 +1,6 @@
 package mastermind.contoller
 
-import mastermind.model.GameState.{PlayerLose, PlayerWin}
+import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
 import mastermind.model.{GameState, ModelModule}
 import mastermind.model.entity.{Game, HintStone, PlayerStoneGrid, Stone}
 import mastermind.utils.*
@@ -97,7 +97,7 @@ object ControllerModule:
       override def checkCode(userInput: Vector[PlayerStoneGrid]): Unit =
         val vectorOfHintStones = context.model.submitGuess(userInput)
         updateView(UpdateHint, Some(vectorOfHintStones))
-        context.model.startNewTurn()
+        if context.model.gameState == InGame then context.model.startNewTurn()
         updateView(UpdatePlayable)
 
       private def updateView(gameMode: GridUpdateType, vectorOfHintStones: Option[Vector[HintStone]] = None): Unit =

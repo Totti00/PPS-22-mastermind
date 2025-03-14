@@ -111,9 +111,8 @@ object ModelModule:
 
       override def startNewTurn(): Unit =
         currentGame.get.currentTurn_()
-        // TODO chiedere se gli va bene fare qui il controllo. Io personalmente farei il controllo dello stato prima di chiamare startNewTurn()
-        if currentGame.get.remainingTurns == 0 && gameState == InGame then gameState_(PlayerLose)
-        if gameState == InGame && currentTurn < currentGame.get.board.rows then
+        if currentGame.get.remainingTurns == 0 then gameState_(PlayerLose)
+        if currentTurn < currentGame.get.board.rows then
           val newBoard = currentGame.get.board.initializeCurrentTurn(currentTurn)
           currentGame.get.board_(newBoard)
 
