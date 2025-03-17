@@ -15,8 +15,8 @@ object MenuView:
   private class MenuViewImpl(private val controller: ControllerModule.Controller) extends MenuView:
 
     // TODO: Sostituire difficoltà con GameMode
-    override def easyModeButtonClick(): Unit = controller.goToPage("game", Some("easy"))
-    override def mediumModeButtonClick(): Unit = controller.goToPage("game", Some("medium"))
-    override def hardModeButtonClick(): Unit = controller.goToPage("game", Some("hard"))
-    override def extremeModeButtonClick(): Unit = controller.goToPage("game", Some("extreme"))
+    override def easyModeButtonClick(): Unit = controller.goToPage("Game", Some("easy"))
+    override def mediumModeButtonClick(): Unit = controller.goToPage("Game", Some("medium"))
+    override def hardModeButtonClick(): Unit = controller.goToPage("Game", Some("hard"))
+    override def extremeModeButtonClick(): Unit = controller.goToPage("Game", Some("extreme"))
     override def rulesButtonClick(): Unit = controller.goToPage("Rules")

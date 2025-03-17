@@ -5,31 +5,30 @@
 <VBox fx:id="mainContainer" xmlns:fx="http://javafx.com/fxml" stylesheets="/css/baseStyle.css">
 
     <GridPane fx:id="border" alignment="CENTER" vgap="20" hgap="20">
-
-        <!-- Colonna Sinistra con i Controlli -->
+        
         <VBox fx:id="controlsBox" spacing="10" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1"
               GridPane.rowSpan="4">
 
-            <Label fx:id="currentTime" text="Time: 00:00" alignment="CENTER" minWidth="200"/>
+            <Label fx:id="timeLabel" text="Time: 00:00" alignment="CENTER" minWidth="200"/>
 
-            <Label fx:id="labelCurrentTurn" alignment="CENTER" minWidth="200"/>
+            <Label fx:id="turnsLabel" alignment="CENTER" minWidth="200"/>
 
-            <Button fx:id="checkButton" text="Check Code" minWidth="200"/>
+            <Button onAction="#checkButton" text="Check Code" minWidth="200"/>
 
-            <Button fx:id="resetGameButton" text="Reset" minWidth="200"/>
+            <Button onAction="#resetButton" text="Reset" minWidth="200"/>
 
-            <Button fx:id="backButton" text="Back" minWidth="200" />
+            <Button onAction="#backButton" text="Back" minWidth="200" />
 
-            <Button fx:id="helpButton" text="Help" minWidth="200"/>
+            <Button onAction="#helpButton" text="Help" minWidth="200"/>
 
             <Label fx:id="resultGame" alignment="CENTER" minWidth="200"/>
         </VBox>
 
         <!-- Matrici -->
-        <GridPane fx:id="stone_matrix" maxWidth="300" maxHeight="300" alignment="CENTER" hgap="10" vgap="10"
+        <GridPane fx:id="attemptGrid" maxWidth="300" maxHeight="300" alignment="CENTER" hgap="10" vgap="10"
                   GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="4"/>
 
-        <GridPane fx:id="hint_stone_matrix" maxWidth="300" maxHeight="300" alignment="CENTER" hgap="10" vgap="10"
+        <GridPane fx:id="hintGrid" maxWidth="300" maxHeight="300" alignment="CENTER" hgap="10" vgap="10"
                   GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="4"/>
 
     </GridPane>

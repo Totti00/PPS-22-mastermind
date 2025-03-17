@@ -11,7 +11,7 @@ object ControllerModule:
   trait Controller:
     /** Reset the game
       */
-    def resetGame(difficulty: String): Unit
+    def resetGame(): Unit
 
     def backToMenu(path: String): Unit
 
@@ -69,7 +69,7 @@ object ControllerModule:
     class ControllerImpl extends Controller:
       private var currentGame: Option[Game] = _
 
-      override def resetGame(difficulty: String): Unit =
+      override def resetGame(): Unit =
         currentGame = context.model.reset()
         updateView(Initialize)
 

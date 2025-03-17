@@ -48,7 +48,7 @@ class GameView(context: ControllerModule.Provider):
     turnsLabel = Some(namespace.get("labelCurrentTurn").asInstanceOf[Label])
     resultGame = Some(namespace.get("resultGame").asInstanceOf[Label])
     timeLabel = Some(namespace.get("currentTime").asInstanceOf[Label])
-    setupButton(namespace, "resetGameButton", () => context.controller.resetGame(difficulty))
+    // setupButton(namespace, "resetGameButton", () => context.controller.resetGame(difficulty))
     setupButton(namespace, "backButton", () => context.controller.backToMenu("MenuPage"))
     setupButton(namespace, "checkButton", () => submitGuess())
     setupButton(namespace, "helpButton", () => context.controller.goToPage("Rules"))

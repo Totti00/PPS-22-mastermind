@@ -7,6 +7,8 @@ import scalafx.stage.{Popup, Stage}
 import javafx.scene.Parent
 import mastermind.model.entity.HintStone
 import mastermind.utils.GridUpdateType
+import mastermind.view.GameView2.GameView2Impl
+import scalafx.scene.layout.GridPane
 
 object ViewModule:
 
@@ -44,10 +46,10 @@ object ViewModule:
 
     class ViewImpl extends View:
       private var stage: Stage = _
-      private val gameView = new GameView(context)
+      private var gameView2: GameView2 = _
 
       override def updateGameView(gameMode: GridUpdateType, hintStones: Option[Vector[HintStone]] = None): Unit =
-        gameView.updateGrids(gameMode, hintStones)
+        gameView2.updateGrids(gameMode, hintStones)
 
       override def show(primaryStage: Stage): Unit =
         stage = primaryStage
@@ -55,7 +57,15 @@ object ViewModule:
 
       override def loadView(path: String, mode: Option[String] = None): Unit =
         path match
-          case "game" => gameView.show(stage, mode.get)
+          case "Game" =>
+            context.controller.startGame(mode.get)
+            val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
+            val gameView = GameView2(context.controller, stage)
+            loader.setController(gameView)
+            val root: Parent = loader.load()
+            import scalafx.Includes.*
+            gameView.setRoot(root)
+            this.gameView2 = gameView
           case "Rules" =>
             val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
             import scalafx.Includes.*
