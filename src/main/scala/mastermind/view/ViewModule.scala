@@ -58,42 +58,17 @@ object ViewModule:
           case "game" => gameView.show(stage, mode.get)
           case "Rules" =>
             val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
-            val root: Parent = loader.load()
-            val popup = new Popup()
-            popup.getContent.clear()
-            popup.getContent.add(root)
-            popup.show(stage)
-            val namespace = loader.getNamespace
-
             import scalafx.Includes.*
-
-            namespace.get("ruleExitButton") match
-              case button: javafx.scene.control.Button => button.setOnAction(_ => popup.hide())
-              case _                                   =>
+            val rulesView = RulesView(stage)
+            loader.setController(rulesView)
+            val root: Parent = loader.load()
+            rulesView.showPopup(root)
 
           case _ =>
             val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
-            loader.setController(context.controller)
+            loader.setController(MenuView(context.controller))
             val root: Parent = loader.load()
-            val namespace = loader.getNamespace
-
             import scalafx.Includes.*
-            namespace.get("rulesButton") match
-              case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("Rules"))
-              case _                                   =>
-
-            val difficultyMapping = Map(
-              "easyModeButton" -> "easy",
-              "mediumModeButton" -> "medium",
-              "hardModeButton" -> "hard",
-              "extremeModeButton" -> "extreme"
-            )
-            difficultyMapping.foreach { case (buttonId, difficulty) =>
-              namespace.get(buttonId) match
-                case button: javafx.scene.control.Button =>
-                  button.setOnAction(_ => context.controller.goToPage("game", Some(difficulty)))
-                case _ =>
-            }
             stage.scene = new Scene(root, 800, 500)
             stage.title = "Mastermind"
             stage.show()
