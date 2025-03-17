@@ -7,7 +7,6 @@ nav_order: 4
 
 |                                          Backlog Item                                           |  Id  | Task                                  | Volontario | Stima (h) | Effettivo (h) |
 |:-----------------------------------------------------------------------------------------------:|:----:|---------------------------------------|:----------:|:---------:|:-------------:|
-|                                            Eventuale                                            |  0   | Refactor                              |    Team    |     9     |       9       |
 | Come giocatore, voglio tentare di indovinare il codice segreto inserendo una sequenza di colori | 8.1  | Implementazione metodo check code     |   Ramzi    |     2     |       4       |
 | Come giocatore, voglio tentare di indovinare il codice segreto inserendo una sequenza di colori | 8.2  | Gestione tentativo                    |   Ramzi    |     2     |       3       |
 | Come giocatore, voglio tentare di indovinare il codice segreto inserendo una sequenza di colori | 8.3  | Gestione feedback                     |   Ramzi    |     2     |       3       |
@@ -17,7 +16,7 @@ nav_order: 4
 |                 Come giocatore, voglio vedere il numero di tentativi rimanenti                  | 11.1 | Gestione turni rimanenti              |   Totaro   |     2     |       3       |
 |             Come giocatore, voglio poter riavviare la partita in qualsiasi momento              | 12.1 | Gestione pulsante riavvio in game     |   Ramzi    |     1     |       1       |
 |             Come giocatore, voglio poter riavviare la partita in qualsiasi momento              | 12.2 | Gestione riavvio con modalità diversa |   Totaro   |     2     |       3       |
-|                                                                                                 |      | **TOT**                               |            |    27     |      35       |
+|                                                                                                 |      | **TOT**                               |            |    18     |      26       |
 
 ## Sprint goal
 
