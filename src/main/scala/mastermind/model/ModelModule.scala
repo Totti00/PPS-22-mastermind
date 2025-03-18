@@ -53,6 +53,8 @@ object ModelModule:
       */
     def gameState_(newState: GameState): Unit
 
+    def colors: PlayableStones
+
   trait Provider:
     val model: Model
 
@@ -71,7 +73,7 @@ object ModelModule:
         currentGame = Some(
           Game(
             Board(currentMode.boardSize._1, currentMode.boardSize._2).initializeCurrentTurn(0),
-            Code(currentMode.codeLength),
+            Code(currentMode.codeAndColorLength),
             0
           )
         )
@@ -119,5 +121,8 @@ object ModelModule:
       override def gameState: GameState = currentGame.get.state
 
       override def gameState_(newState: GameState): Unit = currentGame.get.state_(newState)
+
+      override def colors: PlayableStones =
+        currentGame.get.code.colors
 
   trait Interface extends Provider with Component

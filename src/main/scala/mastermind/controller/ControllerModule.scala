@@ -59,6 +59,8 @@ object ControllerModule:
       */
     def gameState_(newState: GameState): Unit
 
+    def colors: PlayableStones
+
   trait Provider:
     val controller: Controller
 
@@ -106,6 +108,9 @@ object ControllerModule:
       override def gameState: GameState = context.model.gameState
 
       override def gameState_(newState: GameState): Unit = context.model.gameState_(newState)
+
+      override def colors: PlayableStones =
+        context.model.colors
 
   trait Interface extends Provider with Component:
     self: Requirements =>

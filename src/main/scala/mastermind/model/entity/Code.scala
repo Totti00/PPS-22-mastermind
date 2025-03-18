@@ -11,25 +11,27 @@ trait Code:
     *   Feedback in relation to user input
     */
   def compareTo(userInput: PlayableStones): HintStones
+  def colors: PlayableStones
 
 object Code:
-  /*
-  private type PlayableStones = Vector[PlayerStoneGrid]
-  private type HintStones = Vector[HintStone]
-   */
 
-  def apply(size: Int): Code = CodeImpl(Vector.fill(size)(PlayerStoneGrid.random))
+  def apply(size: Int): Code = CodeImpl(PlayerStoneGrid.random(size))
 
   /** Used for test
     *
-    * @param inputCode
+    * @param codeAndColor
     *   Vector of PlayableStone that will be the code
     * @return
     *   A code object
     */
-  def apply(inputCode: PlayableStones): Code = CodeImpl(inputCode)
+  def apply(codeAndColor: (PlayableStones, PlayableStones)): Code = CodeImpl(codeAndColor)
 
-  private case class CodeImpl(code: PlayableStones) extends Code:
+  private case class CodeImpl(codeAndColor: (PlayableStones, PlayableStones)) extends Code:
+
+    private val code = codeAndColor._1
+
+    override def colors: PlayableStones =
+      codeAndColor._2
 
     override def compareTo(userInput: PlayableStones): HintStones =
       val firstRuleVectors = compareToEqual(userInput)

@@ -35,7 +35,7 @@ object MenuView:
       stage.title = "Mastermind"
       stage.show()
 
-    override def easyModeButton(): Unit = controller.goToPage(Game, Some(EasyMode().name)) //
+    override def easyModeButton(): Unit = controller.goToPage(Game, Some(EasyMode().name))
     override def mediumModeButton(): Unit = controller.goToPage(Game, Some(MediumMode().name))
     override def hardModeButton(): Unit = controller.goToPage(Game, Some(HardMode().name))
     override def extremeModeButton(): Unit = controller.goToPage(Game, Some(ExtremeMode().name))

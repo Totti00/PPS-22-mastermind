@@ -26,15 +26,11 @@ object PlayerStoneGrid:
   /** @return
     *   Provides a random color from those that the user can choose
     */
-  def random: PlayerStoneGrid =
-    val stones = Seq(Red, Green, Blue, Yellow, White, Purple)
-    stones(Random.nextInt(stones.length))
-
-    /*
-    colors = stones(random) x numero   //Prende random colori distinti
-    codice = colors(random)       //Crea il codice a partire dai colori distinti che ha preso prima
-    (codice, colors)
-     */
+  def random(codeAndColorLength: Int): (PlayableStones, PlayableStones) =
+    val stones = Vector(Red, Green, Blue, Yellow, White, Purple)
+    val colors = Random.shuffle(stones).take(codeAndColorLength)
+    val code = Vector.fill(codeAndColorLength)(colors(Random.nextInt(colors.length)))
+    (code, colors)
 
   /** @param stoneColor
     *   The color of the stone

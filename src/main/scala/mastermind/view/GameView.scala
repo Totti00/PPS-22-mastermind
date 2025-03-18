@@ -62,7 +62,7 @@ object GameView:
 
     private var timer: Option[Timeline] = None
     private var browseColors: Int = 0
-    private val selectableColors: Vector[String] = Vector("Green", "Red", "Blue", "Yellow", "Purple", "White")
+    private val selectableColors: PlayableStones = controller.colors
 
     override def initialize(location: URL, resourceBundle: ResourceBundle): Unit =
       updateView(Initialize)
@@ -260,7 +260,7 @@ object GameView:
               )
             )
           )
-          label.setText(selectableColors(browseColors))
+          label.setText(selectableColors(browseColors).toString)
       }
       label
 
