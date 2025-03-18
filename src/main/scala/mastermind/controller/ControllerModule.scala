@@ -69,7 +69,7 @@ object ControllerModule:
   trait Component:
     context: Requirements =>
     class ControllerImpl extends Controller:
-      private var currentGame: Option[Game] = _
+      private var currentGame: Option[Game] = None
 
       override def resetGame(): Unit =
         currentGame = context.model.reset()

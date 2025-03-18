@@ -1,7 +1,5 @@
 package mastermind.model
 
-/** Represents the current state of the game.
-  */
 sealed trait GameState
 
 object GameState:

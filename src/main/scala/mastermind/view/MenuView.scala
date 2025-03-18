@@ -7,15 +7,28 @@ import mastermind.model.strategy.*
 import scalafx.scene.Scene
 import scalafx.stage.Stage
 import javafx.scene.layout.AnchorPane
-
 import java.net.URL
 import java.util.ResourceBundle
 
 trait MenuView:
+  /** Handles the action when the easy mode button is clicked.
+    */
   def easyModeButton(): Unit
+
+  /** Handles the action when the medium mode button is clicked.
+    */
   def mediumModeButton(): Unit
+
+  /** Handles the action when the hard mode button is clicked.
+    */
   def hardModeButton(): Unit
+
+  /** Handles the action when the extreme mode button is clicked.
+    */
   def extremeModeButton(): Unit
+
+  /** Handles the action when the rules button is clicked.
+    */
   def rulesButton(): Unit
 
 object MenuView:
@@ -29,6 +42,13 @@ object MenuView:
     @FXML
     private var menuContainer: AnchorPane = _
 
+    /** This method is called after the FXML view is loaded.
+      *
+      * @param url
+      *   The URL of the FXML file.
+      * @param resourceBundle
+      *   The resource bundle used for localization.
+      */
     override def initialize(url: URL, resourceBundle: ResourceBundle): Unit =
       import scalafx.Includes.*
       stage.scene = new Scene(menuContainer, 800, 500)

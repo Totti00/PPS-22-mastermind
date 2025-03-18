@@ -17,17 +17,34 @@ import scalafx.scene.input.ScrollEvent
 import scalafx.stage.Stage
 import mastermind.model.entity.PlayerStoneGrid.StartCurrentTurn
 import mastermind.utils.PagesEnum.{Menu, Rules}
-
 import java.net.URL
 import java.util.ResourceBundle
 import scala.jdk.CollectionConverters.*
 import java.text.{DateFormat, SimpleDateFormat}
 
 trait GameView:
+  /** Handles the action for the check button, submitting the current guess.
+    */
   def checkButton(): Unit
+
+  /** Handles the action for the reset button, resetting the game.
+    */
   def resetButton(): Unit
+
+  /** Handles the action for the back button, returning to the main menu.
+    */
   def backButton(): Unit
+
+  /** Handles the action for the help button, displaying the rules.
+    */
   def helpButton(): Unit
+
+  /** Updates the view based on the given update type.
+    * @param updateType
+    *   The type of update to perform.
+    * @param hintStones
+    *   The hint stones to update the hint grid with.
+    */
   def updateView(updateType: GridUpdateType, hintStones: Option[HintStones]): Unit
 
 object GameView:
@@ -62,12 +79,19 @@ object GameView:
 
     private var timer: Option[Timeline] = None
     private var browseColors: Int = 0
-    private val selectableColors: PlayableStones = controller.colors
+    private var selectableColors: Option[PlayableStones] = None
 
+    /** This method is called after the FXML view is loaded.
+      *
+      * @param location
+      *   The URL of the FXML file.
+      * @param resourceBundle
+      *   The resource bundle used for localization.
+      */
     override def initialize(location: URL, resourceBundle: ResourceBundle): Unit =
       updateView(Initialize)
       stage.scene = new Scene(mainContainer)
-
+      selectableColors = Some(controller.colors)
       setupScrollHandler(stage.scene.get())
       setCustomCursor(stage.scene.get())
       setLabelText(turnsLabel, s"Remaining Turns: ${controller.remainingTurns}")
@@ -83,13 +107,6 @@ object GameView:
 
     override def helpButton(): Unit = controller.goToPage(Rules)
 
-    /** Updates the grids based on the given update type.
-      *
-      * @param updateType
-      *   The type of update to perform.
-      * @param hintStones
-      *   The hint stones to update the hint grid with.
-      */
     override def updateView(updateType: GridUpdateType, hintStones: Option[HintStones] = None): Unit =
       updateRemainingTurns()
       val (rows, cols) = controller.getSizeBoard
@@ -252,7 +269,7 @@ object GameView:
           label.setGraphic(
             new ImageView(
               new Image(
-                getClass.getResource(s"/img/stones/stone_${selectableColors(browseColors)}.png").toExternalForm,
+                getClass.getResource(s"/img/stones/stone_${selectableColors.get(browseColors)}.png").toExternalForm,
                 55,
                 55,
                 true,
@@ -260,7 +277,7 @@ object GameView:
               )
             )
           )
-          label.setText(selectableColors(browseColors).toString)
+          label.setText(selectableColors.get(browseColors).toString)
       }
       label
 
@@ -274,9 +291,9 @@ object GameView:
         ScrollEvent.Scroll,
         (event: ScrollEvent) =>
           if math.abs(event.deltaY) >= 2 then
-            if event.deltaY < 0 then browseColors = (browseColors + 1) % selectableColors.length
+            if event.deltaY < 0 then browseColors = (browseColors + 1) % selectableColors.get.length
             else if event.deltaY > 0 then
-              browseColors = (browseColors - 1 + selectableColors.length) % selectableColors.length
+              browseColors = (browseColors - 1 + selectableColors.get.length) % selectableColors.get.length
           setCustomCursor(scene)
       )
 
@@ -289,7 +306,7 @@ object GameView:
       scene.setCursor(
         new ImageCursor(
           new Image(
-            getClass.getResource(s"/img/coursers/courser_${selectableColors(browseColors)}.png").toExternalForm,
+            getClass.getResource(s"/img/coursers/courser_${selectableColors.get(browseColors)}.png").toExternalForm,
             32,
             32,
             true,

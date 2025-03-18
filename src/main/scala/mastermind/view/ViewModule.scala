@@ -3,7 +3,7 @@ package mastermind.view
 import javafx.fxml.FXMLLoader
 import mastermind.controller.ControllerModule
 import scalafx.stage.Stage
-import mastermind.model.entity.{HintStone, HintStones}
+import mastermind.model.entity.HintStones
 import mastermind.utils.GridUpdateType
 import mastermind.utils.PagesEnum.*
 import mastermind.utils.PagesEnum
@@ -62,10 +62,13 @@ object ViewModule:
           case Rules => loadFXML[RulesView](path, RulesView(stage.get))
           case Menu  => loadFXML[MenuView](path, MenuView(context.controller, stage.get))
 
-      /** Method for loading a view from an FXML file with the specified controller
+      /** Loads a view from an FXML file and sets the provided controller
         * @param path
+        *   The path to the FXML file relative to the resources directory
         * @param controller
+        *   The controller to associate with the loaded FXML view
         * @tparam T
+        *   The type of the controller
         */
       private def loadFXML[T](path: PagesEnum, controller: T): Unit =
         val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
