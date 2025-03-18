@@ -22,11 +22,48 @@ object ModelModule:
       */
     def reset(): Option[Game]
 
+    /** Retrieves a specific playable stone at the given row and column.
+      * @param row
+      *   The row of the stone in the board.
+      * @param col
+      *   The column of the stone in the board.
+      * @return
+      *   The `PlayerStoneGrid` at the given position
+      */
     def getPlayableStone(row: Int, col: Int): PlayerStoneGrid
+
+    /** Retrieves a specific hint stone at the given row and column.
+      * @param row
+      *   The row of the hint stone in the board
+      * @param col
+      *   The column of the hint stone in the board
+      * @return
+      *   The `HintStone` at the given position
+      */
     def getHintStone(row: Int, col: Int): HintStone
+
+    /** Retrieves the size of the board
+      * @return
+      *   A tuple `(rows, cols)` representing the dimensions of the board
+      */
     def getSizeBoard: (Int, Int)
+
+    /** Submits a guess from the player and receives the corresponding feedback of hint stones
+      * @param userInput
+      *   The player's guess
+      * @return
+      *   A sequence of `HintStones` representing feedback for the guess
+      */
     def submitGuess(userInput: PlayableStones): HintStones
+
+    /** Starts a new turn in the game
+      */
     def startNewTurn(): Unit
+
+    /** Deletes the current game instance
+      * @return
+      *   An `Option` representing the deleted game
+      */
     def deleteGame(): Option[Game]
 
     /** Current turn
