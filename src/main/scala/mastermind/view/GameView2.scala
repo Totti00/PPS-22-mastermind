@@ -3,7 +3,7 @@ package mastermind.view
 import javafx.event.EventHandler
 import javafx.fxml.{FXML, Initializable}
 import javafx.scene.control.Label
-import javafx.scene.layout.GridPane
+import javafx.scene.layout.{GridPane, VBox}
 import mastermind.contoller.ControllerModule
 import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
 import mastermind.model.entity.{HintStone, PlayerStoneGrid, Stone}
@@ -58,20 +58,34 @@ object GameView2:
     @FXML
     private var turnsLabel: Label = _
 
+    @FXML
+    private var mainContainer: VBox = _
+
     private var browseColors: Int = 0
     private val selectableColors: Vector[String] = Vector("Green", "Red", "Blue", "Yellow", "Purple", "White")
 
     override def initialize(location: URL, resourceBundle: ResourceBundle): Unit =
+      println("initialize: " + mainContainer)
       updateGrids(Initialize)
-
-    override def setRoot(root: Parent): Unit =
-      stage.scene = new Scene(root)
+      stage.scene = new Scene(mainContainer)
       setupScrollHandler(stage.scene.get())
       setCustomCursor(stage.scene.get())
       setLabelText(turnsLabel, s"Remaining Turns: ${controller.remainingTurns}")
       stage.sizeToScene()
       stage.title = "Mastermind"
       stage.show()
+
+    override def setRoot(root: Parent): Unit =
+    println("setroot: " + root)
+    /*
+      stage.scene = new Scene(mainContainer)
+      setupScrollHandler(stage.scene.get())
+      setCustomCursor(stage.scene.get())
+      setLabelText(turnsLabel, s"Remaining Turns: ${controller.remainingTurns}")
+      stage.sizeToScene()
+      stage.title = "Mastermind"
+      stage.show()
+     */
 
     override def checkButton(): Unit = submitGuess()
 

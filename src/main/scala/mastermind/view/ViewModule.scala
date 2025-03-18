@@ -63,8 +63,8 @@ object ViewModule:
             val gameView = GameView2(context.controller, stage)
             loader.setController(gameView)
             val root: Parent = loader.load()
-            import scalafx.Includes.*
-            gameView.setRoot(root)
+            // import scalafx.Includes.*
+            // gameView.setRoot(root)
             this.gameView2 = gameView
           case "Rules" =>
             val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
@@ -72,7 +72,6 @@ object ViewModule:
             val rulesView = RulesView(stage)
             loader.setController(rulesView)
             val root: Parent = loader.load()
-            rulesView.showPopup(root)
 
           case _ =>
             val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
