@@ -3,12 +3,10 @@ package mastermind.view
 import javafx.fxml.FXMLLoader
 import mastermind.contoller.ControllerModule
 import scalafx.scene.Scene
-import scalafx.stage.{Popup, Stage}
+import scalafx.stage.Stage
 import javafx.scene.Parent
 import mastermind.model.entity.HintStone
 import mastermind.utils.GridUpdateType
-import mastermind.view.GameView2.GameView2Impl
-import scalafx.scene.layout.GridPane
 
 object ViewModule:
 
@@ -63,9 +61,8 @@ object ViewModule:
             val gameView = GameView2(context.controller, stage)
             loader.setController(gameView)
             val root: Parent = loader.load()
-            // import scalafx.Includes.*
-            // gameView.setRoot(root)
             this.gameView2 = gameView
+
           case "Rules" =>
             val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
             import scalafx.Includes.*

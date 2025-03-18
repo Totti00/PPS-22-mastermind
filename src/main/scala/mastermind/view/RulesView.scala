@@ -2,7 +2,6 @@ package mastermind.view
 
 import javafx.fxml.{FXML, Initializable}
 import javafx.scene.layout.AnchorPane
-import scalafx.scene.Parent
 import scalafx.stage.{Popup, Stage}
 
 import java.net.URL
@@ -17,6 +16,7 @@ object RulesView:
   private class RulesViewImpl(stage: Stage) extends RulesView with Initializable:
     private val popup = new Popup()
 
+    // noinspection VarCouldBeVal
     @FXML
     private var infoContainer: AnchorPane = _
 

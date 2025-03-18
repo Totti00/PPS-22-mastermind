@@ -28,7 +28,6 @@ trait GameView2:
   def backButton(): Unit
   def helpButton(): Unit
   def updateGrids(updateType: GridUpdateType, hintStones: Option[Vector[HintStone]]): Unit
-  def setRoot(root: Parent): Unit
 
 object GameView2:
   def apply(controller: ControllerModule.Controller, stage: Stage): GameView2 = GameView2Impl(controller, stage)
@@ -58,6 +57,7 @@ object GameView2:
     @FXML
     private var turnsLabel: Label = _
 
+    // noinspection VarCouldBeVal
     @FXML
     private var mainContainer: VBox = _
 
@@ -65,7 +65,6 @@ object GameView2:
     private val selectableColors: Vector[String] = Vector("Green", "Red", "Blue", "Yellow", "Purple", "White")
 
     override def initialize(location: URL, resourceBundle: ResourceBundle): Unit =
-      println("initialize: " + mainContainer)
       updateGrids(Initialize)
       stage.scene = new Scene(mainContainer)
       setupScrollHandler(stage.scene.get())
@@ -74,18 +73,6 @@ object GameView2:
       stage.sizeToScene()
       stage.title = "Mastermind"
       stage.show()
-
-    override def setRoot(root: Parent): Unit =
-    println("setroot: " + root)
-    /*
-      stage.scene = new Scene(mainContainer)
-      setupScrollHandler(stage.scene.get())
-      setCustomCursor(stage.scene.get())
-      setLabelText(turnsLabel, s"Remaining Turns: ${controller.remainingTurns}")
-      stage.sizeToScene()
-      stage.title = "Mastermind"
-      stage.show()
-     */
 
     override def checkButton(): Unit = submitGuess()
 
