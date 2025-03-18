@@ -1,6 +1,6 @@
 package mastermind
 
-import mastermind.contoller.ControllerModule
+import mastermind.controller.ControllerModule
 import mastermind.model.ModelModule
 import mastermind.view.ViewModule
 import scalafx.application.JFXApp3
@@ -14,4 +14,4 @@ object Launcher extends MVC with JFXApp3:
   override val controller = new ControllerImpl()
 
   override def start(): Unit =
-    view.show(PrimaryStage())
+    view.initialize(PrimaryStage())

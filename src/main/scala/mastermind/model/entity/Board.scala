@@ -34,8 +34,8 @@ trait Board:
     *   The new board of the game
     */
   def placeGuessAndHints(
-      rowPlayableStone: Vector[PlayerStoneGrid],
-      rowHintStone: Vector[HintStone],
+      rowPlayableStone: PlayableStones,
+      rowHintStone: HintStones,
       updateRow: Int
   ): Board
 
@@ -67,8 +67,8 @@ object Board:
   private case class BoardImpl(playableMatrix: Matrix[PlayerStoneGrid], hintMatrix: Matrix[HintStone]) extends Board:
 
     override def placeGuessAndHints(
-        rowPlayableStone: Vector[PlayerStoneGrid],
-        rowHintStone: Vector[HintStone],
+        rowPlayableStone: PlayableStones,
+        rowHintStone: HintStones,
         updateRow: Int
     ): Board =
       copy(playableMatrix.replaceRow(updateRow, rowPlayableStone), hintMatrix.replaceRow(updateRow, rowHintStone))

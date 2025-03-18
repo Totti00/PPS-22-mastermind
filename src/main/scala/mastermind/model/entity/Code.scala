@@ -1,6 +1,5 @@
 package mastermind.model.entity
 
-import mastermind.model.entity.Code.{HintStones, PlayableStones}
 import mastermind.model.entity.HintStone.{HintEmpty, HintRed, HintWhite}
 
 trait Code:
@@ -14,9 +13,10 @@ trait Code:
   def compareTo(userInput: PlayableStones): HintStones
 
 object Code:
-
+  /*
   private type PlayableStones = Vector[PlayerStoneGrid]
   private type HintStones = Vector[HintStone]
+   */
 
   def apply(size: Int): Code = CodeImpl(Vector.fill(size)(PlayerStoneGrid.random))
 
@@ -46,8 +46,7 @@ object Code:
       */
     private def compareToEqual(inputUser: PlayableStones): (HintStones, List[Int]) =
       code.zip(inputUser).zipWithIndex.foldLeft(Vector.empty: HintStones, List.empty: List[Int]) {
-        case ((hintStones, indices), ((stoneCode, stoneUser), index))
-            if stoneCode.toString.equals(stoneUser.toString) =>
+        case ((hintStones, indices), ((stoneCode, stoneUser), index)) if stoneCode == stoneUser =>
           (hintStones :+ HintRed, indices :+ index)
         case ((hintStones, indices), ((_, _), _)) => (hintStones, indices)
       }

@@ -1,8 +1,8 @@
-package mastermind.contoller
+package mastermind.controller
 
 import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
 import mastermind.model.{GameState, ModelModule}
-import mastermind.model.entity.{Game, HintStone, PlayerStoneGrid, Stone}
+import mastermind.model.entity.{Game, HintStone, HintStones, PlayableStones, PlayerStoneGrid, Stone}
 import mastermind.utils.*
 import mastermind.view.ViewModule
 
@@ -13,7 +13,7 @@ object ControllerModule:
       */
     def resetGame(): Unit
 
-    def backToMenu(path: String): Unit
+    def backToMenu(path: PagesEnum): Unit
 
     /** Start a new game
       * @param difficulty
@@ -27,11 +27,11 @@ object ControllerModule:
       * @param mode
       *   the difficulty of the game
       */
-    def goToPage(path: String, mode: Option[String] = None): Unit
+    def goToPage(path: PagesEnum, mode: Option[String] = None): Unit
 
     def getStone(row: Int, col: Int, typeStone: String): Stone
     def getSizeBoard: (Int, Int)
-    def checkCode(userInput: Vector[PlayerStoneGrid]): Unit
+    def checkCode(userInput: PlayableStones): Unit
 
     /** Current turn
       * @return
@@ -73,14 +73,14 @@ object ControllerModule:
         currentGame = context.model.reset()
         updateView(Initialize)
 
-      override def backToMenu(path: String): Unit =
+      override def backToMenu(path: PagesEnum): Unit =
         currentGame = context.model.deleteGame()
         goToPage(path)
 
       override def startGame(difficulty: String): Unit =
         currentGame = context.model.startNewGame(difficulty);
 
-      override def goToPage(path: String, mode: Option[String]): Unit = context.view.loadView(path, mode)
+      override def goToPage(path: PagesEnum, mode: Option[String]): Unit = context.view.loadView(path, mode)
 
       override def getStone(row: Int, col: Int, typeStone: String): Stone =
         typeStone.toLowerCase match
@@ -94,13 +94,13 @@ object ControllerModule:
 
       override def remainingTurns: Int = context.model.remainingTurns
 
-      override def checkCode(userInput: Vector[PlayerStoneGrid]): Unit =
+      override def checkCode(userInput: PlayableStones): Unit =
         val vectorOfHintStones = context.model.submitGuess(userInput)
         updateView(UpdateHint, Some(vectorOfHintStones))
         if context.model.gameState == InGame then context.model.startNewTurn()
         updateView(UpdatePlayable)
 
-      private def updateView(gameMode: GridUpdateType, vectorOfHintStones: Option[Vector[HintStone]] = None): Unit =
+      private def updateView(gameMode: GridUpdateType, vectorOfHintStones: Option[HintStones] = None): Unit =
         context.view.updateGameView(gameMode, vectorOfHintStones)
 
       override def gameState: GameState = context.model.gameState

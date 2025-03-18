@@ -2,7 +2,7 @@ package mastermind.model
 
 import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
 import mastermind.model.entity.HintStone.HintRed
-import mastermind.model.entity.{Board, Code, Game, HintStone, PlayerStoneGrid}
+import mastermind.model.entity.{Board, Code, Game, HintStone, PlayerStoneGrid, HintStones, PlayableStones}
 import mastermind.model.strategy.*
 
 object ModelModule:
@@ -25,7 +25,7 @@ object ModelModule:
     def getPlayableStone(row: Int, col: Int): PlayerStoneGrid
     def getHintStone(row: Int, col: Int): HintStone
     def getSizeBoard: (Int, Int)
-    def submitGuess(userInput: Vector[PlayerStoneGrid]): Vector[HintStone]
+    def submitGuess(userInput: PlayableStones): HintStones
     def startNewTurn(): Unit
     def deleteGame(): Option[Game]
 
@@ -96,7 +96,7 @@ object ModelModule:
 
       override def remainingTurns: Int = currentGame.get.remainingTurns
 
-      override def submitGuess(userInput: Vector[PlayerStoneGrid]): Vector[HintStone] =
+      override def submitGuess(userInput: PlayableStones): HintStones =
         val vectorOfHintStones = currentGame.get.code.compareTo(userInput)
         val newBoard = currentGame.get.board
           .placeGuessAndHints(userInput, vectorOfHintStones, currentTurn)
@@ -106,7 +106,7 @@ object ModelModule:
           currentGame.get.board_(currentGame.get.board.winBoard())
         vectorOfHintStones
 
-      private def checkWin(hintStonesFeedback: Vector[HintStone]): Boolean =
+      private def checkWin(hintStonesFeedback: HintStones): Boolean =
         hintStonesFeedback.forall(_ == HintRed)
 
       override def startNewTurn(): Unit =
