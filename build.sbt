@@ -14,6 +14,9 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "org.scalafx" %% "scalafx" % "22.0.0-R33",
       "org.scalatest" %% "scalatest" % "3.3.0-SNAP4" % Test,
+      "org.scalatestplus" %% "mockito-4-11" % "3.2.18.0" % Test,
+      "org.mockito" % "mockito-core" % "5.14.2" % Test
+      ////"org.scalamock" %% "scalamock" % "6.0.0" % Test
     ),
     libraryDependencies ++= {
       val platforms = Seq("linux", "mac", "win")
