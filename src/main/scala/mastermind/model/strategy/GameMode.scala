@@ -1,25 +1,22 @@
 package mastermind.model.strategy
 
 trait GameMode:
-  /**
-   * The size of the board
-   * @return
-   *    A tuple (rows, cols) representing the dimensions of the board
-   */
+  /** The size of the board
+    * @return
+    *   A tuple (rows, cols) representing the dimensions of the board
+    */
   def boardSize: (Int, Int)
 
-  /**
-   * The length of the secret code, which defines how many colors are in the code
-   * @return
-   *    The number of stones and the colors to use in the code
-   */
+  /** The length of the secret code, which defines how many colors are in the code
+    * @return
+    *   The number of stones and the colors to use in the code
+    */
   def codeAndColorLength: Int
 
-  /**
-   * The name of the game mode
-   * @return
-   *    A string representing the name of the game mode
-   */
+  /** The name of the game mode
+    * @return
+    *   A string representing the name of the game mode
+    */
   def name: String
 
 /** Easy game mode with a 10x4 board and a code length of 4.

@@ -14,9 +14,8 @@ object ControllerModule:
       */
     def resetGame(): Unit
 
-    /**
-     * return to the Menu
-     */
+    /** return to the Menu
+      */
     def backToMenu(): Unit
 
     /** Start a new game
@@ -33,31 +32,28 @@ object ControllerModule:
       */
     def goToPage(path: PagesEnum, mode: Option[String] = None): Unit
 
-    /**
-     * Retrieves a stone from the board at a specified position and type
-     * @param row
-     *    The row index of the stone
-     * @param col
-     *    The column index of the stone
-     * @param typeStone
-     *    The type of stone to retrieve ("playable" or "hint")
-     * @return
-     *    The stone at the specified position.
-     */
+    /** Retrieves a stone from the board at a specified position and type
+      * @param row
+      *   The row index of the stone
+      * @param col
+      *   The column index of the stone
+      * @param typeStone
+      *   The type of stone to retrieve ("playable" or "hint")
+      * @return
+      *   The stone at the specified position.
+      */
     def getStone(row: Int, col: Int, typeStone: String): Stone
 
-    /**
-     * Retrieves the dimensions (rows and columns) of the game board.
-     * @return
-     *    A tuple containing the number of rows and columns of the board.
-     */
+    /** Retrieves the dimensions (rows and columns) of the game board.
+      * @return
+      *   A tuple containing the number of rows and columns of the board.
+      */
     def getSizeBoard: (Int, Int)
 
-    /**
-     * It checks the user's guess and provides feedback on the correctness of the guess.
-     * @param userInput
-     *    The player's guess as a sequence of `PlayableStones`
-     */
+    /** It checks the user's guess and provides feedback on the correctness of the guess.
+      * @param userInput
+      *   The player's guess as a sequence of `PlayableStones`
+      */
     def checkCode(userInput: PlayableStones): Unit
 
     /** Current turn
@@ -86,11 +82,10 @@ object ControllerModule:
       */
     def gameState_(newState: GameState): Unit
 
-    /**
-     * Retrieves the list of available colors for the game
-     * @return
-     *    A sequence of `PlayableStones` representing the available colors.
-     */
+    /** Retrieves the list of available colors for the game
+      * @return
+      *   A sequence of `PlayableStones` representing the available colors.
+      */
     def colors: PlayableStones
 
   trait Provider:
@@ -134,13 +129,12 @@ object ControllerModule:
         if context.model.gameState == InGame then context.model.startNewTurn()
         updateView(UpdatePlayable)
 
-      /**
-       * Updates the view with the latest game state, including the feedback and any game updates
-       * @param gameMode
-       *    The type of update
-       * @param vectorOfHintStones
-       *    Optional feedback on the user's guess.
-       */
+      /** Updates the view with the latest game state, including the feedback and any game updates
+        * @param gameMode
+        *   The type of update
+        * @param vectorOfHintStones
+        *   Optional feedback on the user's guess.
+        */
       private def updateView(gameMode: GridUpdateType, vectorOfHintStones: Option[HintStones] = None): Unit =
         context.view.updateGameView(gameMode, vectorOfHintStones)
 

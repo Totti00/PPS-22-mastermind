@@ -4,36 +4,32 @@ import mastermind.model.entity.HintStone.{HintEmpty, HintRed}
 import mastermind.model.entity.PlayerStoneGrid.{Empty, StartCurrentTurn, Win}
 
 trait Board:
-  /**
-   * The number of rows in the board.
-   * @return
-   *  The number of rows in the board.
-   */
+  /** The number of rows in the board.
+    * @return
+    *   The number of rows in the board.
+    */
   def rows: Int
 
-  /**
-   * The number of cols in the board.
-   * @return
-   *  The number of cols in the board.
-   */
+  /** The number of cols in the board.
+    * @return
+    *   The number of cols in the board.
+    */
   def cols: Int
 
-  /**
-   *  Retrieves the playable stone at a given position on the board.
-   *  @param row
-   *    row index of matrix
+  /** Retrieves the playable stone at a given position on the board.
+    * @param row
+    *   row index of matrix
     * @param cols
-   *    cols index of the matrix
+    *   cols index of the matrix
     * @return
     *   the playableGridStone at the specified row and column.
     */
   def getPlayableStone(row: Int, cols: Int): PlayerStoneGrid
 
-  /**
-   * @param row
-   *    row index of matrix
+  /** @param row
+    *   row index of matrix
     * @param cols
-   *    cols index of the matrix
+    *   cols index of the matrix
     * @return
     *   the hintStone at the specified row and column.
     */
@@ -56,8 +52,8 @@ trait Board:
       updateRow: Int
   ): Board
 
-  /** Creates a new board where the stones are set to represent a winning state.
-    * This method sets all the stones on the board to `Win` and the hint stones to `HintRed`.
+  /** Creates a new board where the stones are set to represent a winning state. This method sets all the stones on the
+    * board to `Win` and the hint stones to `HintRed`.
     * @return
     *   a new board with the winning state.
     */

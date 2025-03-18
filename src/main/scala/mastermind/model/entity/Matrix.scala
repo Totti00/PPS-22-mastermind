@@ -1,43 +1,37 @@
 package mastermind.model.entity
 
 trait Matrix[T]:
-  /**
-   * Retrieves the elements of the matrix.
-   * @return
-   * the matrix elements as a `Vector` of `Vector`s, where each inner `Vector` represents a row of the matrix.
-   *
-   */
+  /** Retrieves the elements of the matrix.
+    * @return
+    *   the matrix elements as a `Vector` of `Vector`s, where each inner `Vector` represents a row of the matrix.
+    */
   def elements: Vector[Vector[T]]
 
-  /**
-   * Retrieves the number of rows in the matrix.
-   * @return
-   *   The rows of the matrix
-   */
+  /** Retrieves the number of rows in the matrix.
+    * @return
+    *   The rows of the matrix
+    */
   def rows: Int = elements.size
 
-  /**
-   * Retrieves the number of columns in the matrix.
-   * @return
-   *   The columns of the matrix
-   */
+  /** Retrieves the number of columns in the matrix.
+    * @return
+    *   The columns of the matrix
+    */
   def cols: Int = elements.head.size
 
-  /**
-   * Retrieves the element at a specific row and column in the matrix.
-   * @param row
-   *    The row index
-   * @param col
-   *    The column index
-   * @return
-   *   The element of the matrix requested
-   */
+  /** Retrieves the element at a specific row and column in the matrix.
+    * @param row
+    *   The row index
+    * @param col
+    *   The column index
+    * @return
+    *   The element of the matrix requested
+    */
   def cell(row: Int, col: Int): T = elements(row)(col)
 
-  /**
-   * Retrieves the entire row
-   * @param row
-   *    The row index
+  /** Retrieves the entire row
+    * @param row
+    *   The row index
     * @return
     *   The row of matrix requested
     */
@@ -46,9 +40,9 @@ trait Matrix[T]:
   /** Replaces an element at a specific row and column in the matrix with a new element.
     *
     * @param row
-   *    The row index
+    *   The row index
     * @param col
-   *    The column index
+    *   The column index
     * @param cell
     *   The element to be inserted in the matrix
     * @return
@@ -59,7 +53,7 @@ trait Matrix[T]:
   /** Replace an entire row of the matrix
     *
     * @param row
-   *    The row index
+    *   The row index
     * @param vec
     *   The new row to be inserted in the matrix
     * @return
