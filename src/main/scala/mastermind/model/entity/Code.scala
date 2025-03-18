@@ -11,6 +11,12 @@ trait Code:
     *   Feedback in relation to user input
     */
   def compareTo(userInput: PlayableStones): HintStones
+
+  /**
+   * Retrieves the colors of the code.
+   * @return 
+   *  the colors of the code represented as `PlayableStones`
+   */
   def colors: PlayableStones
 
 object Code:

@@ -23,20 +23,28 @@ enum PlayerStoneGrid extends Stone:
     case Empty            => "Empty"
 
 object PlayerStoneGrid:
-  /** @return
-    *   Provides a random color from those that the user can choose
-    */
+  /**
+   * Generates a random set of `PlayableStones` and `colors` based on the provided length.
+   *
+   * @param codeAndColorLength
+   *    The length of the code and possible colors to use.
+   * @return a tuple containing:
+   *  - `PlayableStones`: A vector of randomly selected stones, the code.
+   *  - `PlayableStones`: A vector of colors used to make the code.
+   */
   def random(codeAndColorLength: Int): (PlayableStones, PlayableStones) =
     val stones = Vector(Red, Green, Blue, Yellow, White, Purple)
     val colors = Random.shuffle(stones).take(codeAndColorLength)
     val code = Vector.fill(codeAndColorLength)(colors(Random.nextInt(colors.length)))
     (code, colors)
 
-  /** @param stoneColor
-    *   The color of the stone
-    * @return
-    *   Gives the requested color or an empty color in case the requested color is not found
-    */
+  /** 
+   * Converts a string to the corresponding `PlayerStoneGrid` color.
+   * @param stoneColor
+   *   The color of the stone
+   * @return
+   *   Gives the requested color or an empty color in case the requested color is not found
+   */
   def fromString(stoneColor: String): PlayerStoneGrid =
     values.find(_.toString == stoneColor).getOrElse(Empty)
 

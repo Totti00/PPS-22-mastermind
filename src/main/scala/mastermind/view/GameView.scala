@@ -103,7 +103,7 @@ object GameView:
 
     override def resetButton(): Unit = controller.resetGame()
 
-    override def backButton(): Unit = controller.backToMenu(Menu)
+    override def backButton(): Unit = controller.backToMenu()
 
     override def helpButton(): Unit = controller.goToPage(Rules)
 
