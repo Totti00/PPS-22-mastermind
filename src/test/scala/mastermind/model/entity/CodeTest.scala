@@ -29,7 +29,7 @@ class CodeTest extends AnyFlatSpec:
 
   }
    */
-
+//TODO dividere il test grande in più test per testare il comportamento
   "Code" should "check the user input to find the hintVector" in {
     /*
     val inputCode =

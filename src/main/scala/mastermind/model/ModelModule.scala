@@ -120,6 +120,7 @@ object ModelModule:
         startNewGame(currentMode.name)
 
       override def deleteGame(): Option[Game] =
+        // TODO potrebbe non avere un ritorno dato che non viene utilizzato. Nel caso eliminare il test connesso
         currentGame = None
         currentGame
 
@@ -134,7 +135,7 @@ object ModelModule:
       override def currentTurn: Int = currentGame.get.currentTurn
 
       override def remainingTurns: Int = currentGame.get.remainingTurns
-
+      // TODO controllo per fare in modo che lanci errore se gli arriva un userInput di lunghezza sbagliata
       override def submitGuess(userInput: PlayableStones): HintStones =
         val vectorOfHintStones = currentGame.get.code.compareTo(userInput)
         val newBoard = currentGame.get.board

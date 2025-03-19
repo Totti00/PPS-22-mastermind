@@ -96,6 +96,7 @@ object ControllerModule:
   trait Component:
     context: Requirements =>
     class ControllerImpl extends Controller:
+      // TODO currentGame puo essere tolto perché non viene mai usato
       private var currentGame: Option[Game] = None
 
       override def resetGame(): Unit =
