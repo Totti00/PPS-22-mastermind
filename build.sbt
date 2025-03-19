@@ -19,12 +19,17 @@ lazy val root = (project in file("."))
       ////"org.scalamock" %% "scalamock" % "6.0.0" % Test
     ),
     libraryDependencies ++= {
-      val platforms = Seq("linux", "mac-aarch64", "win")
+      val osName = System.getProperty("os.name").toLowerCase
+      val osArch = System.getProperty("os.arch")
+      val platform = osName match {
+        case n if n.startsWith("linux")   => "linux"
+        case n if n.startsWith("mac") || n.startsWith("darwin") =>
+          if (osArch == "aarch64") "mac-aarch64" else "mac"
+        case n if n.startsWith("windows") => "win"
+        case _ => throw new RuntimeException(s"Unsupported platform: $osName")
+      }
       val modules = Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")
+      modules.map(module => "org.openjfx" % s"javafx-$module" % "16" classifier platform)
 
-      for {
-        platform <- platforms
-        module <- modules
-      } yield "org.openjfx" % s"javafx-$module" % "16" classifier platform
     }
   )
