@@ -19,7 +19,7 @@ lazy val root = (project in file("."))
       ////"org.scalamock" %% "scalamock" % "6.0.0" % Test
     ),
     libraryDependencies ++= {
-      val platforms = Seq("linux", "mac", "win")
+      val platforms = Seq("linux", "mac-aarch64", "win")
       val modules = Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")
 
       for {
