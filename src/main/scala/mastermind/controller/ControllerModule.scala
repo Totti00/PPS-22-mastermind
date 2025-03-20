@@ -96,19 +96,17 @@ object ControllerModule:
   trait Component:
     context: Requirements =>
     class ControllerImpl extends Controller:
-      // TODO currentGame puo essere tolto perché non viene mai usato
-      private var currentGame: Option[Game] = None
 
       override def resetGame(): Unit =
-        currentGame = context.model.reset()
+        context.model.reset()
         updateView(Initialize)
 
       override def backToMenu(): Unit =
-        currentGame = context.model.deleteGame()
+        context.model.deleteGame()
         goToPage(Menu)
 
       override def startGame(difficulty: String): Unit =
-        currentGame = context.model.startNewGame(difficulty);
+        context.model.startNewGame(difficulty);
 
       override def goToPage(path: PagesEnum, mode: Option[String]): Unit = context.view.loadView(path, mode)
 

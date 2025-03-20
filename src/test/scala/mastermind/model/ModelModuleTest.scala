@@ -71,12 +71,12 @@ class ModelModuleTest extends AnyFlatSpec:
     assert(model.gameState == PlayerLose)
   }
 
-  "deleteGame" should "remove the current game instance" in {
+  /*"deleteGame" should "remove the current game instance" in {
     val mode = EasyMode()
     model.startNewGame(mode.name)
     val status = model.deleteGame()
     assert(status.isEmpty)
-  }
+  }*/
 
   "getSizeBoard" should "return the correct board size for the current game" in {
     val mode = MediumMode()

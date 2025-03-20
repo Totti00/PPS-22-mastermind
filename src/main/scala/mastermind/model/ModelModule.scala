@@ -11,16 +11,12 @@ object ModelModule:
     /** Start a new game
       * @param difficulty
       *   the difficulty of the game
-      * @return
-      *   the new game
       */
-    def startNewGame(difficulty: String): Option[Game]
+    def startNewGame(difficulty: String): Unit
 
     /** Reset the game
-      * @return
-      *   a new game
       */
-    def reset(): Option[Game]
+    def reset(): Unit
 
     /** Retrieves a specific playable stone at the given row and column.
       * @param row
@@ -61,10 +57,8 @@ object ModelModule:
     def startNewTurn(): Unit
 
     /** Deletes the current game instance
-      * @return
-      *   An `Option` representing the deleted game
       */
-    def deleteGame(): Option[Game]
+    def deleteGame(): Unit
 
     /** Current turn
       * @return
@@ -100,7 +94,7 @@ object ModelModule:
       private var currentGame: Option[Game] = None
       private var currentMode: GameMode = MediumMode()
 
-      override def startNewGame(difficulty: String): Option[Game] =
+      override def startNewGame(difficulty: String): Unit =
         currentMode = difficulty.toLowerCase match
           case "easy"    => EasyMode()
           case "medium"  => MediumMode()
@@ -114,15 +108,12 @@ object ModelModule:
             0
           )
         )
-        currentGame
 
-      override def reset(): Option[Game] =
+      override def reset(): Unit =
         startNewGame(currentMode.name)
 
-      override def deleteGame(): Option[Game] =
-        // TODO potrebbe non avere un ritorno dato che non viene utilizzato. Nel caso eliminare il test connesso
+      override def deleteGame(): Unit =
         currentGame = None
-        currentGame
 
       override def getPlayableStone(row: Int, col: Int): PlayerStoneGrid =
         currentGame.get.board.getPlayableStone(row, col)
@@ -135,7 +126,7 @@ object ModelModule:
       override def currentTurn: Int = currentGame.get.currentTurn
 
       override def remainingTurns: Int = currentGame.get.remainingTurns
-      // TODO controllo per fare in modo che lanci errore se gli arriva un userInput di lunghezza sbagliata
+
       override def submitGuess(userInput: PlayableStones): HintStones =
         val vectorOfHintStones = currentGame.get.code.compareTo(userInput)
         val newBoard = currentGame.get.board
