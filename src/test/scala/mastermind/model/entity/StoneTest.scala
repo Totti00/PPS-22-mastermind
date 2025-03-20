@@ -25,6 +25,6 @@ class StoneTest extends AnyFlatSpec:
   }
 
   "stone random" should "return a right random" in {
-    PlayerStoneGrid.random2(3)
+    PlayerStoneGrid.random(4)
     assert(1 == 1)
   }

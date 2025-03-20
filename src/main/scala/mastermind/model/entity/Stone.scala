@@ -8,6 +8,7 @@ import scala.util.Random
 
 type PlayableStones = Vector[PlayerStoneGrid]
 type HintStones = Vector[HintStone]
+val MAX_PERMUTATION = 100
 
 sealed trait Stone
 
@@ -28,9 +29,11 @@ enum PlayerStoneGrid extends Stone:
 
 object PlayerStoneGrid:
   private val engine = createEngine("/prolog/prova.pl")
-  // TODO deve diventare una utils perché viene usata da code e stone
+  // TODO devono diventare una utils perché viene usata da code e stone. Il secondo no
   private def fromVectorToString(l: Vector[PlayerStoneGrid]): String =
     l.map(_.toString.toLowerCase).mkString("[", ", ", "]")
+  private def fromStringToVector(list: String): PlayableStones =
+    list.init.tail.split(",").map(PlayerStoneGrid.fromString).toVector
 
   /** Generates a random set of `PlayableStones` and `colors` based on the provided length.
     *
@@ -41,31 +44,35 @@ object PlayerStoneGrid:
     *   - `PlayableStones`: A vector of randomly selected stones, the code.
     *   - `PlayableStones`: A vector of colors used to make the code.
     */
-  def random(codeAndColorLength: Int): (PlayableStones, PlayableStones) =
+  /*def random(codeAndColorLength: Int): (PlayableStones, PlayableStones) =
     val stones = Vector(Red, Green, Blue, Yellow, White, Purple)
     val colors = Random.shuffle(stones).take(codeAndColorLength)
     val code = Vector.fill(codeAndColorLength)(colors(Random.nextInt(colors.length)))
-    (code, colors)
-
-  def random2(codeAndColorLength: Int): Unit =
+    (code, colors)*/
+  // TODO anche qui ne caso mettere lo stesso metodo di code e cosi poi dopo anche il metodo di code diventa una utils
+  def random(codeAndColorLength: Int): (PlayableStones, PlayableStones) =
     val stones = Vector(Red, Green, Blue, Yellow, White, Purple)
-    val l = List("PlayableStones")
+    val term = "PlayableStones"
 
     val permutation100 =
       engine(Term.createTerm(s"permutation(${fromVectorToString(stones)}, ${codeAndColorLength}, PlayableStones)."))
-        .take(100)
-        .map(Scala2P.extractTermsToListOfStrings(_, l))
+        .take(MAX_PERMUTATION)
+        .map(Scala2P.extractTermToString(_, term))
         .toVector
-    val colors = permutation100(Random.nextInt(permutation100.size))
-    println(colors)
+    val momColors = permutation100(Random.nextInt(permutation100.size))
+    val colorsToUse = fromStringToVector(momColors)
     val stones2 = stones.take(codeAndColorLength)
     val codes100 =
-      engine(Term.createTerm(s"codeGenerator(${fromVectorToString(stones2)}, ${codeAndColorLength}, PlayableStones)."))
-        .take(100)
-        .map(Scala2P.extractTermsToListOfStrings(_, l))
+      engine(
+        Term.createTerm(s"codeGenerator(${fromVectorToString(colorsToUse)}, ${codeAndColorLength}, PlayableStones).")
+      )
+        .take(MAX_PERMUTATION)
+        .map(Scala2P.extractTermToString(_, term))
         .toVector
-    val codeToUse = codes100(Random.nextInt(codes100.size))
-    println(codeToUse)
+    val momCodeToUse = codes100(Random.nextInt(codes100.size))
+    val codeToUse = fromStringToVector(momCodeToUse)
+    println("Stone: colorsUsed: " + colorsToUse)
+    (codeToUse, colorsToUse)
 
   /** Converts a string to the corresponding `PlayerStoneGrid` color.
     * @param stoneColor
@@ -74,7 +81,7 @@ object PlayerStoneGrid:
     *   Gives the requested color or an empty color in case the requested color is not found
     */
   def fromString(stoneColor: String): PlayerStoneGrid =
-    values.find(_.toString == stoneColor).getOrElse(Empty)
+    values.find(_.toString == stoneColor.toLowerCase.capitalize).getOrElse(Empty)
 
 enum HintStone extends Stone:
   case HintRed, HintWhite, HintEmpty

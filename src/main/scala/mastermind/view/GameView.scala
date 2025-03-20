@@ -126,6 +126,10 @@ object GameView:
               initializeTime(timeLabel)
               setLabelText(resultGame, "")
               fillGrid(rows, cols)
+              selectableColors = Some(
+                controller.colors
+              ) // TODO aggiunta perché senno dopo il reset non ricarica i colori del mouse
+              setCustomCursor(stage.scene.get()) // messo perché deve aggiornare anche il colore attuale
             case UpdateHint =>
               updateGrid(hintGrid, hintStones.getOrElse(Vector.empty), getGraphicLabel)
             case UpdatePlayable =>
