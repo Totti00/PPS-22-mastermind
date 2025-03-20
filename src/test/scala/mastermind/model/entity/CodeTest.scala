@@ -31,7 +31,7 @@ class CodeTest extends AnyFlatSpec:
    */
 //TODO dividere il test grande in più test per testare il comportamento
   "Code" should "check the user input to find the hintVector" in {
-    /*
+
     val inputCode =
       Vector(
         PlayerStoneGrid.fromString("Green"),
@@ -96,14 +96,14 @@ class CodeTest extends AnyFlatSpec:
       )
     val hintResult4 = Vector(HintRed, HintEmpty, HintEmpty, HintEmpty)
 
-    val code = Code(inputCode)
-    val code2 = Code(inputCode2)
-    val code3 = Code(inputCode3)
-    val code4 = Code(inputCode4)
+    val code = Code(inputCode, Vector.empty)
+    val code2 = Code(inputCode2, Vector.empty)
+    val code3 = Code(inputCode3, Vector.empty)
+    val code4 = Code(inputCode4, Vector.empty)
 
     assert(hintResult == code.compareTo(userInput))
     assert(hintResult2 == code2.compareTo(userInput2))
     assert(hintResult3 == code3.compareTo(userInput3))
     assert(hintResult4 == code4.compareTo(userInput4))
-     */
+
   }

@@ -54,6 +54,7 @@ object Scala2P:
     *   The extracted term
     */
   def extractTermToString(solveInfo: SolveInfo, s: String): String =
+    println("extracsTerm: " + solveInfo.getTerm(s).toString)
     solveInfo.getTerm(s).toString.replace("'", "")
 
   /** Extracts a list of Terms and converts it to a String
