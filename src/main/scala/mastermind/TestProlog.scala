@@ -10,7 +10,7 @@ object TestProlog extends App:
   var l = List("HintStones")
   for
     s <- engine(
-        Term.createTerm("compareToEqual([green, green, blu, blu], [green, green, red, blu], HintStones).")
+      Term.createTerm("compareToEqual([green, green, blu, blu], [green, green, red, blu], HintStones).")
     )
     x = Scala2P.extractTermsToListOfStrings(s, l)
     hintStones = mkHintStonesVector(x)
@@ -18,9 +18,8 @@ object TestProlog extends App:
 
   private def mkHintStonesVector(l: List[String]): HintStones = l match
     case List(hintStones) => hintStones.split(",").map(_ => HintStone.HintRed).toVector
-    case _ => Vector.empty
-    
-    
+    case _                => Vector.empty
+
   l = List("HintStones")
   for
     s <- engine(
