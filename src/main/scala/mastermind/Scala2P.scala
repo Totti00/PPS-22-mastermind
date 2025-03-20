@@ -66,6 +66,7 @@ object Scala2P:
     * @return
     *   The extracted terms
     */
+  // TODO io questa la toglierei perché tanto noi abbiamo una sola variabile ogni volta. semplifica di molto
   def extractTermsToListOfStrings(solveInfo: SolveInfo, s: List[String]): List[String] =
     s.map(extractTermToString(solveInfo, _))
 

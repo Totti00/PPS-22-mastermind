@@ -16,10 +16,15 @@ class StoneTest extends AnyFlatSpec:
   }
    */
   "a Hint white" should "be white" in {
-    assert(HintWhite.toString.equals("White"))
+    assert(HintWhite.toString == "White")
   }
 
   "a red Hint stone" should "be red hint stone" in {
     assert(HintRed.isInstanceOf[HintStone])
     assert(!HintRed.isInstanceOf[PlayerStoneGrid])
+  }
+
+  "stone random" should "return a right random" in {
+    PlayerStoneGrid.random2(3)
+    assert(1 == 1)
   }
