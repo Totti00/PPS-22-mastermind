@@ -13,12 +13,8 @@ object TestProlog extends App:
       Term.createTerm("compareToEqual([green, green, blu, blu], [green, green, red, blu], HintStones).")
     )
     x = Scala2P.extractTermsToListOfStrings(s, l)
-    hintStones = mkHintStonesVector(x)
-  yield println(hintStones)
-
-  private def mkHintStonesVector(l: List[String]): HintStones = l match
-    case List(hintStones) => hintStones.split(",").map(_ => HintStone.HintRed).toVector
-    case _                => Vector.empty
+    hintStones1 = mkHintStonesVector(x)
+  yield println(hintStones1)
 
   l = List("HintStones")
   for
@@ -26,5 +22,18 @@ object TestProlog extends App:
       Term.createTerm("compareToPresent([green, green, blu, blu], [blu, blu, red, red], HintStones).")
     )
     x = Scala2P.extractTermsToListOfStrings(s, l)
-    hintStones = mkHintStonesVector(x)
-  yield println(hintStones)
+    hintStones2 = mkHintStonesVector(x)
+  yield println(hintStones2)
+
+  private def mkHintStonesVector(l: List[String]): HintStones = l match
+    case List(hintStones) =>
+      hintStones
+        .stripPrefix("[")
+        .stripSuffix("]")
+        .split(",")
+        .map {
+          case "hintRed"   => HintStone.HintRed
+          case "hintWhite" => HintStone.HintWhite
+        }
+        .toVector
+    case _ => Vector.empty

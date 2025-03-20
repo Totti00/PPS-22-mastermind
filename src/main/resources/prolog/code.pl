@@ -1,5 +1,5 @@
 compareToEqual([], [], []).
-compareToEqual([H|CT], [H|UT], [hintRed|HintRest]) :- compareToEqual(CT, UT, HintRest), !.
+compareToEqual([C|CT], [U|UT], [hintRed|HintRest]) :- C == U, compareToEqual(CT, UT, HintRest), !.
 compareToEqual([_|CT], [_|UT], HintRest) :- compareToEqual(CT, UT, HintRest).
 
 

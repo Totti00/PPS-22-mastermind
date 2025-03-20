@@ -16,7 +16,7 @@ object TestProlog2 extends App:
 
   for
     s <- engine(
-      Term.createTerm("b([blu, w, g],3,X).")
+      Term.createTerm("permutation([blu, w, g],X).")
     )
     x = Scala2P.extractTermsToListOfStrings(s, l)
   yield println(x)
