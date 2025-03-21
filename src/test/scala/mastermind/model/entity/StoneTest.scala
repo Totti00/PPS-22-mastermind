@@ -23,8 +23,3 @@ class StoneTest extends AnyFlatSpec:
     assert(HintRed.isInstanceOf[HintStone])
     assert(!HintRed.isInstanceOf[PlayerStoneGrid])
   }
-
-  "stone random" should "return a right random" in {
-    PlayerStoneGrid.random(4)
-    assert(1 == 1)
-  }

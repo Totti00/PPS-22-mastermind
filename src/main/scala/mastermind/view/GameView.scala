@@ -129,7 +129,7 @@ object GameView:
               selectableColors = Some(
                 controller.colors
               ) // TODO aggiunta perché senno dopo il reset non ricarica i colori del mouse
-              setCustomCursor(stage.scene.get()) // messo perché deve aggiornare anche il colore attuale
+              setCustomCursor(stage.scene.get())
             case UpdateHint =>
               updateGrid(hintGrid, hintStones.getOrElse(Vector.empty), getGraphicLabel)
             case UpdatePlayable =>
@@ -324,7 +324,7 @@ object GameView:
     private def submitGuess(): Unit =
       if controller.gameState == InGame then
         val guess = extractGuess()
-        if !guess.contains(StartCurrentTurn) then controller.checkCode(guess)
+        if !guess.contains(StartCurrentTurn) then controller.checkCode(guess) // TODO risolvere bug
 
     /** Extracts the current guess from the attempt grid.
       *

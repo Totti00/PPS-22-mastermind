@@ -110,3 +110,26 @@ class CodeTest extends AnyFlatSpec:
     assert(hintResult == code.compareTo(userInput))
 
   }
+
+  "Code" should "check the user input to find the hintVectorhhhhh" in {
+
+    val inputCode =
+      Vector(
+        PlayerStoneGrid.fromString("Red"),
+        PlayerStoneGrid.fromString("White"),
+        PlayerStoneGrid.fromString("Yellow"),
+        PlayerStoneGrid.fromString("Red")
+      )
+    val userInput =
+      Vector(
+        PlayerStoneGrid.fromString("White"),
+        PlayerStoneGrid.fromString("Red"),
+        PlayerStoneGrid.fromString("Red"),
+        PlayerStoneGrid.fromString("White")
+      )
+    val hintResult = Vector(HintWhite, HintWhite, HintWhite, HintEmpty)
+
+    val code = Code(inputCode, Vector.empty)
+    assert(hintResult == code.compareTo(userInput))
+
+  }
