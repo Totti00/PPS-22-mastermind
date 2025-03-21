@@ -15,7 +15,7 @@ import scalafx.Includes.*
 import scalafx.scene.{ImageCursor, Scene}
 import scalafx.scene.input.ScrollEvent
 import scalafx.stage.Stage
-import mastermind.model.entity.PlayerStoneGrid.StartCurrentTurn
+import mastermind.model.entity.PlayerStoneGrid.Playable
 import mastermind.utils.PagesEnum.{Menu, Rules}
 import java.net.URL
 import java.util.ResourceBundle
@@ -324,7 +324,7 @@ object GameView:
     private def submitGuess(): Unit =
       if controller.gameState == InGame then
         val guess = extractGuess()
-        if !guess.contains(StartCurrentTurn) then controller.checkCode(guess) // TODO risolvere bug
+        if !guess.contains(Playable) then controller.checkCode(guess) // TODO risolvere bug
 
     /** Extracts the current guess from the attempt grid.
       *

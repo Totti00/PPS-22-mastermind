@@ -1,7 +1,7 @@
 package mastermind.model.entity
 
 import mastermind.model.entity.HintStone.{HintEmpty, HintRed}
-import mastermind.model.entity.PlayerStoneGrid.{Empty, StartCurrentTurn, Win}
+import mastermind.model.entity.PlayerStoneGrid.{Empty, Playable, Win}
 
 trait Board:
   /** The number of rows in the board.
@@ -93,7 +93,7 @@ object Board:
     override def getHintStone(row: Int, cols: Int): HintStone = hintMatrix.cell(row, cols)
 
     override def initializeCurrentTurn(currentTurn: Int): Board =
-      copy(playableMatrix.replaceRow(currentTurn, Vector.fill(cols)(StartCurrentTurn)), hintMatrix)
+      copy(playableMatrix.replaceRow(currentTurn, Vector.fill(cols)(Playable)), hintMatrix)
 
     override def winBoard(): Board =
       copy(Matrix(rows, cols, Win), Matrix(rows, cols, HintRed))

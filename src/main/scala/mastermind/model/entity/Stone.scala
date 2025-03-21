@@ -12,19 +12,19 @@ val MAX_PERMUTATION = 100
 sealed trait Stone
 
 enum PlayerStoneGrid extends Stone:
-  case StartCurrentTurn, Empty, Win
+  case Playable, Empty, Win
   private case Red, Green, Blue, Yellow, White, Purple
 
   override def toString: String = this match
-    case StartCurrentTurn => "StartCurrentTurn"
-    case Red              => "Red"
-    case Green            => "Green"
-    case Blue             => "Blue"
-    case Yellow           => "Yellow"
-    case White            => "White"
-    case Purple           => "Purple"
-    case Win              => "Win"
-    case Empty            => "Empty"
+    case Playable => "Playable"
+    case Red      => "Red"
+    case Green    => "Green"
+    case Blue     => "Blue"
+    case Yellow   => "Yellow"
+    case White    => "White"
+    case Purple   => "Purple"
+    case Win      => "Win"
+    case Empty    => "Empty"
 
 object PlayerStoneGrid:
   private val engine = createEngine("/prolog/stone.pl")

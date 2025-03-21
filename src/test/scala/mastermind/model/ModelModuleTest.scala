@@ -5,7 +5,7 @@ import mastermind.model.GameState.PlayerLose
 import mastermind.model.ModelModule.Model
 import mastermind.model.entity.HintStone.{HintEmpty, HintRed, HintWhite}
 import mastermind.model.entity.PlayerStoneGrid
-import mastermind.model.entity.PlayerStoneGrid.{StartCurrentTurn, Empty}
+import mastermind.model.entity.PlayerStoneGrid.{Playable, Empty}
 import mastermind.model.strategy.{EasyMode, ExtremeMode, MediumMode}
 import org.scalatest.flatspec.AnyFlatSpec
 
@@ -90,7 +90,7 @@ class ModelModuleTest extends AnyFlatSpec:
     val mode = MediumMode()
     model.startNewGame(mode.name)
     val stone = model.getPlayableStone(0, 0)
-    assert(stone == StartCurrentTurn)
+    assert(stone == Playable)
     assert(stone != HintRed)
   }
 
