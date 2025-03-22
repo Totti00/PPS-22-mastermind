@@ -321,7 +321,7 @@ object GameView:
     private def submitGuess(): Unit =
       if controller.gameState == InGame then
         val guess = extractGuess()
-        if !guess.contains(Playable) then controller.checkCode(guess) // TODO risolvere bug
+        if !guess.contains(Playable) then controller.checkCode(guess)
 
     /** Extracts the current guess from the attempt grid.
       *
