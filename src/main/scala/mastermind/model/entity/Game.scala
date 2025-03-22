@@ -74,7 +74,9 @@ object Game:
 
     override def currentTurn_(): Unit = _currentTurn += 1
 
-    override def board_(newBoard: Board): Unit = this.board = newBoard
+    override def board_(newBoard: Board): Unit = newBoard match
+      case board if board.rows == this.board.rows && board.cols == this.board.cols => this.board = newBoard
+      case _ => throw Exception("new board size is different")
 
     override def state: GameState = _state
 

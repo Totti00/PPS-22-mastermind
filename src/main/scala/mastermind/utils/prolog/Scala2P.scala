@@ -31,6 +31,16 @@ object Scala2P:
   def extractTermToString(solveInfo: SolveInfo, s: String): String =
     solveInfo.getTerm(s).toString.replace("'", "")
 
+  /** Converts a string to a vector
+    * @param list
+    *   The string representing the list, formatted as `"[elem1, elem2, elem3, ...]"`
+    * @param mapper
+    *   A function to convert each string element of the list to an instance of type `T`
+    * @tparam T
+    *   The type of the elements in the resulting vector. It must be a subtype of `Stone`.
+    * @return
+    *   A Vector containing the elements of the list converted by the "mapper" function.
+    */
   def fromStringToVector[T <: Stone: ClassTag](list: String)(mapper: String => T): Vector[T] =
     if list == "[]" then Vector.empty
     else list.init.tail.split(",").map(mapper).toVector

@@ -84,6 +84,9 @@ object ModelModule:
       */
     def gameState_(newState: GameState): Unit
 
+    /** @return
+      *   Vector that represent the colors used to make the code
+      */
     def colors: PlayableStones
 
   trait Provider:
@@ -137,6 +140,12 @@ object ModelModule:
           currentGame.get.board_(currentGame.get.board.winBoard())
         vectorOfHintStones
 
+      /** Checks whether the player has won
+        * @param hintStonesFeedback
+        *   User input feedback
+        * @return
+        *   True if the user has won, false otherwise
+        */
       private def checkWin(hintStonesFeedback: HintStones): Boolean =
         hintStonesFeedback.forall(_ == HintRed)
 

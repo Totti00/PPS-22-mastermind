@@ -2,8 +2,9 @@ package mastermind.model.entity
 
 import mastermind.model.entity.HintStone.*
 import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class CodeTest extends AnyFlatSpec:
+class CodeTest extends AnyFlatSpec with Matchers:
 
   "Code" should "find the stones in the wrong position" in {
     val inputCode =
@@ -22,7 +23,7 @@ class CodeTest extends AnyFlatSpec:
       )
     val hintResult = Vector(HintWhite, HintWhite, HintEmpty, HintEmpty)
     val code = Code(inputCode, Vector.empty)
-    assert(hintResult == code.compareTo(userInput))
+    code.compareTo(userInput) shouldBe hintResult
 
   }
 
@@ -43,7 +44,7 @@ class CodeTest extends AnyFlatSpec:
       )
     val hintResult = Vector(HintRed, HintRed, HintEmpty, HintEmpty)
     val code = Code(inputCode, Vector.empty)
-    assert(hintResult == code.compareTo(userInput))
+    code.compareTo(userInput) shouldBe hintResult
 
   }
 
@@ -64,7 +65,7 @@ class CodeTest extends AnyFlatSpec:
       )
     val hintResult = Vector(HintWhite, HintWhite, HintEmpty, HintEmpty)
     val code = Code(inputCode, Vector.empty)
-    assert(hintResult == code.compareTo(userInput))
+    code.compareTo(userInput) shouldBe hintResult
   }
 
   "Code" should "check the stones in the right position using more colors" in {
@@ -85,6 +86,7 @@ class CodeTest extends AnyFlatSpec:
     val hintResult = Vector(HintWhite, HintWhite, HintEmpty, HintEmpty)
     val code = Code(inputCode, Vector.empty)
     assert(hintResult == code.compareTo(userInput))
+    code.compareTo(userInput) shouldBe hintResult
 
   }
 
@@ -108,28 +110,6 @@ class CodeTest extends AnyFlatSpec:
 
     val code = Code(inputCode, Vector.empty)
     assert(hintResult == code.compareTo(userInput))
-
-  }
-
-  "Code" should "check the user input to find the hintVectorhhhhh" in {
-
-    val inputCode =
-      Vector(
-        PlayerStoneGrid.fromString("Red"),
-        PlayerStoneGrid.fromString("White"),
-        PlayerStoneGrid.fromString("Yellow"),
-        PlayerStoneGrid.fromString("Red")
-      )
-    val userInput =
-      Vector(
-        PlayerStoneGrid.fromString("White"),
-        PlayerStoneGrid.fromString("Red"),
-        PlayerStoneGrid.fromString("Red"),
-        PlayerStoneGrid.fromString("White")
-      )
-    val hintResult = Vector(HintWhite, HintWhite, HintWhite, HintEmpty)
-
-    val code = Code(inputCode, Vector.empty)
-    assert(hintResult == code.compareTo(userInput))
+    code.compareTo(userInput) shouldBe hintResult
 
   }
