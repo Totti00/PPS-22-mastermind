@@ -16,7 +16,7 @@ import scalafx.scene.{ImageCursor, Scene}
 import scalafx.scene.input.ScrollEvent
 import scalafx.stage.Stage
 import mastermind.model.entity.PlayerStoneGrid.Playable
-import mastermind.utils.PagesEnum.{Menu, Rules}
+import mastermind.utils.PagesEnum.Rules
 import java.net.URL
 import java.util.ResourceBundle
 import scala.jdk.CollectionConverters.*
@@ -91,9 +91,8 @@ object GameView:
     override def initialize(location: URL, resourceBundle: ResourceBundle): Unit =
       updateView(Initialize)
       stage.scene = new Scene(mainContainer)
-      selectableColors = Some(controller.colors)
-      setupScrollHandler(stage.scene.get())
       setCustomCursor(stage.scene.get())
+      setupScrollHandler(stage.scene.get())
       setLabelText(turnsLabel, s"Remaining Turns: ${controller.remainingTurns}")
       stage.sizeToScene()
       stage.title = "Mastermind"
@@ -126,9 +125,6 @@ object GameView:
               initializeTime(timeLabel)
               setLabelText(resultGame, "")
               fillGrid(rows, cols)
-              selectableColors = Some(
-                controller.colors
-              ) // TODO aggiunta perché senno dopo il reset non ricarica i colori del mouse
               setCustomCursor(stage.scene.get())
             case UpdateHint =>
               updateGrid(hintGrid, hintStones.getOrElse(Vector.empty), getGraphicLabel)
@@ -307,6 +303,7 @@ object GameView:
       *   The scene to set the cursor for.
       */
     private def setCustomCursor(scene: Scene): Unit =
+      selectableColors = Some(controller.colors)
       scene.setCursor(
         new ImageCursor(
           new Image(
