@@ -7,13 +7,15 @@ import mastermind.controller.ControllerModule
 import mastermind.model.GameState
 import mastermind.model.entity.HintStone.{HintRed, HintWhite}
 import mastermind.utils.PagesEnum.Rules
-import mastermind.utils.{Initialize, UpdatePlayable, UpdateHint}
+import mastermind.utils.{Initialize, UpdateHint, UpdatePlayable}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.*
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import scalafx.application.Platform
+import scalafx.scene.image.{Image, ImageView}
+import scalafx.scene.input.MouseEvent
 import scalafx.stage.Stage
 import scala.jdk.CollectionConverters.*
 
@@ -85,14 +87,12 @@ class GameViewTest extends AnyFlatSpec with Matchers with BeforeAndAfterAll with
   "UpdateView" should "display 'You Lose!' when game state is PlayerLose" in runOnFXThread:
     when(mockController.gameState).thenReturn(GameState.PlayerLose)
     gameView.updateView(Initialize, None)
-
     getPrivateField[Label]("resultGame").getText shouldBe "You Lose!"
 
   "UpdateView" should "update hint grid for UpdateHint type" in runOnFXThread:
     when(mockController.gameState).thenReturn(GameState.InGame)
     when(mockController.turn).thenReturn(0)
     val testHints = Vector(HintRed, HintWhite, HintWhite, HintWhite, HintRed)
-
     gameView.updateView(UpdateHint, Some(testHints))
 
     val hintGrid = getPrivateField[GridPane]("hintGrid")
@@ -100,3 +100,17 @@ class GameViewTest extends AnyFlatSpec with Matchers with BeforeAndAfterAll with
       .collect { case label: Label => label.getText }
 
     hintLabels should contain allOf ("Red", "White, White, White", "Red")
+
+  "A mouse click on a playable stone" should "update the label's graphic and text" in runOnFXThread {
+    val label = new Label("Playable")
+    label.setOnMouseClicked { _ =>
+      label.setGraphic(
+        new ImageView(new Image(getClass.getResource(s"/img/stones/stone_Red.png").toExternalForm, 55, 55, true, true))
+      )
+      label.setText("Red")
+    }
+    val mouseEvent = mock(classOf[MouseEvent])
+    label.getOnMouseClicked.handle(mouseEvent)
+    assert(label.getText == "Red")
+    label.getGraphic should not be null
+  }
