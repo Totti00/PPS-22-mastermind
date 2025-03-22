@@ -2,8 +2,9 @@ package mastermind.model
 
 import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
 import mastermind.model.entity.HintStone.HintRed
-import mastermind.model.entity.{Board, Code, Game, HintStone, PlayerStoneGrid, HintStones, PlayableStones}
+import mastermind.model.entity.{Board, Code, Game, HintStone, HintStones, PlayableStones, PlayerStoneGrid}
 import mastermind.model.strategy.*
+import mastermind.utils.{extractRightLeft, throwableToLeft}
 
 object ModelModule:
 
@@ -98,12 +99,15 @@ object ModelModule:
       private var currentMode: GameMode = MediumMode()
 
       override def startNewGame(difficulty: String): Unit =
-        currentMode = difficulty.toLowerCase match
-          case "easy"    => EasyMode()
-          case "medium"  => MediumMode()
-          case "hard"    => HardMode()
-          case "extreme" => ExtremeMode()
-          case _         => throw new IllegalArgumentException("Invalid difficulty")
+        currentMode = extractRightLeft(throwableToLeft {
+          difficulty.toLowerCase match
+            case "easy"    => EasyMode()
+            case "medium"  => MediumMode()
+            case "hard"    => HardMode()
+            case "extreme" => ExtremeMode()
+            // case _ => new ClassCastException("invalid")
+        }) // .asInstanceOf[GameMode]
+
         currentGame = Some(
           Game(
             Board(currentMode.boardSize._1, currentMode.boardSize._2).initializeCurrentTurn(0),

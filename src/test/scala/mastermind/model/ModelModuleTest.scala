@@ -14,6 +14,11 @@ class ModelModuleTest extends AnyFlatSpec with Matchers:
 
   var model: Model = new ModelImpl()
 
+  "startNewGame" should "throw exception if the name is wrong" in {
+    assertThrows[MatchError]:
+      model.startNewGame("test")
+  }
+
   "startNewGame" should "initialize the game with the correct difficulty" in {
     val mode = EasyMode()
     model.startNewGame(mode.name)

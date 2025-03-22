@@ -1,5 +1,7 @@
 package mastermind.model.entity
 
+import mastermind.utils.throwableToLeft
+
 trait Matrix[T]:
   /** Retrieves the elements of the matrix.
     * @return
@@ -63,10 +65,11 @@ trait Matrix[T]:
 
 object Matrix:
 
-  def apply[T](rows: Int, cols: Int, filling: T): Matrix[T] = (rows, cols, filling) match
-    case (rows, cols, filling) if (rows > 0 || cols > 0) && filling != null =>
+  def apply[T](rows: Int, cols: Int, filling: T): Either[Throwable, Matrix[T]] =
+    throwableToLeft {
+      require(rows >= 0 && cols >= 0 && filling != null, "Matrix empty or null")
       MatrixImpl(Vector.fill(rows, cols)(filling))
-    case _ => throw new Error("matrix empty or null")
+    }
 
   private case class MatrixImpl[T](override val elements: Vector[Vector[T]]) extends Matrix[T]:
     override def replaceRow(row: Int, vec: Vector[T]): Matrix[T] = copy(elements.updated(row, vec))

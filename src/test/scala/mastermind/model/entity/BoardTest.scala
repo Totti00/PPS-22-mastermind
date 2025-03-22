@@ -49,3 +49,9 @@ class BoardTest extends AnyFlatSpec with Matchers:
     updatedBoard.getHintStone(0, 2) shouldBe HintWhite
     updatedBoard.getHintStone(0, 3) shouldBe HintEmpty
   }
+
+  "Board" should "throw exception if the numbers are negative" in {
+    assertThrows[IllegalArgumentException]:
+      Board(-1, 2)
+      Board(-1, -2)
+  }

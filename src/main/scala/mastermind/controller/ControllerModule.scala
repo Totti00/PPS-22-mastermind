@@ -111,10 +111,12 @@ object ControllerModule:
       override def goToPage(path: PagesEnum, mode: Option[String]): Unit = context.view.loadView(path, mode)
 
       override def getStone(row: Int, col: Int, typeStone: String): Stone =
+        // throwableToLeft {
         typeStone.toLowerCase match
           case "playable" => context.model.getPlayableStone(row, col)
           case "hint"     => context.model.getHintStone(row, col)
           case _          => throw new Exception("wrong request!")
+      // }
 
       override def getSizeBoard: (Int, Int) = context.model.getSizeBoard
 
