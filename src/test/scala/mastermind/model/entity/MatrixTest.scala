@@ -16,7 +16,6 @@ class MatrixTest extends AnyFlatSpec:
     assert(matrix.cell(2, 2) == Empty)
   }
 
-  // Test per ottenere una riga
   "Matrix" should "return the correct row" in {
     val matrix = Matrix(3, 3, 0)
     val row = matrix.row(1)
@@ -24,7 +23,6 @@ class MatrixTest extends AnyFlatSpec:
     assert(row == Seq(0, 0, 0))
   }
 
-  // Test per la sostituzione di una cella
   "Matrix" should "replace the correct cell value" in {
     val matrix = Matrix(3, 3, 0)
     val updatedMatrix = matrix.replaceCell(1, 1, 5)
@@ -34,7 +32,6 @@ class MatrixTest extends AnyFlatSpec:
     assert(updatedMatrix.cell(2, 2) == 0)
   }
 
-  // Test per la sostituzione di una riga
   "Matrix" should "replace the correct row" in {
     val matrix = Matrix(3, 3, 0)
     val updatedRow = Vector(1, 1, 1)
@@ -45,7 +42,6 @@ class MatrixTest extends AnyFlatSpec:
     assert(updatedMatrix.row(2) == Seq(0, 0, 0))
   }
 
-  // Test per la sostituzione di una cella in una matrice vuota
   "Matrix" should "handle replaceCell on an empty matrix correctly" in {
     assertThrows[Error]:
       val matrix = Matrix(0, 0, 0)

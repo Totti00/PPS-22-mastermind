@@ -6,7 +6,6 @@ import org.scalatest.flatspec.AnyFlatSpec
 
 class BoardTest extends AnyFlatSpec:
 
-  // Test di creazione della Board
   "Board" should "be created with specified dimensions and default values" in {
     val startBoard = Board(6, 4)
     val firstTestBoard = Board(6, 4, Empty, HintEmpty)
@@ -26,7 +25,6 @@ class BoardTest extends AnyFlatSpec:
     assert(board.getHintStone(0, 2) == HintRed)
   }
 
-  // Test di aggiornamento della board
   "placeGuessAndHints" should "update the specified row correctly" in {
     val board = Board(6, 4)
     val newPlayableRow =
@@ -38,7 +36,6 @@ class BoardTest extends AnyFlatSpec:
       )
     val newHintRow = Vector(HintRed, HintWhite, HintWhite, HintEmpty)
 
-    // Aggiorna la prima riga della board
     val updatedBoard = board.placeGuessAndHints(newPlayableRow, newHintRow, 0)
 
     assert(updatedBoard.getPlayableStone(0, 0) == PlayerStoneGrid.fromString("Red"))
