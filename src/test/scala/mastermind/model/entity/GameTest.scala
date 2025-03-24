@@ -16,17 +16,17 @@ class GameTest extends AnyFlatSpec with Matchers with BeforeAndAfterEach:
     game = Game(board, code, 0)
 
   "Game" should "initialize correctly with provided board and code" in {
-    game.board.rows shouldBe 10
-    game.board.cols shouldBe 5
-    game.code.colors.length shouldBe 5
-    game.remainingTurns shouldBe 10
-    game.currentTurn shouldBe 0
-    game.state shouldBe GameState.InGame
+    assert(game.board.rows == 10)
+    assert(game.board.cols == 5)
+    assert(game.code.colors.length == 5)
+    assert(game.remainingTurns == 10)
+    assert(game.currentTurn == 0)
+    assert(game.state == GameState.InGame)
   }
 
   "Remaining turns" should "decrease after a turn" in {
 
-    game.remainingTurns shouldBe 10
+    assert(game.remainingTurns == 10)
 
     game.currentTurn_()
 
@@ -35,9 +35,9 @@ class GameTest extends AnyFlatSpec with Matchers with BeforeAndAfterEach:
 
   "Game" should "reset correctly" in {
 
-    game.remainingTurns shouldBe 10
+    assert(game.remainingTurns == 10)
     game.currentTurn_()
-    game.remainingTurns shouldBe 9
+    assert(game.remainingTurns == 9)
 
     game = game.resetGame()
     game.remainingTurns shouldBe 10
@@ -72,8 +72,8 @@ class GameTest extends AnyFlatSpec with Matchers with BeforeAndAfterEach:
   }
 
   "Board" should "not change the actual board if the new board size is different" in {
-    game.board.rows shouldBe 10
-    game.board.cols shouldBe 5
+    assert(game.board.rows == 10)
+    assert(game.board.cols == 5)
     game.board_(Board(7, 7).initializeCurrentTurn(0))
 
     game.board.rows should not be 7

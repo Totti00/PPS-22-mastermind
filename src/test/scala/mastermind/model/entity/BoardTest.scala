@@ -13,8 +13,8 @@ class BoardTest extends AnyFlatSpec with Matchers:
     val firstTestBoard = Board(6, 4, Empty, HintEmpty)
     val secondTestBoard = Board(6, 4, Empty, HintRed)
 
-    startBoard.rows shouldBe 6
-    startBoard.cols shouldBe 4
+    assert(startBoard.rows == 6)
+    assert(startBoard.cols == 4)
 
     startBoard shouldBe firstTestBoard
     startBoard should not be secondTestBoard
@@ -53,8 +53,8 @@ class BoardTest extends AnyFlatSpec with Matchers:
 
   "Board" should "manage negative number" in {
     val board = Board(-1, 2)
-    board.rows shouldBe MediumMode().boardSize._1
-    board.cols shouldBe MediumMode().boardSize._2
+    assert(board.rows == MediumMode().boardSize._1)
+    assert(board.cols == MediumMode().boardSize._2)
 
     board.rows should not be EasyMode().boardSize._1
     board.cols should not be EasyMode().boardSize._2

@@ -10,8 +10,8 @@ class MatrixTest extends AnyFlatSpec with Matchers:
   "Matrix" should "be created with specified dimensions and filling value" in {
     val matrix = Matrix(3, 3, PlayerStoneGrid.Empty)
 
-    matrix.rows shouldBe 3
-    matrix.cols shouldBe 3
+    assert(matrix.rows == 3)
+    assert(matrix.cols == 3)
     matrix.cell(0, 0) shouldBe Empty
     matrix.cell(1, 1) shouldBe Empty
     matrix.cell(2, 2) shouldBe Empty
@@ -28,8 +28,8 @@ class MatrixTest extends AnyFlatSpec with Matchers:
     val matrix = Matrix(3, 3, 0)
     val updatedMatrix = matrix.replaceCell(1, 1, 5)
 
-    updatedMatrix.cell(1, 1) shouldBe 5
-    updatedMatrix.cell(0, 0) shouldBe 0
+    assert(updatedMatrix.cell(1, 1) == 5)
+    assert(updatedMatrix.cell(0, 0) == 0)
     updatedMatrix.cell(2, 2) shouldBe 0
   }
 
@@ -38,8 +38,8 @@ class MatrixTest extends AnyFlatSpec with Matchers:
     val updatedRow = Vector(1, 1, 1)
     val updatedMatrix = matrix.replaceRow(1, updatedRow)
 
-    updatedMatrix.row(1) shouldBe updatedRow
-    updatedMatrix.row(0) shouldBe Seq(0, 0, 0)
+    assert(updatedMatrix.row(1) == updatedRow)
+    assert(updatedMatrix.row(0) == Seq(0, 0, 0))
     updatedMatrix.row(2) shouldBe Seq(0, 0, 0)
   }
 

@@ -17,8 +17,8 @@ class ModelModuleTest extends AnyFlatSpec with Matchers:
   "startNewGame" should "manage wrong mode" in {
     model.startNewGame("start")
 
-    model.getSizeBoard._1 shouldBe MediumMode().boardSize._1
-    model.getSizeBoard._2 shouldBe MediumMode().boardSize._2
+    assert(model.getSizeBoard._1 == MediumMode().boardSize._1)
+    assert(model.getSizeBoard._2 == MediumMode().boardSize._2)
     model.getSizeBoard._1 should not be EasyMode().boardSize._1
     model.getSizeBoard._2 should not be EasyMode().boardSize._2
   }
@@ -26,7 +26,7 @@ class ModelModuleTest extends AnyFlatSpec with Matchers:
   "startNewGame" should "initialize the game with the correct difficulty" in {
     val mode = EasyMode()
     model.startNewGame(mode.name)
-    model.currentTurn shouldBe 0
+    assert(model.currentTurn == 0)
     model.remainingTurns shouldBe mode.boardSize._1
   }
 
@@ -34,11 +34,11 @@ class ModelModuleTest extends AnyFlatSpec with Matchers:
 
     val mode = MediumMode()
     model.startNewGame(mode.name)
-    model.currentTurn shouldBe 0
-    model.remainingTurns shouldBe mode.boardSize._1
+    assert(model.currentTurn == 0)
+    assert(model.remainingTurns == mode.boardSize._1)
 
     model.reset()
-    model.currentTurn shouldBe 0
+    assert(model.currentTurn == 0)
     model.remainingTurns shouldBe mode.boardSize._1
   }
 

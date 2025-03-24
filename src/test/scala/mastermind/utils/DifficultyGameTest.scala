@@ -1,4 +1,4 @@
-package mastermind
+package mastermind.utils
 
 import mastermind.model.strategy.*
 import org.scalatest.flatspec.AnyFlatSpec
