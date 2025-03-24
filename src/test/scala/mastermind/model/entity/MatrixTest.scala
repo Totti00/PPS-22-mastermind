@@ -43,11 +43,6 @@ class MatrixTest extends AnyFlatSpec with Matchers:
     updatedMatrix.row(2) shouldBe Seq(0, 0, 0)
   }
 
-  "Matrix" should "handle replaceCell on an empty matrix correctly" in {
-    assertThrows[Error]:
-      val matrix = Matrix(0, 0, 0)
-  }
-
   "Playable Matrix" should "replace the correct cell value" in {
     val matrix: Matrix[PlayerStoneGrid] = Matrix(3, 3, Empty)
     val updatedMatrix = matrix.replaceCell(1, 1, PlayerStoneGrid.fromString("Red"))

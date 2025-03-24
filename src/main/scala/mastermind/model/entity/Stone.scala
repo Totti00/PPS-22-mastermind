@@ -47,7 +47,6 @@ object PlayerStoneGrid:
     val colors = randomHelper(stones, "permutation", codeAndColorLength)
     val code = randomHelper(colors, "codeGenerator", codeAndColorLength)
 
-    println("Stone: code: " + code)
     (code, colors)
 
   private def randomHelper(stones: PlayableStones, functor: String, codeAndColorLength: Int): PlayableStones =
