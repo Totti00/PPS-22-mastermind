@@ -1,7 +1,6 @@
 package mastermind.model.entity
 
 import mastermind.model.GameState
-import java.text.SimpleDateFormat
 import mastermind.utils.ErrorHandler.*
 
 trait Game:

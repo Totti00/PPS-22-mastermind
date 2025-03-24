@@ -1,8 +1,8 @@
 package mastermind.controller
 
-import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
+import mastermind.model.GameState.InGame
 import mastermind.model.{GameState, ModelModule}
-import mastermind.model.entity.{Game, HintStone, HintStones, PlayableStones, PlayerStoneGrid, Stone}
+import mastermind.model.entity.{HintStones, PlayableStones, Stone}
 import mastermind.utils.ErrorHandler.*
 import mastermind.utils.{GridUpdateType, Initialize, PagesEnum, UpdateHint, UpdatePlayable}
 import mastermind.utils.PagesEnum.Menu
