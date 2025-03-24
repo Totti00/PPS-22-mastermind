@@ -1,38 +1,51 @@
 package mastermind.model.entity
 
+import mastermind.model.strategy.MediumMode
+import mastermind.utils.ErrorHandler.*
+
 trait Matrix[T]:
-  /** @return
-    *   The matrix composed by the elements
+  /** Retrieves the elements of the matrix.
+    * @return
+    *   the matrix elements as a `Vector` of `Vector`s, where each inner `Vector` represents a row of the matrix.
     */
   def elements: Vector[Vector[T]]
 
-  /** @return
+  /** Retrieves the number of rows in the matrix.
+    * @return
     *   The rows of the matrix
     */
   def rows: Int = elements.size
 
-  /** @return
+  /** Retrieves the number of columns in the matrix.
+    * @return
     *   The columns of the matrix
     */
   def cols: Int = elements.head.size
 
-  /** @param row
+  /** Retrieves the element at a specific row and column in the matrix.
+    * @param row
+    *   The row index
     * @param col
+    *   The column index
     * @return
     *   The element of the matrix requested
     */
   def cell(row: Int, col: Int): T = elements(row)(col)
 
-  /** @param row
+  /** Retrieves the entire row
+    * @param row
+    *   The row index
     * @return
     *   The row of matrix requested
     */
-  def row(row: Int): Seq[T] = elements(row)
+  def row(row: Int): Vector[T] = elements(row)
 
-  /** Replace of an element in the matrix
+  /** Replaces an element at a specific row and column in the matrix with a new element.
     *
     * @param row
+    *   The row index
     * @param col
+    *   The column index
     * @param cell
     *   The element to be inserted in the matrix
     * @return
@@ -43,8 +56,9 @@ trait Matrix[T]:
   /** Replace an entire row of the matrix
     *
     * @param row
+    *   The row index
     * @param vec
-    *   The row to be inserted in the matrix
+    *   The new row to be inserted in the matrix
     * @return
     *   New matrix with the row replaced by the new one
     */
@@ -52,10 +66,13 @@ trait Matrix[T]:
 
 object Matrix:
 
-  def apply[T](rows: Int, cols: Int, filling: T): Matrix[T] = (rows, cols, filling) match
-    case (rows, cols, filling) if (rows > 0 || cols > 0) && filling != null =>
+  def apply[T](rows: Int, cols: Int, filling: T): Matrix[T] =
+    giveMeEither {
+      require(rows >= 0 && cols >= 0, "Invalid matrix size")
       MatrixImpl(Vector.fill(rows, cols)(filling))
-    case _ => throw new Error("matrix empty or null")
+    } match
+      case Right(result) => result
+      case Left(_)       => MatrixImpl(Vector.fill(MediumMode().boardSize._1, MediumMode().boardSize._2)(filling))
 
   private case class MatrixImpl[T](override val elements: Vector[Vector[T]]) extends Matrix[T]:
     override def replaceRow(row: Int, vec: Vector[T]): Matrix[T] = copy(elements.updated(row, vec))

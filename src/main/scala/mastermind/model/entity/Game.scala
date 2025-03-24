@@ -1,7 +1,7 @@
 package mastermind.model.entity
 
 import mastermind.model.GameState
-import java.text.SimpleDateFormat
+import mastermind.utils.ErrorHandler.*
 
 trait Game:
   /** Board of the game
@@ -74,7 +74,11 @@ object Game:
 
     override def currentTurn_(): Unit = _currentTurn += 1
 
-    override def board_(newBoard: Board): Unit = this.board = newBoard
+    override def board_(newBoard: Board): Unit =
+      giveMeEither {
+        require(newBoard.rows == board.rows && newBoard.cols == board.cols, "Invalid arguments")
+        this.board = newBoard
+      }
 
     override def state: GameState = _state
 

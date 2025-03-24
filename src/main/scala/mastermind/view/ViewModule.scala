@@ -1,12 +1,12 @@
 package mastermind.view
 
 import javafx.fxml.FXMLLoader
-import mastermind.contoller.ControllerModule
-import scalafx.scene.Scene
-import scalafx.stage.{Popup, Stage}
-import javafx.scene.Parent
-import mastermind.model.entity.HintStone
+import mastermind.controller.ControllerModule
+import scalafx.stage.Stage
+import mastermind.model.entity.HintStones
 import mastermind.utils.GridUpdateType
+import mastermind.utils.PagesEnum.*
+import mastermind.utils.PagesEnum
 
 object ViewModule:
 
@@ -16,7 +16,7 @@ object ViewModule:
       * @param stage
       *   The main window to display the view.
       */
-    def show(stage: Stage): Unit
+    def initialize(stage: Stage): Unit
 
     /** Loads a view from an FXML file.
       * @param path
@@ -24,7 +24,7 @@ object ViewModule:
       * @param mode
       *   An optional parameter specifying the mode (e.g., difficulty level).
       */
-    def loadView(path: String, mode: Option[String] = None): Unit
+    def loadView(path: PagesEnum, mode: Option[String] = None): Unit
 
     /** Updates the game view based on the specified game mode
       * @param gameMode
@@ -32,7 +32,7 @@ object ViewModule:
       * @param hintStones
       *   Optional parameter to update the view with the hint stones
       */
-    def updateGameView(gameMode: GridUpdateType, hintStones: Option[Vector[HintStone]]): Unit
+    def updateGameView(gameMode: GridUpdateType, hintStones: Option[HintStones]): Unit
 
   trait Provider:
     val view: View
@@ -43,60 +43,29 @@ object ViewModule:
     context: Requirements =>
 
     class ViewImpl extends View:
-      private var stage: Stage = _
-      private val gameView = new GameView(context)
+      private var stage: Option[Stage] = None
+      private var gameView: Option[GameView] = None
 
-      override def updateGameView(gameMode: GridUpdateType, hintStones: Option[Vector[HintStone]] = None): Unit =
-        gameView.updateGrids(gameMode, hintStones)
+      override def updateGameView(gameMode: GridUpdateType, hintStones: Option[HintStones] = None): Unit =
+        gameView.get.updateView(gameMode, hintStones)
 
-      override def show(primaryStage: Stage): Unit =
-        stage = primaryStage
-        loadView("MenuPage")
+      override def initialize(primaryStage: Stage): Unit =
+        stage = Some(primaryStage)
+        loadView(Menu)
 
-      override def loadView(path: String, mode: Option[String] = None): Unit =
+      override def loadView(path: PagesEnum, mode: Option[String] = None): Unit =
         path match
-          case "game" => gameView.show(stage, mode.get)
-          case "Rules" =>
-            val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
-            val root: Parent = loader.load()
-            val popup = new Popup()
-            popup.getContent.clear()
-            popup.getContent.add(root)
-            popup.show(stage)
-            val namespace = loader.getNamespace
+          case Game =>
+            context.controller.startGame(mode.get)
+            gameView = Some(GameView(context.controller, stage.get))
+            loadFXML[GameView](path, gameView.get)
+          case Rules => loadFXML[RulesView](path, RulesView(stage.get))
+          case Menu  => loadFXML[MenuView](path, MenuView(context.controller, stage.get))
 
-            import scalafx.Includes.*
-
-            namespace.get("ruleExitButton") match
-              case button: javafx.scene.control.Button => button.setOnAction(_ => popup.hide())
-              case _                                   =>
-
-          case _ =>
-            val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
-            loader.setController(context.controller)
-            val root: Parent = loader.load()
-            val namespace = loader.getNamespace
-
-            import scalafx.Includes.*
-            namespace.get("rulesButton") match
-              case button: javafx.scene.control.Button => button.setOnAction(_ => context.controller.goToPage("Rules"))
-              case _                                   =>
-
-            val difficultyMapping = Map(
-              "easyModeButton" -> "easy",
-              "mediumModeButton" -> "medium",
-              "hardModeButton" -> "hard",
-              "extremeModeButton" -> "extreme"
-            )
-            difficultyMapping.foreach { case (buttonId, difficulty) =>
-              namespace.get(buttonId) match
-                case button: javafx.scene.control.Button =>
-                  button.setOnAction(_ => context.controller.goToPage("game", Some(difficulty)))
-                case _ =>
-            }
-            stage.scene = new Scene(root, 800, 500)
-            stage.title = "Mastermind"
-            stage.show()
+      private def loadFXML[T](path: PagesEnum, controller: T): Unit =
+        val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
+        loader.setController(controller)
+        loader.load()
 
   trait Interface extends Provider with Component:
     self: Requirements =>

@@ -2,11 +2,12 @@ package mastermind.model.entity
 
 import mastermind.model.entity.HintStone.{HintEmpty, HintRed, HintWhite}
 import mastermind.model.entity.PlayerStoneGrid.Empty
+import mastermind.model.strategy.{EasyMode, MediumMode}
 import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class BoardTest extends AnyFlatSpec:
+class BoardTest extends AnyFlatSpec with Matchers:
 
-  // Test di creazione della Board
   "Board" should "be created with specified dimensions and default values" in {
     val startBoard = Board(6, 4)
     val firstTestBoard = Board(6, 4, Empty, HintEmpty)
@@ -15,18 +16,17 @@ class BoardTest extends AnyFlatSpec:
     assert(startBoard.rows == 6)
     assert(startBoard.cols == 4)
 
-    assert(startBoard == firstTestBoard)
-    assert(startBoard != secondTestBoard)
+    startBoard shouldBe firstTestBoard
+    startBoard should not be secondTestBoard
   }
 
   "Board" should "give the stone in a specified row correctly" in {
     val board = Board(6, 4, Empty, HintRed)
-    assert(board.getPlayableStone(0, 3) == Empty)
-    assert(board.getPlayableStone(0, 2) != PlayerStoneGrid.fromString("Yellow"))
-    assert(board.getHintStone(0, 2) == HintRed)
+    board.getPlayableStone(0, 3) shouldBe Empty
+    board.getPlayableStone(0, 2) should not be PlayerStoneGrid.fromString("Yellow")
+    board.getHintStone(0, 2) shouldBe HintRed
   }
 
-  // Test di aggiornamento della board
   "placeGuessAndHints" should "update the specified row correctly" in {
     val board = Board(6, 4)
     val newPlayableRow =
@@ -38,16 +38,24 @@ class BoardTest extends AnyFlatSpec:
       )
     val newHintRow = Vector(HintRed, HintWhite, HintWhite, HintEmpty)
 
-    // Aggiorna la prima riga della board
     val updatedBoard = board.placeGuessAndHints(newPlayableRow, newHintRow, 0)
 
-    assert(updatedBoard.getPlayableStone(0, 0) == PlayerStoneGrid.fromString("Red"))
-    assert(updatedBoard.getPlayableStone(0, 1) == PlayerStoneGrid.fromString("Blue"))
-    assert(updatedBoard.getPlayableStone(0, 2) == PlayerStoneGrid.fromString("Green"))
-    assert(updatedBoard.getPlayableStone(0, 3) == PlayerStoneGrid.fromString("Yellow"))
+    updatedBoard.getPlayableStone(0, 0) shouldBe PlayerStoneGrid.fromString("Red")
+    updatedBoard.getPlayableStone(0, 1) shouldBe PlayerStoneGrid.fromString("Blue")
+    updatedBoard.getPlayableStone(0, 2) shouldBe PlayerStoneGrid.fromString("Green")
+    updatedBoard.getPlayableStone(0, 3) shouldBe PlayerStoneGrid.fromString("Yellow")
 
-    assert(updatedBoard.getHintStone(0, 0) == HintRed)
-    assert(updatedBoard.getHintStone(0, 1) == HintWhite)
-    assert(updatedBoard.getHintStone(0, 2) == HintWhite)
-    assert(updatedBoard.getHintStone(0, 3) == HintEmpty)
+    updatedBoard.getHintStone(0, 0) shouldBe HintRed
+    updatedBoard.getHintStone(0, 1) shouldBe HintWhite
+    updatedBoard.getHintStone(0, 2) shouldBe HintWhite
+    updatedBoard.getHintStone(0, 3) shouldBe HintEmpty
+  }
+
+  "Board" should "manage negative number" in {
+    val board = Board(-1, 2)
+    assert(board.rows == MediumMode().boardSize._1)
+    assert(board.cols == MediumMode().boardSize._2)
+
+    board.rows should not be EasyMode().boardSize._1
+    board.cols should not be EasyMode().boardSize._2
   }

@@ -7,75 +7,71 @@
     -fx-background-color: #2f3136;
 }
 
-/* Stile delle matrici di gioco */
-#stone_matrix, #hint_stone_matrix {
+
+#attemptGrid, #hintGrid {
     -fx-background-color: #202225;
     -fx-background-radius: 10;
 }
 
-.button, #labelCurrentTurn, #currentTime, #resultGame {
--fx-background-color: #202225, linear-gradient(#20262b, #191d22);
--fx-background-radius: 5,4,3,5;
--fx-text-fill: linear-gradient(#da1e28, #2625ff);
--fx-font-size: 25px;
--fx-padding: 5 15 5 15;
-
+.button, #turnsLabel, #timeLabel, #resultGame {
+    -fx-background-color: #6a9fb5, linear-gradient(#5a8a9b, #4a7a8b);
+    -fx-background-radius: 5,4,3,5;
+    -fx-text-fill: #ffffff; 
+    -fx-font-size: 25px;
+    -fx-padding: 5 15 5 15;
+}
+.button:hover {
+    -fx-background-color: #6a9fb5, linear-gradient(#5a8a9b, #4a7a8b), radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 25px;
+    -fx-padding: 5 15 5 15;
 }
 
-.button:hover{
--fx-background-color: #202225, linear-gradient(#20262b, #191d22), radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
--fx-background-radius: 5,4,3,5;
--fx-background-insets: 0,1,2,0;
--fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
--fx-text-fill: linear-gradient(#da1e28, #2625ff);
--fx-font-size: 25px;
--fx-padding: 5 15 5 15;
-
-}
-
-.button:pressed{
--fx-background-color: #202225, linear-gradient(#20262b, #191d22), radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
--fx-background-radius: 5,4,3,5;
--fx-background-insets: 0,1,2,0;
--fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.9) , 1, 0.0 , 0 , 1 );
--fx-text-fill: linear-gradient(#da1e28, #2625ff);
--fx-font-size: 25px;
--fx-padding: 5 15 5 15;
-
+.button:pressed {
+    -fx-background-color: #6a9fb5, linear-gradient(#5a8a9b, #4a7a8b), radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.9) , 1, 0.0 , 0 , 1 );
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 25px;
+    -fx-padding: 5 15 5 15;
 }
 
 .label{
--fx-text-fill: linear-gradient(#f7f5f5, #26255f);
+    -fx-text-fill: linear-gradient(#6a9fb5, #4a7a8b);
 }
 
 #imagePanel {
--fx-background-image: url(../img/mastermind-logo.jpg);
--fx-background-size: 100% 100%;
--fx-background-position: center;
--fx-background-repeat: no-repeat;
+    -fx-background-image: url(../img/mastermind-logo.jpg);
+    -fx-background-size: 100% 100%;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
 }
 
 #gridRule ImageView {
--fx-fit-height: 50px;
--fx-fit-width: 50px;
+    -fx-fit-height: 50px;
+    -fx-fit-width: 50px;
 }
 
 #gridRule Label {
--fx-text-fill: #ffffff; 
--fx-font-size: 20px; 
--fx-font-weight: normal;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+    -fx-font-weight: normal;
 }
 
 #infoContainer {
--fx-background-color: #202225;
+    -fx-background-color: #202225;
 }
 
 #ruleTitle {
--fx-text-fill: #ffffff; 
--fx-font-size: 25px; 
--fx-font-weight: normal;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 25px;
+    -fx-font-weight: normal;
 }
 
 #gridRule {
--fx-background-color: #202225;
+    -fx-background-color: #202225;
 }

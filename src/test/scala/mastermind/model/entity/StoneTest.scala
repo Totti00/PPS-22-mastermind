@@ -1,25 +1,28 @@
 package mastermind.model.entity
 
 import mastermind.model.entity.HintStone.{HintRed, HintWhite}
+import mastermind.model.entity.PlayerStoneGrid.{Playable, Win}
 import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class StoneTest extends AnyFlatSpec:
+class StoneTest extends AnyFlatSpec with Matchers:
 
-  /*
-  "a Purple stone" should "be purple" in {
-    assert(Purple.stringRepresentation.equals("Purple"))
+  "a Playable stone" should "be Playable" in {
+    PlayerStoneGrid.fromString("playable") shouldBe Playable
+    PlayerStoneGrid.fromString("playable") should not be HintWhite
   }
 
-  "a red Playable stone" should "be red stone" in {
-    assert(PlayerStoneGrid.fromString("Red") == Red)
-    assert(!(PlayerStoneGrid.fromString("Red") == HintRed))
+  "a Win stone" should "be a Win" in {
+    PlayerStoneGrid.fromString("win") shouldBe Win
+    PlayerStoneGrid.fromString("Red") should not be HintRed
+
   }
-   */
+
   "a Hint white" should "be white" in {
-    assert(HintWhite.toString.equals("White"))
+    HintWhite.toString shouldBe "White"
   }
 
-  "a red Hint stone" should "be red hint stone" in {
-    assert(HintRed.isInstanceOf[HintStone])
-    assert(!HintRed.isInstanceOf[PlayerStoneGrid])
+  "a red Hint stone" should "be HintStone" in {
+    HintRed shouldBe a[HintStone]
+    HintRed should not be a[PlayerStoneGrid]
   }
