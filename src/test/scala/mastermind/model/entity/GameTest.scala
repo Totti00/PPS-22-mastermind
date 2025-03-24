@@ -70,3 +70,12 @@ class GameTest extends AnyFlatSpec with Matchers with BeforeAndAfterEach:
     game.board.getPlayableStone(0, 0) shouldBe Win
 
   }
+
+  "Board" should "not change the actual board if the new board size is different" in {
+    game.board.rows shouldBe 10
+    game.board.cols shouldBe 5
+    game.board_(Board(7, 7).initializeCurrentTurn(0))
+
+    game.board.rows should not be 7
+    game.board.cols should not be 7
+  }

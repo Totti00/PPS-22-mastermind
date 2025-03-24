@@ -2,7 +2,7 @@ package mastermind.model.entity
 
 import mastermind.model.entity.HintStone.{HintEmpty, HintRed}
 import mastermind.model.entity.PlayerStoneGrid.{Empty, Playable, Win}
-import mastermind.utils.extractRightLeft
+import mastermind.utils.ErrorHandler.*
 
 trait Board:
   /** The number of rows in the board.
@@ -75,8 +75,7 @@ object Board:
       cols: Int,
       playableFilling: PlayerStoneGrid = Empty,
       hintFilling: HintStone = HintEmpty
-  ): Board =
-    BoardImpl(extractRightLeft(Matrix(rows, cols, playableFilling)), extractRightLeft(Matrix(rows, cols, hintFilling)))
+  ): Board = BoardImpl(Matrix(rows, cols, playableFilling), Matrix(rows, cols, hintFilling))
 
   private case class BoardImpl(playableMatrix: Matrix[PlayerStoneGrid], hintMatrix: Matrix[HintStone]) extends Board:
 
@@ -97,4 +96,4 @@ object Board:
       copy(playableMatrix.replaceRow(currentTurn, Vector.fill(cols)(Playable)), hintMatrix)
 
     override def winBoard(): Board =
-      copy(extractRightLeft(Matrix(rows, cols, Win)), extractRightLeft(Matrix(rows, cols, HintRed)))
+      copy(Matrix(rows, cols, Win), Matrix(rows, cols, HintRed))

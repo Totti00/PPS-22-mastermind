@@ -26,7 +26,7 @@ class EasyMode extends GameMode:
   override def codeAndColorLength: Int = 4
   override def name: String = "Easy"
 
-/** Medium game mode with an 8x5 board and a code length of 5.
+/** Medium game mode with a 8x5 board and a code length of 5.
   */
 class MediumMode extends GameMode:
   override def boardSize: (Int, Int) = (8, 5)

@@ -50,42 +50,17 @@ object PlayerStoneGrid:
     println("Stone: code: " + code)
     (code, colors)
 
-  /** Gives a random Vector of PlayableGridStone using prolog
-    * @param stones
-    *   The string representation of stones to be permuted.
-    * @param functor
-    *   The Prolog functor used to obtain the permutations.
-    * @param codeAndColorLength
-    *   The resulting vector length
-    * @return
-    *   a permutation of "stones" with a predefined length
-    */
   private def randomHelper(stones: PlayableStones, functor: String, codeAndColorLength: Int): PlayableStones =
     val permutations = obtainVectorPlayable(stones, functor, codeAndColorLength)
     val drawOne = permutations(Random.nextInt(permutations.size))
     fromStringToVector(drawOne)(mapper)
 
-  /** This helper method retrieves the possible permutations of stones from the Prolog engine.
-    *
-    * @param stones
-    *   The string representation of stones to be permuted.
-    * @param functor
-    *   The Prolog functor used to obtain the permutations.
-    * @param codeAndColorLength
-    *   The resulting vector length
-    * @return
-    *   A vector of strings representing possible permutations of the "stones".
-    */
   private def obtainVectorPlayable(stones: String, functor: String, codeAndColorLength: Int): Vector[String] =
     engine(s"$functor($stones, $codeAndColorLength, PlayableStones).")
       .take(MAX_PERMUTATION)
       .map(extractTermToString(_, "PlayableStones"))
       .toVector
 
-  /** Maps a string representation of a stone to the corresponding `PlayerStoneGrid` value.
-    * @return
-    *   The corresponding `PlayerStoneGrid` value.
-    */
   private def mapper = PlayerStoneGrid.fromString
 
   /** Converts a string to the corresponding `PlayerStoneGrid` color.

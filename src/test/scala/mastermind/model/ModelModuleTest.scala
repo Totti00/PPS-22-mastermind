@@ -3,7 +3,7 @@ package mastermind.model
 import mastermind.Launcher.ModelImpl
 import mastermind.model.GameState.PlayerLose
 import mastermind.model.ModelModule.Model
-import mastermind.model.entity.HintStone.{HintEmpty, HintRed, HintWhite}
+import mastermind.model.entity.HintStone.{HintEmpty, HintRed}
 import mastermind.model.entity.{HintStone, PlayerStoneGrid}
 import mastermind.model.entity.PlayerStoneGrid.{Empty, Playable}
 import mastermind.model.strategy.{EasyMode, ExtremeMode, MediumMode}
@@ -14,9 +14,13 @@ class ModelModuleTest extends AnyFlatSpec with Matchers:
 
   var model: Model = new ModelImpl()
 
-  "startNewGame" should "throw exception if the name is wrong" in {
-    assertThrows[MatchError]:
-      model.startNewGame("test")
+  "startNewGame" should "manage wrong mode" in {
+    model.startNewGame("start")
+
+    model.getSizeBoard._1 shouldBe MediumMode().boardSize._1
+    model.getSizeBoard._2 shouldBe MediumMode().boardSize._2
+    model.getSizeBoard._1 should not be EasyMode().boardSize._1
+    model.getSizeBoard._2 should not be EasyMode().boardSize._2
   }
 
   "startNewGame" should "initialize the game with the correct difficulty" in {

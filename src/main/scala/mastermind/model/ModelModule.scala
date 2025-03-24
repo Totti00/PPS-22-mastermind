@@ -4,7 +4,7 @@ import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
 import mastermind.model.entity.HintStone.HintRed
 import mastermind.model.entity.{Board, Code, Game, HintStone, HintStones, PlayableStones, PlayerStoneGrid}
 import mastermind.model.strategy.*
-import mastermind.utils.{extractRightLeft, throwableToLeft}
+import mastermind.utils.ErrorHandler.*
 
 object ModelModule:
 
@@ -99,14 +99,15 @@ object ModelModule:
       private var currentMode: GameMode = MediumMode()
 
       override def startNewGame(difficulty: String): Unit =
-        currentMode = extractRightLeft(throwableToLeft {
+        currentMode = giveMeEither {
           difficulty.toLowerCase match
             case "easy"    => EasyMode()
             case "medium"  => MediumMode()
             case "hard"    => HardMode()
             case "extreme" => ExtremeMode()
-            // case _ => new ClassCastException("invalid")
-        }) // .asInstanceOf[GameMode]
+        } match
+          case Right(result) => result
+          case Left(_)       => MediumMode()
 
         currentGame = Some(
           Game(
@@ -144,12 +145,6 @@ object ModelModule:
           currentGame.get.board_(currentGame.get.board.winBoard())
         vectorOfHintStones
 
-      /** Checks whether the player has won
-        * @param hintStonesFeedback
-        *   User input feedback
-        * @return
-        *   True if the user has won, false otherwise
-        */
       private def checkWin(hintStonesFeedback: HintStones): Boolean =
         hintStonesFeedback.forall(_ == HintRed)
 

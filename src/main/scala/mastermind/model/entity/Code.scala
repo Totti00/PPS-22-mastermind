@@ -45,36 +45,12 @@ object Code:
       val rulesJoinedVector = joinVectors(hintStonesRed, hintStoneWhite)
       rulesJoinedVector
 
-    /** Compare the user input with the code and return a vector of HintStones where the colors are in the correct
-      * position
-      * @param userInput
-      *   The user input
-      * @return
-      *   a vector of HintStones
-      */
     private def compareToPresent(userInput: PlayableStones): HintStones =
       getHintStonesByRule("compareToPresent", code, userInput)
 
-    /** Compare the user input with the code and return a vector of HintStones where the colors are in the correct
-      * position
-      * @param userInput
-      *   The user input
-      * @return
-      *   a vector of HintStones
-      */
     private def compareToEqual(userInput: PlayableStones): HintStones =
       getHintStonesByRule("compareToEqual", code, userInput)
 
-    /** Get the hintStones vector using Prolog
-      * @param functor
-      *   The functor to use
-      * @param code
-      *   The code
-      * @param userInput
-      *   The user input
-      * @return
-      *   a vector of HintStones
-      */
     private def getHintStonesByRule(functor: String, code: String, userInput: String): HintStones =
       val solveInfo = engine(s"$functor($code, $userInput, HintStones).").head
       val result = extractTermToString(solveInfo, "HintStones")
@@ -83,15 +59,6 @@ object Code:
         case _                               => HintWhite
       }
 
-    /** Create the feedback of hintStones
-      *
-      * @param hintStonesRed
-      *   Vector of the first rule
-      * @param hintStonesWhite
-      *   Vector of the second rule
-      * @return
-      *   HintStone feedback consisting of White, Blank and Red
-      */
     private def joinVectors(hintStonesRed: HintStones, hintStonesWhite: HintStones): HintStones =
       val missingPositions = code.size - (hintStonesRed.size + hintStonesWhite.size)
       val joinedVectors: HintStones =

@@ -6,10 +6,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 class MatrixTest extends AnyFlatSpec with Matchers:
-  "hhhhh" should "bhhh" in {
-    assert(true)
-  }
-/*
+
   "Matrix" should "be created with specified dimensions and filling value" in {
     val matrix = Matrix(3, 3, PlayerStoneGrid.Empty)
 
@@ -69,4 +66,3 @@ class MatrixTest extends AnyFlatSpec with Matchers:
     updatedMatrix.cell(2, 2) should not be Empty
 
   }
- */

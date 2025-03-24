@@ -2,6 +2,7 @@ package mastermind.model.entity
 
 import mastermind.model.entity.HintStone.{HintEmpty, HintRed, HintWhite}
 import mastermind.model.entity.PlayerStoneGrid.Empty
+import mastermind.model.strategy.{EasyMode, MediumMode}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -50,8 +51,11 @@ class BoardTest extends AnyFlatSpec with Matchers:
     updatedBoard.getHintStone(0, 3) shouldBe HintEmpty
   }
 
-  "Board" should "throw exception if the numbers are negative" in {
-    assertThrows[IllegalArgumentException]:
-      Board(-1, 2)
-      Board(-1, -2)
+  "Board" should "manage negative number" in {
+    val board = Board(-1, 2)
+    board.rows shouldBe MediumMode().boardSize._1
+    board.cols shouldBe MediumMode().boardSize._2
+
+    board.rows should not be EasyMode().boardSize._1
+    board.cols should not be EasyMode().boardSize._2
   }

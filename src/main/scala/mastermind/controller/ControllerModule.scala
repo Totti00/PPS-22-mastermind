@@ -3,7 +3,8 @@ package mastermind.controller
 import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
 import mastermind.model.{GameState, ModelModule}
 import mastermind.model.entity.{Game, HintStone, HintStones, PlayableStones, PlayerStoneGrid, Stone}
-import mastermind.utils.*
+import mastermind.utils.ErrorHandler.*
+import mastermind.utils.{GridUpdateType, Initialize, PagesEnum, UpdateHint, UpdatePlayable}
 import mastermind.utils.PagesEnum.Menu
 import mastermind.view.ViewModule
 
@@ -42,7 +43,7 @@ object ControllerModule:
       * @return
       *   The stone at the specified position.
       */
-    def getStone(row: Int, col: Int, typeStone: String): Stone
+    def getStone(row: Int, col: Int, typeStone: String): Either[Boolean, Stone]
 
     /** Retrieves the dimensions (rows and columns) of the game board.
       * @return
@@ -110,13 +111,12 @@ object ControllerModule:
 
       override def goToPage(path: PagesEnum, mode: Option[String]): Unit = context.view.loadView(path, mode)
 
-      override def getStone(row: Int, col: Int, typeStone: String): Stone =
-        // throwableToLeft {
-        typeStone.toLowerCase match
-          case "playable" => context.model.getPlayableStone(row, col)
-          case "hint"     => context.model.getHintStone(row, col)
-          case _          => throw new Exception("wrong request!")
-      // }
+      override def getStone(row: Int, col: Int, typeStone: String): Either[Boolean, Stone] =
+        giveMeEither {
+          typeStone.toLowerCase match
+            case "playable" => context.model.getPlayableStone(row, col)
+            case "hint"     => context.model.getHintStone(row, col)
+        }
 
       override def getSizeBoard: (Int, Int) = context.model.getSizeBoard
 
@@ -130,12 +130,6 @@ object ControllerModule:
         if context.model.gameState == InGame then context.model.startNewTurn()
         updateView(UpdatePlayable)
 
-      /** Updates the view with the latest game state, including the feedback and any game updates
-        * @param gameMode
-        *   The type of update
-        * @param vectorOfHintStones
-        *   Optional feedback on the user's guess.
-        */
       private def updateView(gameMode: GridUpdateType, vectorOfHintStones: Option[HintStones] = None): Unit =
         context.view.updateGameView(gameMode, vectorOfHintStones)
 

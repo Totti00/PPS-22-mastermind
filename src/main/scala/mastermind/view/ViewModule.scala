@@ -62,14 +62,6 @@ object ViewModule:
           case Rules => loadFXML[RulesView](path, RulesView(stage.get))
           case Menu  => loadFXML[MenuView](path, MenuView(context.controller, stage.get))
 
-      /** Loads a view from an FXML file and sets the provided controller
-        * @param path
-        *   The path to the FXML file relative to the resources directory
-        * @param controller
-        *   The controller to associate with the loaded FXML view
-        * @tparam T
-        *   The type of the controller
-        */
       private def loadFXML[T](path: PagesEnum, controller: T): Unit =
         val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
         loader.setController(controller)

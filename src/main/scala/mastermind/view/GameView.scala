@@ -21,6 +21,7 @@ import java.net.URL
 import java.util.ResourceBundle
 import scala.jdk.CollectionConverters.*
 import java.text.{DateFormat, SimpleDateFormat}
+import mastermind.utils.ErrorHandler.*
 
 trait GameView:
   /** Handles the action for the check button, submitting the current guess.
@@ -132,20 +133,9 @@ object GameView:
               val newCurrentTurnStones = (for (i <- 0 until cols) yield getStone(i, controller.turn)).toVector
               updateGrid(attemptGrid, newCurrentTurnStones, identity)
 
-    /** Updates the turns label with the remaining turns.
-      */
     private def updateRemainingTurns(): Unit =
       setLabelText(turnsLabel, s"Remaining Turns: ${controller.remainingTurns}")
 
-    /** Updates the given grid with new values.
-      *
-      * @param grid
-      *   The `GridPane` to update.
-      * @param newValues
-      *   A vector containing the new values to display.
-      * @param labelTransformer
-      *   A function that transforms a value into a `Label`.
-      */
     private def updateGrid[T](grid: GridPane, newValues: Vector[T], labelTransformer: T => Label): Unit =
       grid.getChildren.asScala
         .collect { case label: Label if GridPane.getRowIndex(label) == controller.turn => label }
@@ -156,11 +146,6 @@ object GameView:
           label.setText(newLabel.getText)
         }
 
-    /** Initializes the time label.
-      *
-      * @param timeLabel
-      *   The time label to initialize.
-      */
     private def initializeTime(timeLabel: Label): Unit =
       if timer.isDefined then timer.get.stop()
       setLabelText(timeLabel, "Time: 00:00")
@@ -180,25 +165,11 @@ object GameView:
       )
       timer.get.play()
 
-    /** Creates a label representing a hint stone.
-      *
-      * @param hintStone
-      *   The `HintStone` to represent.
-      * @return
-      *   A `Label` with the hint stone's text and corresponding graphic.
-      */
     private def getGraphicLabel(hintStone: HintStone): Label =
       val label = new Label(hintStone.toString)
       label.setGraphic(getGraphic(hintStone))
       label
 
-    /** Returns the graphic representation of a stone.
-      *
-      * @param stone
-      *   The stone to get the graphic for.
-      * @return
-      *   An ImageView representing the stone.
-      */
     private def getGraphic(stone: Stone): ImageView =
       val urlStone =
         if stone.isInstanceOf[HintStone] then s"/img/hintStones/hstone_${stone.toString}.png"
@@ -207,85 +178,52 @@ object GameView:
       val image_size = circle_size - 5
       new ImageView(new Image(getClass.getResource(urlStone).toExternalForm, image_size, image_size, true, true))
 
-    /** Sets the text of a label.
-      *
-      * @param label
-      *   The label to set the text of.
-      * @param text
-      *   The text to set.
-      */
     private def setLabelText(label: Label, text: String): Unit =
       label.setText(text)
 
-    /** Fills the grids with stones.
-      */
     private def fillGrid(rows: Int, cols: Int): Unit =
       for c <- 0 until cols; r <- 0 until rows do
         attemptGrid.add(getStone(c, r), c, r)
         hintGrid.add(getHint(c, r), c, r)
 
-    /** Returns a playable stone label.
-      *
-      * @param c
-      *   The column
-      * @param r
-      *   The row
-      * @return
-      *   The created label
-      */
     private def getStone(c: Int, r: Int): Label = createStoneLabel(c, r, "playable")
 
-    /** Returns a hint stone label.
-      *
-      * @param c
-      *   The column
-      * @param r
-      *   The row
-      * @return
-      *   The created label
-      */
     private def getHint(c: Int, r: Int): Label = createStoneLabel(c, r, "hint")
 
-    /** Creates a stone label.
-      *
-      * @param c
-      *   The column
-      * @param r
-      *   The row
-      * @param stoneType
-      *   The type of stone
-      * @return
-      *   The created label
-      */
     private def createStoneLabel(c: Int, r: Int, stoneType: String): Label =
-      val stone = controller.getStone(r, c, stoneType)
-      val label = new Label(stone.toString)
+      controller.getStone(r, c, stoneType) match
+        case Right(stone) =>
+          val label = new Label(stone.toString)
+          configureLabel(label)
+          label.setGraphic(getGraphic(stone))
+          label.setOnMouseClicked { _ =>
+            if controller.turn == r && stoneType == "playable" then
+              label.setGraphic(
+                new ImageView(
+                  new Image(
+                    getClass.getResource(s"/img/stones/stone_${selectableColors.get(browseColors)}.png").toExternalForm,
+                    55,
+                    55,
+                    true,
+                    true
+                  )
+                )
+              )
+              label.setText(selectableColors.get(browseColors).toString)
+          }
+          label
+        case Left(_) =>
+          val label = new Label("Invalid stone type")
+          configureLabel(label)
+          setLabelText(resultGame, "Stone Type Error !")
+          label
+
+    private def configureLabel(label: Label): Label =
       label.setPrefSize(60, 60)
       label.setMinSize(60, 60)
       label.setMaxSize(60, 60)
-      label.setGraphic(getGraphic(stone))
-      label.setOnMouseClicked { _ =>
-        if controller.turn == r && stoneType == "playable" then
-          label.setGraphic(
-            new ImageView(
-              new Image(
-                getClass.getResource(s"/img/stones/stone_${selectableColors.get(browseColors)}.png").toExternalForm,
-                55,
-                55,
-                true,
-                true
-              )
-            )
-          )
-          label.setText(selectableColors.get(browseColors).toString)
-      }
       label
 
-    /** Sets up the scroll handler for the scene, allowing the user to change the cursor color.
-      *
-      * @param scene
-      *   The scene to set up the scroll handler for.
-      */
     private def setupScrollHandler(scene: Scene): Unit =
       scene.addEventHandler(
         ScrollEvent.Scroll,
@@ -297,11 +235,6 @@ object GameView:
           setCustomCursor(scene)
       )
 
-    /** Sets the custom cursor.
-      *
-      * @param scene
-      *   The scene to set the cursor for.
-      */
     private def setCustomCursor(scene: Scene): Unit =
       selectableColors = Some(controller.colors)
       scene.setCursor(
@@ -316,18 +249,11 @@ object GameView:
         )
       )
 
-    /** Handles submitting the user's guess, extracting and processing it if valid.
-      */
     private def submitGuess(): Unit =
       if controller.gameState == InGame then
         val guess = extractGuess()
         if !guess.contains(Playable) then controller.checkCode(guess)
 
-    /** Extracts the current guess from the attempt grid.
-      *
-      * @return
-      *   A vector of strings representing the user's selected colors.
-      */
     private def extractGuess(): PlayableStones =
       attemptGrid.getChildren
         .filtered(child => GridPane.getRowIndex(child) == controller.turn)
