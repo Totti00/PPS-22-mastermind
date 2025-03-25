@@ -27,7 +27,8 @@ trait Board:
     */
   def getPlayableStone(row: Int, cols: Int): PlayerStoneGrid
 
-  /** @param row
+  /** Retrieves the hint stone at a given position on the board.
+    * @param row
     *   row index of matrix
     * @param cols
     *   cols index of the matrix

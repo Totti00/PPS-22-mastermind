@@ -85,7 +85,8 @@ object ModelModule:
       */
     def gameState_(newState: GameState): Unit
 
-    /** @return
+    /** Colors used to make the code
+      * @return
       *   Vector that represent the colors used to make the code
       */
     def colors: PlayableStones
