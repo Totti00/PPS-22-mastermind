@@ -66,8 +66,8 @@ Grazie a questa struttura, ogni membro del team potrà avere una visione d'insie
 Per la gestione del codice sorgente su Git e GitHub, è stato scelto un modello che prevede l'utilizzo di due branch per 
 organizzare lo sviluppo in modo strutturato:
 - **main**: branch principale, utilizzato sia per lo sviluppo che per il rilascio di codice stabile.
+- **develop**: branch di sviluppo, utilizzato per integrare le funzionalità sviluppate dai vari membri del team. 
 - **doc**: branch dedicato alla documentazione, in cui vengono aggiornate le informazioni relative al progetto.
-
 
 ## Testing
 Per garantire l'affidabilità delle funzionalità sviluppate, è stato adottato il paradigma del **Test Driven Development (TDD)**. 
@@ -76,7 +76,7 @@ durante lo sviluppo.
 
 Il processo TDD si articola in tre fasi principali:
 1. **Definizione del test**: si scrive un test che specifica il comportamento atteso del componente o delle funzionalità 
-in sviluppo. Poiché l'implementazione non è ancora presente, il deve inizialmente fallire.
+in sviluppo. Poiché l'implementazione non è ancora presente, deve inizialmente fallire.
 2. **Implementazione**: si realizza il codice necessario affinché il test venga superato.
 3. **Refactoring**: una volta che il test è stato superato, il codice viene ottimizzato e reso più leggibile, garantendo 
 che i test continuino a essere validi anche dopo le modifiche.

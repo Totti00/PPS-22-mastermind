@@ -16,7 +16,7 @@ tentativi. Dopo ogni tentativo, il sistema fornisce un feedback utilizzando appo
 sono corretti e nella giusta posizione e quanti sono presenti ma in una posizione errata.
 
 ## Obiettivo del gioco
-Il fine ultimo del gioco è individuare la combinazione segreta nel minor numero possibile di tentativi, sfruttando la 
+Il fine ultimo del gioco è individuare la combinazione segreta entro un numero definito di tentativi, sfruttando la 
 logica deduttiva e interpretando correttamente i suggerimenti forniti dal codificatore.
 
 ## Contributors
