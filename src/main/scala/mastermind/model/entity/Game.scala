@@ -26,7 +26,7 @@ trait Game:
     * @return
     *   a new game
     */
-  def resetGame(): Game
+  def resetGame: Game
 
   /** Remaining turns
     * @return
@@ -66,7 +66,7 @@ object Game:
       private var _state: GameState
   ) extends Game:
 
-    override def resetGame(): Game = Game(Board(board.rows, board.cols), Code(4), 0)
+    override def resetGame: Game = Game(Board(board.rows, board.cols), Code(4), 0)
 
     override def remainingTurns: Int = board.rows - currentTurn
 
