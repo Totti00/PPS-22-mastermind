@@ -44,7 +44,8 @@ object ControllerModule:
 
 ## Model
 
-![Cake Model](../img/04-design/cake-model.jpg)
+![Model](../img/04-design/cake-model.jpg)
+![Model_dettaglio](../img/04-design/model.jpg)
 
 
 1 startNewGame
@@ -54,9 +55,26 @@ object ControllerModule:
 5 settere le stone per il nuovo turno
 6 turni rimanenti
 7 colori utilizzati
+
+### Game
+
+### Code
+
+### Board
+
+### Matrix
+
+### GameState
+
+### GameMode
+
+
 ## View
+Immagine della struttura cake view
+Parlare di come abbiamo fatto le view
 
 ## Controller
+Immagine della struttura cake controller e basta
 
 ## Pattern utilizzati
 
