@@ -6,7 +6,7 @@ import javafx.scene.control.Label
 import javafx.scene.layout.{GridPane, VBox}
 import mastermind.controller.ControllerModule
 import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
-import mastermind.model.entity.{HintStone, HintStones, PlayableStones, PlayerStoneGrid, Stone}
+import mastermind.model.entity.{HintStone, HintStones, PlayableStones, PlayerStone, Stone}
 import mastermind.utils.{GridUpdateType, Initialize, UpdateHint, UpdatePlayable}
 import scalafx.animation.{KeyFrame, Timeline}
 import scalafx.scene.image.{Image, ImageView}
@@ -15,7 +15,7 @@ import scalafx.Includes.*
 import scalafx.scene.{ImageCursor, Scene}
 import scalafx.scene.input.ScrollEvent
 import scalafx.stage.Stage
-import mastermind.model.entity.PlayerStoneGrid.Playable
+import mastermind.model.entity.PlayerStone.Playable
 import mastermind.utils.PagesEnum.Rules
 import java.net.URL
 import java.util.ResourceBundle
@@ -258,5 +258,5 @@ object GameView:
       attemptGrid.getChildren
         .filtered(child => GridPane.getRowIndex(child) == controller.turn)
         .asScala
-        .map(cell => PlayerStoneGrid.fromString(cell.asInstanceOf[Label].getText))
+        .map(cell => PlayerStone.fromString(cell.asInstanceOf[Label].getText))
         .toVector

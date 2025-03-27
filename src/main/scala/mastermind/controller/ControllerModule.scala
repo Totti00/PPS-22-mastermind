@@ -107,7 +107,7 @@ object ControllerModule:
         goToPage(Menu)
 
       override def startGame(difficulty: String): Unit =
-        context.model.startNewGame(difficulty);
+        context.model.startNewGame(difficulty)
 
       override def goToPage(path: PagesEnum, mode: Option[String]): Unit = context.view.loadView(path, mode)
 

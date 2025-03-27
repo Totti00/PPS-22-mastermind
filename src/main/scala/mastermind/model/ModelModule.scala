@@ -2,7 +2,7 @@ package mastermind.model
 
 import mastermind.model.GameState.{PlayerLose, PlayerWin}
 import mastermind.model.entity.HintStone.HintRed
-import mastermind.model.entity.{Board, Code, Game, HintStone, HintStones, PlayableStones, PlayerStoneGrid}
+import mastermind.model.entity.{Board, Code, Game, HintStone, HintStones, PlayableStones, PlayerStone}
 import mastermind.model.strategy.*
 import mastermind.utils.ErrorHandler.*
 
@@ -27,7 +27,7 @@ object ModelModule:
       * @return
       *   The `PlayerStoneGrid` at the given position
       */
-    def getPlayableStone(row: Int, col: Int): PlayerStoneGrid
+    def getPlayableStone(row: Int, col: Int): PlayerStone
 
     /** Retrieves a specific hint stone at the given row and column.
       * @param row
@@ -124,7 +124,7 @@ object ModelModule:
       override def deleteGame(): Unit =
         currentGame = None
 
-      override def getPlayableStone(row: Int, col: Int): PlayerStoneGrid =
+      override def getPlayableStone(row: Int, col: Int): PlayerStone =
         currentGame.get.board.getPlayableStone(row, col)
 
       override def getHintStone(row: Int, col: Int): HintStone =

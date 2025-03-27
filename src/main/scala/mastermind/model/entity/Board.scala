@@ -1,7 +1,7 @@
 package mastermind.model.entity
 
 import mastermind.model.entity.HintStone.{HintEmpty, HintRed}
-import mastermind.model.entity.PlayerStoneGrid.{Empty, Playable, Win}
+import mastermind.model.entity.PlayerStone.{Empty, Playable, Win}
 import mastermind.utils.ErrorHandler.*
 
 trait Board:
@@ -25,7 +25,7 @@ trait Board:
     * @return
     *   the playableGridStone at the specified row and column.
     */
-  def getPlayableStone(row: Int, cols: Int): PlayerStoneGrid
+  def getPlayableStone(row: Int, cols: Int): PlayerStone
 
   /** Retrieves the hint stone at a given position on the board.
     * @param row
@@ -72,13 +72,13 @@ trait Board:
 
 object Board:
   def apply(
-      rows: Int,
-      cols: Int,
-      playableFilling: PlayerStoneGrid = Empty,
-      hintFilling: HintStone = HintEmpty
+             rows: Int,
+             cols: Int,
+             playableFilling: PlayerStone = Empty,
+             hintFilling: HintStone = HintEmpty
   ): Board = BoardImpl(Matrix(rows, cols, playableFilling), Matrix(rows, cols, hintFilling))
 
-  private case class BoardImpl(playableMatrix: Matrix[PlayerStoneGrid], hintMatrix: Matrix[HintStone]) extends Board:
+  private case class BoardImpl(playableMatrix: Matrix[PlayerStone], hintMatrix: Matrix[HintStone]) extends Board:
 
     override def placeGuessAndHints(
         rowPlayableStone: PlayableStones,
@@ -90,7 +90,7 @@ object Board:
     override def rows: Int = playableMatrix.rows
     override def cols: Int = playableMatrix.cols
 
-    override def getPlayableStone(row: Int, cols: Int): PlayerStoneGrid = playableMatrix.cell(row, cols)
+    override def getPlayableStone(row: Int, cols: Int): PlayerStone = playableMatrix.cell(row, cols)
     override def getHintStone(row: Int, cols: Int): HintStone = hintMatrix.cell(row, cols)
 
     override def initializeCurrentTurn(currentTurn: Int): Board =

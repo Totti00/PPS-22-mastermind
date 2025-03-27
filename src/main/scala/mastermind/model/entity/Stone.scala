@@ -5,13 +5,13 @@ import mastermind.utils.GivenConversion.PrologConversion.given
 import scala.util.Random
 import scala.language.implicitConversions
 
-type PlayableStones = Vector[PlayerStoneGrid]
+type PlayableStones = Vector[PlayerStone]
 type HintStones = Vector[HintStone]
 val MAX_PERMUTATION = 100
 
 sealed trait Stone
 
-enum PlayerStoneGrid extends Stone:
+enum PlayerStone extends Stone:
   case Playable, Empty, Win
   private case Red, Green, Blue, Yellow, White, Purple
 
@@ -30,7 +30,7 @@ enum PlayerStoneGrid extends Stone:
     case Win      => "Win"
     case Empty    => "Empty"
 
-object PlayerStoneGrid:
+object PlayerStone:
   private val engine = createEngine("/prolog/stone.pl")
 
   /** Generates a random set of `PlayableStones` and `colors` based on the provided length.
@@ -60,7 +60,7 @@ object PlayerStoneGrid:
       .map(extractTermToString(_, "PlayableStones"))
       .toVector
 
-  private def mapper = PlayerStoneGrid.fromString
+  private def mapper = PlayerStone.fromString
 
   /** Converts a string to the corresponding `PlayerStoneGrid` color.
     * @param stoneColor
@@ -68,7 +68,7 @@ object PlayerStoneGrid:
     * @return
     *   Gives the requested color or an empty color in case the requested color is not found
     */
-  def fromString(stoneColor: String): PlayerStoneGrid =
+  def fromString(stoneColor: String): PlayerStone =
     values.find(_.toString == stoneColor.toLowerCase.capitalize).getOrElse(Empty)
 
 enum HintStone extends Stone:

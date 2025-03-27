@@ -9,17 +9,17 @@ class CodeTest extends AnyFlatSpec with Matchers:
   "Code" should "find the stones in the wrong position" in {
     val inputCode =
       Vector(
-        PlayerStoneGrid.fromString("Green"),
-        PlayerStoneGrid.fromString("Green"),
-        PlayerStoneGrid.fromString("White"),
-        PlayerStoneGrid.fromString("White")
+        PlayerStone.fromString("Green"),
+        PlayerStone.fromString("Green"),
+        PlayerStone.fromString("White"),
+        PlayerStone.fromString("White")
       )
     val userInput =
       Vector(
-        PlayerStoneGrid.fromString("Blue"),
-        PlayerStoneGrid.fromString("Blue"),
-        PlayerStoneGrid.fromString("Blue"),
-        PlayerStoneGrid.fromString("Green")
+        PlayerStone.fromString("Blue"),
+        PlayerStone.fromString("Blue"),
+        PlayerStone.fromString("Blue"),
+        PlayerStone.fromString("Green")
       )
     val hintResult = Vector(HintWhite, HintWhite, HintEmpty, HintEmpty)
     val code = Code(inputCode, Vector.empty)
@@ -30,17 +30,17 @@ class CodeTest extends AnyFlatSpec with Matchers:
   "Code" should "check the stones in the right position" in {
     val inputCode =
       Vector(
-        PlayerStoneGrid.fromString("Green"),
-        PlayerStoneGrid.fromString("Green"),
-        PlayerStoneGrid.fromString("White"),
-        PlayerStoneGrid.fromString("Yellow")
+        PlayerStone.fromString("Green"),
+        PlayerStone.fromString("Green"),
+        PlayerStone.fromString("White"),
+        PlayerStone.fromString("Yellow")
       )
     val userInput =
       Vector(
-        PlayerStoneGrid.fromString("Green"),
-        PlayerStoneGrid.fromString("Green"),
-        PlayerStoneGrid.fromString("Blue"),
-        PlayerStoneGrid.fromString("Green")
+        PlayerStone.fromString("Green"),
+        PlayerStone.fromString("Green"),
+        PlayerStone.fromString("Blue"),
+        PlayerStone.fromString("Green")
       )
     val hintResult = Vector(HintRed, HintRed, HintEmpty, HintEmpty)
     val code = Code(inputCode, Vector.empty)
@@ -51,17 +51,17 @@ class CodeTest extends AnyFlatSpec with Matchers:
   "Code" should "find the stones in the wrong position repeated two times by the user" in {
     val inputCode =
       Vector(
-        PlayerStoneGrid.fromString("Yellow"),
-        PlayerStoneGrid.fromString("Yellow"),
-        PlayerStoneGrid.fromString("White"),
-        PlayerStoneGrid.fromString("White")
+        PlayerStone.fromString("Yellow"),
+        PlayerStone.fromString("Yellow"),
+        PlayerStone.fromString("White"),
+        PlayerStone.fromString("White")
       )
     val userInput =
       Vector(
-        PlayerStoneGrid.fromString("Blue"),
-        PlayerStoneGrid.fromString("Blue"),
-        PlayerStoneGrid.fromString("Yellow"),
-        PlayerStoneGrid.fromString("Yellow")
+        PlayerStone.fromString("Blue"),
+        PlayerStone.fromString("Blue"),
+        PlayerStone.fromString("Yellow"),
+        PlayerStone.fromString("Yellow")
       )
     val hintResult = Vector(HintWhite, HintWhite, HintEmpty, HintEmpty)
     val code = Code(inputCode, Vector.empty)
@@ -71,17 +71,17 @@ class CodeTest extends AnyFlatSpec with Matchers:
   "Code" should "check the stones in the right position using more colors" in {
     val inputCode =
       Vector(
-        PlayerStoneGrid.fromString("Yellow"),
-        PlayerStoneGrid.fromString("Yellow"),
-        PlayerStoneGrid.fromString("White"),
-        PlayerStoneGrid.fromString("White")
+        PlayerStone.fromString("Yellow"),
+        PlayerStone.fromString("Yellow"),
+        PlayerStone.fromString("White"),
+        PlayerStone.fromString("White")
       )
     val userInput =
       Vector(
-        PlayerStoneGrid.fromString("Blue"),
-        PlayerStoneGrid.fromString("Blue"),
-        PlayerStoneGrid.fromString("Yellow"),
-        PlayerStoneGrid.fromString("Blue")
+        PlayerStone.fromString("Blue"),
+        PlayerStone.fromString("Blue"),
+        PlayerStone.fromString("Yellow"),
+        PlayerStone.fromString("Blue")
       )
     val hintResult = Vector(HintWhite, HintWhite, HintEmpty, HintEmpty)
     val code = Code(inputCode, Vector.empty)
@@ -94,17 +94,17 @@ class CodeTest extends AnyFlatSpec with Matchers:
 
     val inputCode =
       Vector(
-        PlayerStoneGrid.fromString("Yellow"),
-        PlayerStoneGrid.fromString("Yellow"),
-        PlayerStoneGrid.fromString("White"),
-        PlayerStoneGrid.fromString("Blue")
+        PlayerStone.fromString("Yellow"),
+        PlayerStone.fromString("Yellow"),
+        PlayerStone.fromString("White"),
+        PlayerStone.fromString("Blue")
       )
     val userInput =
       Vector(
-        PlayerStoneGrid.fromString("Yellow"),
-        PlayerStoneGrid.fromString("Blue"),
-        PlayerStoneGrid.fromString("White"),
-        PlayerStoneGrid.fromString("Yellow")
+        PlayerStone.fromString("Yellow"),
+        PlayerStone.fromString("Blue"),
+        PlayerStone.fromString("White"),
+        PlayerStone.fromString("Yellow")
       )
     val hintResult = Vector(HintRed, HintRed, HintWhite, HintWhite)
 

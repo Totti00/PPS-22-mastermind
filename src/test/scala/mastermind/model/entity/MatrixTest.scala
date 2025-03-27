@@ -1,14 +1,14 @@
 package mastermind.model.entity
 
 import mastermind.model.entity.HintStone.{HintEmpty, HintWhite}
-import mastermind.model.entity.PlayerStoneGrid.Empty
+import mastermind.model.entity.PlayerStone.Empty
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 class MatrixTest extends AnyFlatSpec with Matchers:
 
   "Matrix" should "be created with specified dimensions and filling value" in {
-    val matrix = Matrix(3, 3, PlayerStoneGrid.Empty)
+    val matrix = Matrix(3, 3, PlayerStone.Empty)
 
     assert(matrix.rows == 3)
     assert(matrix.cols == 3)
@@ -44,10 +44,10 @@ class MatrixTest extends AnyFlatSpec with Matchers:
   }
 
   "Playable Matrix" should "replace the correct cell value" in {
-    val matrix: Matrix[PlayerStoneGrid] = Matrix(3, 3, Empty)
-    val updatedMatrix = matrix.replaceCell(1, 1, PlayerStoneGrid.fromString("Red"))
+    val matrix: Matrix[PlayerStone] = Matrix(3, 3, Empty)
+    val updatedMatrix = matrix.replaceCell(1, 1, PlayerStone.fromString("Red"))
 
-    updatedMatrix.cell(1, 1) shouldBe PlayerStoneGrid.fromString("Red")
+    updatedMatrix.cell(1, 1) shouldBe PlayerStone.fromString("Red")
     updatedMatrix.cell(0, 0) shouldBe Empty
     updatedMatrix.cell(2, 2) shouldBe Empty
   }

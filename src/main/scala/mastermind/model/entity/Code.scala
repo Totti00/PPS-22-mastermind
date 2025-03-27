@@ -24,7 +24,7 @@ trait Code:
 object Code:
 
   def apply(size: Int): Code =
-    val (code, colors) = PlayerStoneGrid.random(size)
+    val (code, colors) = PlayerStone.random(size)
     CodeImpl(code, colors)
 
   /** Used for test

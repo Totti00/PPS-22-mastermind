@@ -31,17 +31,27 @@ jobs:
           java-version: '17'
           cache: 'sbt'
 
-      # Step 3: Generate Jacoco
+      # Step 3: Start X virtual framebuffer (xvfb) for JavaFX tests
+      - name: Start xvfb
+        run: Xvfb :99 -screen 0 1024x768x16 &
+
+      # Step 4: Run sbt jacoco to generate coverage
+      - name: Run sbt jacoco to generate coverage
+        run: |
+          export DISPLAY=:99
+          sbt jacoco
+
+      # Step 5: Generate Jacoco
       - name: Run sbt jacoco to generate coverage
         run: sbt jacoco
 
-      # Step 4: Move generated coverage to a temporary directory
+      # Step 6: Move generated coverage to a temporary directory
       - name: Move coverage to temporary directory
         run: |
           mkdir -p /tmp/coverage
           cp -r ${SCALA_TARGET}/jacoco/report/html/* /tmp/coverage
 
-      # Step 5: Checkout the doc branch to add the coverage
+      # Step 7: Checkout the doc branch to add the coverage
       - name: Checkout doc branch
         uses: actions/checkout@v3
         with:
@@ -49,13 +59,13 @@ jobs:
           persist-credentials: false
           fetch-depth: 0  # Fetch full history to allow branch switching
 
-      # Step 6: Copy the generated coverage to the Jekyll site
+      # Step 8: Copy the generated coverage to the Jekyll site
       - name: Copy coverage to Jekyll site
         run: |
           mkdir -p ./test-coverage
           cp -r /tmp/coverage/* ./test-coverage
 
-      # Step 7: Commit the updated coverage
+      # Step 9: Commit the updated coverage
       - name: Commit changes
         run: |
           git config --local user.name "github-actions[bot]"
@@ -68,7 +78,7 @@ jobs:
             exit 0;
           }
 
-      # Step 8: Push changes to the doc branch
+      # Step 10: Push changes to the doc branch
       - name: Push changes to the doc branch
         uses: ad-m/github-push-action@master
         with:

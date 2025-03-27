@@ -4,8 +4,8 @@ import mastermind.Launcher.ModelImpl
 import mastermind.model.GameState.PlayerLose
 import mastermind.model.ModelModule.Model
 import mastermind.model.entity.HintStone.{HintEmpty, HintRed}
-import mastermind.model.entity.{HintStone, PlayerStoneGrid}
-import mastermind.model.entity.PlayerStoneGrid.{Empty, Playable}
+import mastermind.model.entity.{HintStone, PlayerStone}
+import mastermind.model.entity.PlayerStone.{Empty, Playable}
 import mastermind.model.strategy.{EasyMode, ExtremeMode, MediumMode}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -47,10 +47,10 @@ class ModelModuleTest extends AnyFlatSpec with Matchers:
     model.startNewGame(mode.name)
     val guess =
       Vector(
-        PlayerStoneGrid.fromString("Green"),
-        PlayerStoneGrid.fromString("Green"),
-        PlayerStoneGrid.fromString("White"),
-        PlayerStoneGrid.fromString("Yellow")
+        PlayerStone.fromString("Green"),
+        PlayerStone.fromString("Green"),
+        PlayerStone.fromString("White"),
+        PlayerStone.fromString("Yellow")
       )
     val feedback = model.submitGuess(guess)
 
@@ -71,10 +71,10 @@ class ModelModuleTest extends AnyFlatSpec with Matchers:
     model.startNewGame(mode.name)
     val guess =
       Vector(
-        PlayerStoneGrid.fromString("Green"),
-        PlayerStoneGrid.fromString("Green"),
-        PlayerStoneGrid.fromString("White"),
-        PlayerStoneGrid.fromString("Yellow")
+        PlayerStone.fromString("Green"),
+        PlayerStone.fromString("Green"),
+        PlayerStone.fromString("White"),
+        PlayerStone.fromString("Yellow")
       )
     for _ <- 1 to mode.boardSize._1 do
       model.submitGuess(guess)

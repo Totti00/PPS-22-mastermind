@@ -1,7 +1,7 @@
 package mastermind.model.entity
 
 import mastermind.model.GameState
-import mastermind.model.entity.PlayerStoneGrid.{Playable, Win}
+import mastermind.model.entity.PlayerStone.{Playable, Win}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
