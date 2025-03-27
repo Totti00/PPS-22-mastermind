@@ -9,48 +9,51 @@ In questo capitolo verrà descritta nel dettaglio l'architettura del sistema, an
 rispettive caratteristiche.
 
 ## Component programming & cake Pattern
-Come descritto nella sezione precedente, si è deciso di utilizzare il pattern architetturale MVC. Per agevolare l'implementazione di 
-questa scelta si è deciso di utilizzare il Cake Pattern, questo permette di iniettare le dipendenza fra i vari componenti in modo 
-semplice e dichiarativo utilizzando aspetti avanzati della programmazione funzionale tra cui: *self-type*, *min-in* e *type-members*.
-Nello specifico ogni componente che si desidera implementare deve avere cinque aspetti principali:
+Come illustrato nella sezione precedente, si è scelto di adottare il pattern architetturale MVC. Per facilitare questa implementazione,
+è stato impiegato il Cake Pattern, che consente di gestire le dipendenze tra i vari componenti in modo chiaro e strutturato, sfruttando
+caratteristiche avanzate della programmazione funzionale come self-type, mix-in e type-members.
+In particolare, ogni componente da implementare segue cinque principi fondamentali:
 1. Un trait che definisce l'interfaccia del componente;
-2. Un trait `Provider` che definisce il riferimento al componente tramite una singleton-like val;
-3. Un type-member `Requirements` che definisce, in modo dichiarativo, le dipendenze di altri componenti di cui ha bisogno per svolgere 
-i propri compiti (queste verranno mixed-in dai provider degli altri componenti in modo automatico);
-4. Un trait `Component` che definisce l'implementazione effettiva del componente;
-5. Un trait `Interface` che si occupa di aggregare gli altri elementi del modulo per renderlo effettivamente utilizzabile.
+2. Un trait `Provider`, responsabile dell'esposizione del componente attraverso una variabile singleton-like;
+3. Un type-member `Requirements`, che dichiara esplicitamente le dipendenze necessarie affinché il componente possa operare 
+correttamente (queste verranno mixed-in dai provider degli altri componenti);
+4. Un trait `Component`, che fornisce l'implementazione concreta del componente;
+5. Un trait `Interface`, che combina e organizza gli elementi del modulo, rendendolo pronto per l'uso. 
 
-Un esempio di modulo view implementato utilizzando questo pattern è il seguente:
-
+Di seguito è riportato un esempio di modulo Controller realizzato secondo questo modello:
 ```scala
-object ViewModule:
-  trait View:
-    def show(stage: Stage): Unit
+object ControllerModule:
+  trait Controller:
+    def goToPage(path: PagesEnum, mode: Option[String] = None): Unit
+    def startGame(difficulty: String): Unit
   
   trait Provider:
-    val view: View
+    val controller: Controller
 
-  type Requirements = ControllerModule.Provider
+  type Requirements = ViewModule.Provider with ModelModule.Provider
 
   trait Component:
     context: Requirements =>
-    class ViewImpl extends View:
-        private val GameView = new GameView(context)
-        private var stage: Stage = _
-        def show(primaryStage: Stage): Unit = {
-          stage = primaryStage
-          loadView("MenuPage")
-        }
-```
+    class ControllerImpl extends Controller:
+      override def goToPage(path: PagesEnum, mode: Option[String] = None): Unit = context.view.loadView(path, mode)
+      override def startGame(difficulty: String): Unit = context.model.startNewGame(difficulty)
 
-Questa strategia, sostanzialmente, prevede di implementare il *pattern MVC* come una composizione di tre elementi: Model (M), View (V) 
-e Controller (C), i quali presentano le seguenti dipendenze: C -> V, V -> C e C -> M.
-Più precisamente, possiamo realizzare questi tre elementi incapsulando già al loro interno la risoluzione delle dipendenze 
-precedentemente citate e, infine, potremo istanziare un oggetto *MVC* che li detiene tutti e tre e che è in grado di accedere alle 
-rispettive proprietà, senza doversi preoccupare del loro collegamento.
+  trait Interface extends Provider with Component:
+    self: Requirements =>
+```
 
 ## Model
 
+![Cake Model](../img/04-design/cake-model.jpg)
+
+
+1 startNewGame
+2 reset
+3 Prendere le stone: sia hint che playable
+4 sottomettere userInput
+5 settere le stone per il nuovo turno
+6 turni rimanenti
+7 colori utilizzati
 ## View
 
 ## Controller
