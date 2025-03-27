@@ -72,10 +72,10 @@ trait Board:
 
 object Board:
   def apply(
-             rows: Int,
-             cols: Int,
-             playableFilling: PlayerStone = Empty,
-             hintFilling: HintStone = HintEmpty
+      rows: Int,
+      cols: Int,
+      playableFilling: PlayerStone = Empty,
+      hintFilling: HintStone = HintEmpty
   ): Board = BoardImpl(Matrix(rows, cols, playableFilling), Matrix(rows, cols, hintFilling))
 
   private case class BoardImpl(playableMatrix: Matrix[PlayerStone], hintMatrix: Matrix[HintStone]) extends Board:
