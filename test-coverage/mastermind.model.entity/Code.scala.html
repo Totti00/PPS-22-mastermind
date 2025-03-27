@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Code.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.model.entity</a> &gt; <span class="el_source">Code.scala</span></div><h1>Code.scala</h1><pre class="source lang-java linenums">package mastermind.model.entity
 
-import mastermind.model.entity.Code.{HintStones, PlayableStones}
-import mastermind.model.entity.HintStone.{HintEmpty, HintRed, HintWhite}
+import mastermind.model.entity.HintStone.*
+import mastermind.utils.prolog.Scala2P.*
+import mastermind.utils.GivenConversion.PrologConversion.given
+import scala.language.implicitConversions
 
 trait Code:
   /** Takes userInput to perform a comparison finding hintStones
@@ -13,75 +15,53 @@ trait Code:
     */
   def compareTo(userInput: PlayableStones): HintStones
 
-<span class="nc" id="L16">object Code:</span>
+  /** Retrieves the colors of the code.
+    * @return
+    *   the colors of the code represented as `PlayableStones`
+    */
+  def colors: PlayableStones
 
-<span class="fc" id="L18">  private type PlayableStones = Vector[PlayerStoneGrid]</span>
-  private type HintStones = Vector[HintStone]
+<span class="nc" id="L24">object Code:</span>
 
-<span class="nc" id="L21">  def apply(size: Int): Code = CodeImpl(Vector.fill(size)(PlayerStoneGrid.random))</span>
+<span class="fc" id="L26">  def apply(size: Int): Code =</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">    val (code, colors) = PlayerStone.random(size)</span>
+<span class="fc" id="L28">    CodeImpl(code, colors)</span>
 
   /** Used for test
     *
-    * @param inputCode
+    * @param codeAndColor
     *   Vector of PlayableStone that will be the code
     * @return
     *   A code object
     */
-<span class="fc" id="L30">  def apply(inputCode: PlayableStones): Code = CodeImpl(inputCode)</span>
+<span class="fc" id="L37">  def apply(codeAndColor: (PlayableStones, PlayableStones)): Code = CodeImpl(codeAndColor._1, codeAndColor._2)</span>
 
-<span class="pc bnc" id="L32" title="All 18 branches missed.">  private case class CodeImpl(code: PlayableStones) extends Code:</span>
+<span class="pc bnc" id="L39" title="All 28 branches missed.">  private case class CodeImpl(code: PlayableStones, colors: PlayableStones) extends Code:</span>
+<span class="fc" id="L40">    private val engine = createEngine(&quot;/prolog/code.pl&quot;)</span>
 
     override def compareTo(userInput: PlayableStones): HintStones =
-<span class="fc" id="L35">      val firstRuleVectors = compareToEqual(userInput)</span>
-<span class="fc" id="L36">      val secondRuleVector = compareToPresent(firstRuleVectors._2, userInput)</span>
-<span class="fc" id="L37">      val rulesJoinedVector = joinVectors(firstRuleVectors._1, secondRuleVector)</span>
-<span class="fc" id="L38">      rulesJoinedVector</span>
+<span class="fc" id="L43">      val hintStonesRed = compareToEqual(userInput)</span>
+<span class="fc" id="L44">      val hintStoneWhite = compareToPresent(userInput)</span>
+<span class="fc" id="L45">      val rulesJoinedVector = joinVectors(hintStonesRed, hintStoneWhite)</span>
+<span class="fc" id="L46">      rulesJoinedVector</span>
 
-    /** Takes user input to find stones of correct colour in correct position
-      *
-      * @param inputUser
-      *   Guess of the user
-      * @return
-      *   Vector of HintStones Red and their position
-      */
-    private def compareToEqual(inputUser: PlayableStones): (HintStones, List[Int]) =
-<span class="fc" id="L48">      code.zip(inputUser).zipWithIndex.foldLeft(Vector.empty: HintStones, List.empty: List[Int]) {</span>
-        case ((hintStones, indices), ((stoneCode, stoneUser), index))
-            if stoneCode.toString.equals(stoneUser.toString) =&gt;
-          (hintStones :+ HintRed, indices :+ index)
-        case ((hintStones, indices), ((_, _), _)) =&gt; (hintStones, indices)
-      }
+    private def compareToPresent(userInput: PlayableStones): HintStones =
+<span class="fc" id="L49">      getHintStonesByRule(&quot;compareToPresent&quot;, code, userInput)</span>
 
-    /** Checks if there are stones of the right colour but positioned wrong
-      *
-      * @param indicesToDelete
-      *   First rule indices that must not be used
-      * @param userInput
-      *   Guess of the user
-      * @return
-      *   Vector of HintStones White
-      */
-    private def compareToPresent(indicesToDelete: List[Int], userInput: PlayableStones): HintStones =
-<span class="fc" id="L65">      val codeToCheck = code.zipWithIndex.filter((_, index) =&gt; !indicesToDelete.contains(index))</span>
-      val userInputToCheck =
-<span class="fc" id="L67">        userInput.zipWithIndex.filter((_, index) =&gt; !indicesToDelete.contains(index)).map((stone, _) =&gt; stone)</span>
-<span class="fc" id="L68">      codeToCheck.foldLeft(Vector.empty: HintStones) {</span>
-        case (res, (codeStone, index)) if userInputToCheck.contains(codeStone) =&gt; res :+ HintWhite
-        case (res, (codeStone, index))                                         =&gt; res
-      }
+    private def compareToEqual(userInput: PlayableStones): HintStones =
+<span class="fc" id="L52">      getHintStonesByRule(&quot;compareToEqual&quot;, code, userInput)</span>
 
-    /** Create the feedback of hintStones
-      *
-      * @param hintStonesVector
-      *   Vector of the first rule
-      * @param hintStonesVector2
-      *   Vector of the second rule
-      * @return
-      *   HintStone feedback consisting of White, Blank and Red
-      */
-    private def joinVectors(hintStonesVector: HintStones, hintStonesVector2: HintStones): HintStones =
-<span class="fc" id="L83">      val missingPositions = code.size - (hintStonesVector.size + hintStonesVector2.size)</span>
+    private def getHintStonesByRule(functor: String, code: String, userInput: String): HintStones =
+<span class="fc" id="L55">      val solveInfo = engine(s&quot;$functor($code, $userInput, HintStones).&quot;).head</span>
+<span class="fc" id="L56">      val result = extractTermToString(solveInfo, &quot;HintStones&quot;)</span>
+<span class="fc" id="L57">      fromStringToVector(result) {</span>
+        case s if s.toLowerCase == &quot;hintred&quot; =&gt; HintRed
+        case _                               =&gt; HintWhite
+<span class="fc" id="L60">      }</span>
+
+    private def joinVectors(hintStonesRed: HintStones, hintStonesWhite: HintStones): HintStones =
+<span class="fc" id="L63">      val missingPositions = code.size - (hintStonesRed.size + hintStonesWhite.size)</span>
       val joinedVectors: HintStones =
-<span class="fc" id="L85">        hintStonesVector ++ hintStonesVector2 ++ Vector.fill(missingPositions)(HintEmpty)</span>
-<span class="fc" id="L86">      joinedVectors</span>
+<span class="fc" id="L65">        hintStonesRed ++ hintStonesWhite ++ Vector.fill(missingPositions)(HintEmpty)</span>
+<span class="fc" id="L66">      joinedVectors</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

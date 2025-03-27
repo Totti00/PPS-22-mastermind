@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ControllerModule.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.controller</a> &gt; <span class="el_source">ControllerModule.scala</span></div><h1>ControllerModule.scala</h1><pre class="source lang-java linenums">package mastermind.controller
+
+import mastermind.model.GameState.InGame
+import mastermind.model.{GameState, ModelModule}
+import mastermind.model.entity.{HintStones, PlayableStones, Stone}
+import mastermind.utils.ErrorHandler.*
+import mastermind.utils.{GridUpdateType, Initialize, PagesEnum, UpdateHint, UpdatePlayable}
+import mastermind.utils.PagesEnum.Menu
+import mastermind.view.ViewModule
+
+<span class="nc" id="L11">object ControllerModule:</span>
+
+<span class="nc" id="L13">  trait Controller:</span>
+    /** Reset the game
+      */
+    def resetGame(): Unit
+
+    /** return to the Menu
+      */
+    def backToMenu(): Unit
+
+    /** Start a new game
+      * @param difficulty
+      *   the difficulty of the game
+      */
+    def startGame(difficulty: String): Unit
+
+    /** Go to a specific page
+      * @param path
+      *   the path of the page
+      * @param mode
+      *   the difficulty of the game
+      */
+<span class="nc" id="L34">    def goToPage(path: PagesEnum, mode: Option[String] = None): Unit</span>
+
+    /** Retrieves a stone from the board at a specified position and type
+      * @param row
+      *   The row index of the stone
+      * @param col
+      *   The column index of the stone
+      * @param typeStone
+      *   The type of stone to retrieve (&quot;playable&quot; or &quot;hint&quot;)
+      * @return
+      *   The stone at the specified position.
+      */
+    def getStone(row: Int, col: Int, typeStone: String): Either[Boolean, Stone]
+
+    /** Retrieves the dimensions (rows and columns) of the game board.
+      * @return
+      *   A tuple containing the number of rows and columns of the board.
+      */
+    def getSizeBoard: (Int, Int)
+
+    /** It checks the user's guess and provides feedback on the correctness of the guess.
+      * @param userInput
+      *   The player's guess as a sequence of `PlayableStones`
+      */
+    def checkCode(userInput: PlayableStones): Unit
+
+    /** Current turn
+      * @return
+      *   the current turn
+      */
+    def turn: Int
+
+    /** Remaining turns
+      * @return
+      *   the remaining turns
+      */
+    def remainingTurns: Int
+
+    /** Gets the current game state.
+      *
+      * @return
+      *   The current `GameState` of the game.
+      */
+    def gameState: GameState
+
+    /** Sets a new game state.
+      *
+      * @param newState
+      *   The new `GameState` to be set.
+      */
+    def gameState_(newState: GameState): Unit
+
+    /** Retrieves the list of available colors for the game
+      * @return
+      *   A sequence of `PlayableStones` representing the available colors.
+      */
+    def colors: PlayableStones
+
+  trait Provider:
+    val controller: Controller
+
+  type Requirements = ViewModule.Provider with ModelModule.Provider
+
+  trait Component:
+    context: Requirements =&gt;
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">    class ControllerImpl extends Controller:</span>
+
+      override def resetGame(): Unit =
+<span class="nc" id="L102">        context.model.reset()</span>
+<span class="nc" id="L103">        updateView(Initialize)</span>
+
+      override def backToMenu(): Unit =
+<span class="nc" id="L106">        context.model.deleteGame()</span>
+<span class="nc" id="L107">        goToPage(Menu)</span>
+
+      override def startGame(difficulty: String): Unit =
+<span class="nc" id="L110">        context.model.startNewGame(difficulty)</span>
+
+<span class="nc" id="L112">      override def goToPage(path: PagesEnum, mode: Option[String]): Unit = context.view.loadView(path, mode)</span>
+
+      override def getStone(row: Int, col: Int, typeStone: String): Either[Boolean, Stone] =
+<span class="nc" id="L115">        giveMeEither {</span>
+<span class="nc" id="L116">          typeStone.toLowerCase match</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">            case &quot;playable&quot; =&gt; context.model.getPlayableStone(row, col)</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">            case &quot;hint&quot;     =&gt; context.model.getHintStone(row, col)</span>
+<span class="nc" id="L119">        }</span>
+
+<span class="nc" id="L121">      override def getSizeBoard: (Int, Int) = context.model.getSizeBoard</span>
+
+<span class="nc" id="L123">      override def turn: Int = context.model.currentTurn</span>
+
+<span class="nc" id="L125">      override def remainingTurns: Int = context.model.remainingTurns</span>
+
+      override def checkCode(userInput: PlayableStones): Unit =
+<span class="nc" id="L128">        val vectorOfHintStones = context.model.submitGuess(userInput)</span>
+<span class="nc" id="L129">        updateView(UpdateHint, Some(vectorOfHintStones))</span>
+<span class="nc bnc" id="L130" title="All 6 branches missed.">        if context.model.gameState == InGame then context.model.startNewTurn()</span>
+<span class="nc" id="L131">        updateView(UpdatePlayable)</span>
+
+<span class="nc" id="L133">      private def updateView(gameMode: GridUpdateType, vectorOfHintStones: Option[HintStones] = None): Unit =</span>
+<span class="nc" id="L134">        context.view.updateGameView(gameMode, vectorOfHintStones)</span>
+
+<span class="nc" id="L136">      override def gameState: GameState = context.model.gameState</span>
+
+<span class="nc" id="L138">      override def gameState_(newState: GameState): Unit = context.model.gameState_(newState)</span>
+
+      override def colors: PlayableStones =
+<span class="nc" id="L141">        context.model.colors</span>
+
+  trait Interface extends Provider with Component:
+    self: Requirements =&gt;
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

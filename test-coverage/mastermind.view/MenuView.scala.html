@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MenuView.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.view</a> &gt; <span class="el_source">MenuView.scala</span></div><h1>MenuView.scala</h1><pre class="source lang-java linenums">package mastermind.view
+
+import javafx.fxml.{Initializable, FXML}
+import mastermind.controller.ControllerModule
+import mastermind.utils.PagesEnum.*
+import mastermind.model.strategy.*
+import scalafx.scene.Scene
+import scalafx.stage.Stage
+import javafx.scene.layout.AnchorPane
+import java.net.URL
+import java.util.ResourceBundle
+
+trait MenuView:
+  /** Handles the action when the easy mode button is clicked.
+    */
+  def easyModeButton(): Unit
+
+  /** Handles the action when the medium mode button is clicked.
+    */
+  def mediumModeButton(): Unit
+
+  /** Handles the action when the hard mode button is clicked.
+    */
+  def hardModeButton(): Unit
+
+  /** Handles the action when the extreme mode button is clicked.
+    */
+  def extremeModeButton(): Unit
+
+  /** Handles the action when the rules button is clicked.
+    */
+  def rulesButton(): Unit
+
+<span class="nc" id="L34">object MenuView:</span>
+<span class="nc" id="L35">  def apply(controller: ControllerModule.Controller, stage: Stage): MenuView = MenuViewImpl(controller, stage)</span>
+
+<span class="nc" id="L37">  private class MenuViewImpl(private val controller: ControllerModule.Controller, stage: Stage)</span>
+      extends MenuView
+      with Initializable:
+
+    // noinspection VarCouldBeVal
+    @FXML
+    private var menuContainer: AnchorPane = _
+
+    /** This method is called after the FXML view is loaded.
+      *
+      * @param url
+      *   The URL of the FXML file.
+      * @param resourceBundle
+      *   The resource bundle used for localization.
+      */
+    override def initialize(url: URL, resourceBundle: ResourceBundle): Unit =
+      import scalafx.Includes.*
+<span class="nc" id="L54">      stage.scene = new Scene(menuContainer, 800, 500)</span>
+<span class="nc" id="L55">      stage.title = &quot;Mastermind&quot;</span>
+<span class="nc" id="L56">      stage.show()</span>
+
+<span class="nc" id="L58">    override def easyModeButton(): Unit = controller.goToPage(Game, Some(EasyMode().name))</span>
+<span class="nc" id="L59">    override def mediumModeButton(): Unit = controller.goToPage(Game, Some(MediumMode().name))</span>
+<span class="nc" id="L60">    override def hardModeButton(): Unit = controller.goToPage(Game, Some(HardMode().name))</span>
+<span class="nc" id="L61">    override def extremeModeButton(): Unit = controller.goToPage(Game, Some(ExtremeMode().name))</span>
+<span class="nc" id="L62">    override def rulesButton(): Unit = controller.goToPage(Rules)</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

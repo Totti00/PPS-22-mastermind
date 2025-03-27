@@ -1,33 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModelModule.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.model</a> &gt; <span class="el_source">ModelModule.scala</span></div><h1>ModelModule.scala</h1><pre class="source lang-java linenums">package mastermind.model
 
-import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
+import mastermind.model.GameState.{PlayerLose, PlayerWin}
 import mastermind.model.entity.HintStone.HintRed
-import mastermind.model.entity.{Board, Code, Game, HintStone, PlayerStoneGrid}
+import mastermind.model.entity.{Board, Code, Game, HintStone, HintStones, PlayableStones, PlayerStone}
 import mastermind.model.strategy.*
+import mastermind.utils.ErrorHandler.*
 
-<span class="nc" id="L8">object ModelModule:</span>
+<span class="nc" id="L9">object ModelModule:</span>
 
-<span class="nc" id="L10">  trait Model:</span>
+<span class="fc" id="L11">  trait Model:</span>
     /** Start a new game
       * @param difficulty
       *   the difficulty of the game
-      * @return
-      *   the new game
       */
-    def startNewGame(difficulty: String): Option[Game]
+    def startNewGame(difficulty: String): Unit
 
     /** Reset the game
-      * @return
-      *   a new game
       */
-    def reset(): Option[Game]
+    def reset(): Unit
 
-    def getPlayableStone(row: Int, col: Int): PlayerStoneGrid
+    /** Retrieves a specific playable stone at the given row and column.
+      * @param row
+      *   The row of the stone in the board.
+      * @param col
+      *   The column of the stone in the board.
+      * @return
+      *   The `PlayerStoneGrid` at the given position
+      */
+    def getPlayableStone(row: Int, col: Int): PlayerStone
+
+    /** Retrieves a specific hint stone at the given row and column.
+      * @param row
+      *   The row of the hint stone in the board
+      * @param col
+      *   The column of the hint stone in the board
+      * @return
+      *   The `HintStone` at the given position
+      */
     def getHintStone(row: Int, col: Int): HintStone
+
+    /** Retrieves the size of the board
+      * @return
+      *   A tuple `(rows, cols)` representing the dimensions of the board
+      */
     def getSizeBoard: (Int, Int)
-    def submitGuess(userInput: Vector[PlayerStoneGrid]): Vector[HintStone]
+
+    /** Submits a guess from the player and receives the corresponding feedback of hint stones
+      * @param userInput
+      *   The player's guess
+      * @return
+      *   A sequence of `HintStones` representing feedback for the guess
+      */
+    def submitGuess(userInput: PlayableStones): HintStones
+
+    /** Starts a new turn in the game
+      */
     def startNewTurn(): Unit
-    def deleteGame(): Option[Game]
+
+    /** Deletes the current game instance
+      */
+    def deleteGame(): Unit
 
     /** Current turn
       * @return
@@ -53,72 +85,83 @@ import mastermind.model.strategy.*
       */
     def gameState_(newState: GameState): Unit
 
+    /** Colors used to make the code
+      * @return
+      *   Vector that represent the colors used to make the code
+      */
+    def colors: PlayableStones
+
   trait Provider:
     val model: Model
 
   trait Component:
-<span class="nc bnc" id="L60" title="All 2 branches missed.">    class ModelImpl extends Model:</span>
-<span class="nc" id="L61">      private var currentGame: Option[Game] = None</span>
-<span class="nc" id="L62">      private var currentMode: GameMode = MediumMode()</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">    class ModelImpl extends Model:</span>
+<span class="fc" id="L99">      private var currentGame: Option[Game] = None</span>
+<span class="fc" id="L100">      private var currentMode: GameMode = MediumMode()</span>
 
-      override def startNewGame(difficulty: String): Option[Game] =
-<span class="nc" id="L65">        currentMode = difficulty.toLowerCase match</span>
-<span class="nc bnc" id="L66" title="All 15 branches missed.">          case &quot;easy&quot;    =&gt; EasyMode()</span>
-<span class="nc" id="L67">          case &quot;medium&quot;  =&gt; MediumMode()</span>
-<span class="nc" id="L68">          case &quot;hard&quot;    =&gt; HardMode()</span>
-<span class="nc" id="L69">          case &quot;extreme&quot; =&gt; ExtremeMode()</span>
-<span class="nc" id="L70">          case _         =&gt; throw new IllegalArgumentException(&quot;Invalid difficulty&quot;)</span>
-<span class="nc" id="L71">        currentGame = Some(</span>
-<span class="nc" id="L72">          Game(</span>
-<span class="nc" id="L73">            Board(currentMode.boardSize._1, currentMode.boardSize._2).initializeCurrentTurn(0),</span>
-<span class="nc" id="L74">            Code(currentMode.codeLength),</span>
-<span class="nc" id="L75">            0</span>
+      override def startNewGame(difficulty: String): Unit =
+<span class="fc" id="L103">        currentMode = giveMeEither {</span>
+<span class="fc" id="L104">          difficulty.toLowerCase match</span>
+<span class="pc bpc" id="L105" title="7 of 15 branches missed.">            case &quot;easy&quot;    =&gt; EasyMode()</span>
+<span class="pc" id="L106">            case &quot;medium&quot;  =&gt; MediumMode()</span>
+<span class="nc" id="L107">            case &quot;hard&quot;    =&gt; HardMode()</span>
+<span class="pc" id="L108">            case &quot;extreme&quot; =&gt; ExtremeMode()</span>
+<span class="fc" id="L109">        } match</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">          case Right(result) =&gt; result</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">          case Left(_)       =&gt; MediumMode()</span>
+
+<span class="fc" id="L113">        currentGame = Some(</span>
+<span class="fc" id="L114">          Game(</span>
+<span class="fc" id="L115">            Board(currentMode.boardSize._1, currentMode.boardSize._2).initializeCurrentTurn(0),</span>
+<span class="fc" id="L116">            Code(currentMode.codeAndColorLength),</span>
+<span class="fc" id="L117">            0</span>
           )
         )
-<span class="nc" id="L78">        currentGame</span>
 
-      override def reset(): Option[Game] =
-<span class="nc" id="L81">        startNewGame(currentMode.name)</span>
+      override def reset(): Unit =
+<span class="fc" id="L122">        startNewGame(currentMode.name)</span>
 
-      override def deleteGame(): Option[Game] =
-<span class="nc" id="L84">        currentGame = None</span>
-<span class="nc" id="L85">        currentGame</span>
+      override def deleteGame(): Unit =
+<span class="nc" id="L125">        currentGame = None</span>
 
-      override def getPlayableStone(row: Int, col: Int): PlayerStoneGrid =
-<span class="nc" id="L88">        currentGame.get.board.getPlayableStone(row, col)</span>
+      override def getPlayableStone(row: Int, col: Int): PlayerStone =
+<span class="fc" id="L128">        currentGame.get.board.getPlayableStone(row, col)</span>
 
       override def getHintStone(row: Int, col: Int): HintStone =
-<span class="nc" id="L91">        currentGame.get.board.getHintStone(row, col)</span>
+<span class="fc" id="L131">        currentGame.get.board.getHintStone(row, col)</span>
 
-<span class="nc" id="L93">      override def getSizeBoard: (Int, Int) = (currentGame.get.board.rows, currentGame.get.board.cols)</span>
+<span class="fc" id="L133">      override def getSizeBoard: (Int, Int) = (currentGame.get.board.rows, currentGame.get.board.cols)</span>
 
-<span class="nc" id="L95">      override def currentTurn: Int = currentGame.get.currentTurn</span>
+<span class="fc" id="L135">      override def currentTurn: Int = currentGame.get.currentTurn</span>
 
-<span class="nc" id="L97">      override def remainingTurns: Int = currentGame.get.remainingTurns</span>
+<span class="fc" id="L137">      override def remainingTurns: Int = currentGame.get.remainingTurns</span>
 
-      override def submitGuess(userInput: Vector[PlayerStoneGrid]): Vector[HintStone] =
-<span class="nc" id="L100">        val vectorOfHintStones = currentGame.get.code.compareTo(userInput)</span>
-<span class="nc" id="L101">        val newBoard = currentGame.get.board</span>
-<span class="nc" id="L102">          .placeGuessAndHints(userInput, vectorOfHintStones, currentTurn)</span>
-<span class="nc" id="L103">        currentGame.get.board_(newBoard)</span>
-<span class="nc bnc" id="L104" title="All 2 branches missed.">        if checkWin(vectorOfHintStones) then</span>
-<span class="nc" id="L105">          gameState_(PlayerWin)</span>
-<span class="nc" id="L106">          currentGame.get.board_(currentGame.get.board.winBoard())</span>
-<span class="nc" id="L107">        vectorOfHintStones</span>
+      override def submitGuess(userInput: PlayableStones): HintStones =
+<span class="fc" id="L140">        val vectorOfHintStones = currentGame.get.code.compareTo(userInput)</span>
+<span class="fc" id="L141">        val newBoard = currentGame.get.board</span>
+<span class="fc" id="L142">          .placeGuessAndHints(userInput, vectorOfHintStones, currentTurn)</span>
+<span class="fc" id="L143">        currentGame.get.board_(newBoard)</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if checkWin(vectorOfHintStones) then</span>
+<span class="nc" id="L145">          gameState_(PlayerWin)</span>
+<span class="nc" id="L146">          currentGame.get.board_(currentGame.get.board.winBoard())</span>
+<span class="fc" id="L147">        vectorOfHintStones</span>
 
-      private def checkWin(hintStonesFeedback: Vector[HintStone]): Boolean =
-<span class="nc" id="L110">        hintStonesFeedback.forall(_ == HintRed)</span>
+      private def checkWin(hintStonesFeedback: HintStones): Boolean =
+<span class="fc" id="L150">        hintStonesFeedback.forall(_ == HintRed)</span>
 
       override def startNewTurn(): Unit =
-<span class="nc" id="L113">        currentGame.get.currentTurn_()</span>
-<span class="nc bnc" id="L114" title="All 2 branches missed.">        if currentGame.get.remainingTurns == 0 then gameState_(PlayerLose)</span>
-<span class="nc bnc" id="L115" title="All 2 branches missed.">        if currentTurn &lt; currentGame.get.board.rows then</span>
-<span class="nc" id="L116">          val newBoard = currentGame.get.board.initializeCurrentTurn(currentTurn)</span>
-<span class="nc" id="L117">          currentGame.get.board_(newBoard)</span>
+<span class="fc" id="L153">        currentGame.get.currentTurn_()</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">        if currentGame.get.remainingTurns == 0 then gameState_(PlayerLose)</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        if currentTurn &lt; currentGame.get.board.rows then</span>
+<span class="fc" id="L156">          val newBoard = currentGame.get.board.initializeCurrentTurn(currentTurn)</span>
+<span class="fc" id="L157">          currentGame.get.board_(newBoard)</span>
 
-<span class="nc" id="L119">      override def gameState: GameState = currentGame.get.state</span>
+<span class="fc" id="L159">      override def gameState: GameState = currentGame.get.state</span>
 
-<span class="nc" id="L121">      override def gameState_(newState: GameState): Unit = currentGame.get.state_(newState)</span>
+<span class="fc" id="L161">      override def gameState_(newState: GameState): Unit = currentGame.get.state_(newState)</span>
+
+      override def colors: PlayableStones =
+<span class="nc" id="L164">        currentGame.get.code.colors</span>
 
   trait Interface extends Provider with Component
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

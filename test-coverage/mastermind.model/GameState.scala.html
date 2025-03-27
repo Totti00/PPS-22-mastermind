@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameState.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.model</a> &gt; <span class="el_source">GameState.scala</span></div><h1>GameState.scala</h1><pre class="source lang-java linenums">package mastermind.model
 
-/** Represents the current state of the game.
-  */
 sealed trait GameState
 
-<span class="nc bnc" id="L7" title="All 6 branches missed.">object GameState:</span>
+<span class="nc bnc" id="L5" title="All 6 branches missed.">object GameState:</span>
   /** The game is in progress.
     */
-<span class="nc" id="L10">  case object InGame extends GameState</span>
+<span class="pc" id="L8">  case object InGame extends GameState</span>
 
   /** The player has won the game.
     */
-<span class="nc" id="L14">  case object PlayerWin extends GameState</span>
+<span class="pc" id="L12">  case object PlayerWin extends GameState</span>
 
   /** The player has lost the game.
     */
-<span class="nc" id="L18">  case object PlayerLose extends GameState</span>
+<span class="pc" id="L16">  case object PlayerLose extends GameState</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

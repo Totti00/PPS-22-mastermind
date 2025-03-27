@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RulesView.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.view</a> &gt; <span class="el_source">RulesView.scala</span></div><h1>RulesView.scala</h1><pre class="source lang-java linenums">package mastermind.view
+
+import javafx.fxml.{FXML, Initializable}
+import javafx.scene.layout.AnchorPane
+import scalafx.stage.{Popup, Stage}
+import java.net.URL
+import java.util.ResourceBundle
+
+trait RulesView:
+  /** Handles the action when the exit button is clicked.
+    */
+  def exitButton(): Unit
+
+<span class="nc" id="L14">object RulesView:</span>
+<span class="nc" id="L15">  def apply(stage: Stage): RulesView = RulesViewImpl(stage)</span>
+
+<span class="nc" id="L17">  private class RulesViewImpl(stage: Stage) extends RulesView with Initializable:</span>
+<span class="nc" id="L18">    private val popup = new Popup()</span>
+
+    // noinspection VarCouldBeVal
+    @FXML
+    private var infoContainer: AnchorPane = _
+
+    /** This method is called after the FXML view is loaded.
+      *
+      * @param url
+      *   The URL of the FXML file.
+      * @param resourceBundle
+      *   The resource bundle used for localization.
+      */
+    override def initialize(url: URL, resourceBundle: ResourceBundle): Unit =
+<span class="nc" id="L32">      popup.getContent.clear()</span>
+<span class="nc" id="L33">      popup.getContent.add(infoContainer)</span>
+<span class="nc" id="L34">      popup.show(stage)</span>
+
+    override def exitButton(): Unit =
+<span class="nc" id="L37">      popup.hide()</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

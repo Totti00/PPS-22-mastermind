@@ -2,9 +2,15 @@
 
 sealed trait GridUpdateType
 
-<span class="nc" id="L5">case object Initialize extends GridUpdateType</span>
-<span class="nc" id="L6">case object UpdateHint extends GridUpdateType</span>
-<span class="nc" id="L7">case object UpdatePlayable extends GridUpdateType</span>
-//case object UpdateWinning extends GridUpdateType
-//case object UpdateLosing extends GridUpdateType
+/** Represents the initialization of the game grid.
+  */
+<span class="nc" id="L7">case object Initialize extends GridUpdateType</span>
+
+/** Represents the update of the hint stones in the game grid.
+  */
+<span class="nc" id="L11">case object UpdateHint extends GridUpdateType</span>
+
+/** Represents the update of the playable stones in the game grid.
+  */
+<span class="nc" id="L15">case object UpdatePlayable extends GridUpdateType</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,24 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Board.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.model.entity</a> &gt; <span class="el_source">Board.scala</span></div><h1>Board.scala</h1><pre class="source lang-java linenums">package mastermind.model.entity
 
 import mastermind.model.entity.HintStone.{HintEmpty, HintRed}
-import mastermind.model.entity.PlayerStoneGrid.{Empty, StartCurrentTurn, Win}
+import mastermind.model.entity.PlayerStone.{Empty, Playable, Win}
+import mastermind.utils.ErrorHandler.*
 
 trait Board:
-
+  /** The number of rows in the board.
+    * @return
+    *   The number of rows in the board.
+    */
   def rows: Int
+
+  /** The number of cols in the board.
+    * @return
+    *   The number of cols in the board.
+    */
   def cols: Int
 
-  /** @param row
+  /** Retrieves the playable stone at a given position on the board.
+    * @param row
+    *   row index of matrix
     * @param cols
+    *   cols index of the matrix
     * @return
-    *   Gives the PlayableStoneGrid requested
+    *   the playableGridStone at the specified row and column.
     */
-  def getPlayableStone(row: Int, cols: Int): PlayerStoneGrid
+  def getPlayableStone(row: Int, cols: Int): PlayerStone
 
-  /** @param row
+  /** Retrieves the hint stone at a given position on the board.
+    * @param row
+    *   row index of matrix
     * @param cols
+    *   cols index of the matrix
     * @return
-    *   Gives the HintStone requested
+    *   the hintStone at the specified row and column.
     */
   def getHintStone(row: Int, cols: Int): HintStone
 
@@ -31,18 +46,18 @@ trait Board:
     * @param updateRow
     *   The row that need to be updated
     * @return
-    *   The new board of the game
+    *   a new board with the updated row.
     */
   def placeGuessAndHints(
-      rowPlayableStone: Vector[PlayerStoneGrid],
-      rowHintStone: Vector[HintStone],
+      rowPlayableStone: PlayableStones,
+      rowHintStone: HintStones,
       updateRow: Int
   ): Board
 
-  /** Creates the board of gold and red stones if the player win
-    *
+  /** Creates a new board where the stones are set to represent a winning state. This method sets all the stones on the
+    * board to `Win` and the hint stones to `HintRed`.
     * @return
-    *   The new board of the game
+    *   a new board with the winning state.
     */
   def winBoard(): Board
 
@@ -55,33 +70,32 @@ trait Board:
     */
   def initializeCurrentTurn(currentTurn: Int): Board
 
-<span class="nc" id="L58">object Board:</span>
-<span class="fc" id="L59">  def apply(</span>
+<span class="nc" id="L73">object Board:</span>
+<span class="fc" id="L74">  def apply(</span>
       rows: Int,
       cols: Int,
-<span class="fc" id="L62">      playableFilling: PlayerStoneGrid = Empty,</span>
-<span class="fc" id="L63">      hintFilling: HintStone = HintEmpty</span>
-  ): Board =
-<span class="fc" id="L65">    BoardImpl(Matrix(rows, cols, playableFilling), Matrix(rows, cols, hintFilling))</span>
+<span class="fc" id="L77">      playableFilling: PlayerStone = Empty,</span>
+<span class="fc" id="L78">      hintFilling: HintStone = HintEmpty</span>
+<span class="fc" id="L79">  ): Board = BoardImpl(Matrix(rows, cols, playableFilling), Matrix(rows, cols, hintFilling))</span>
 
-<span class="pc bpc" id="L67" title="18 of 28 branches missed.">  private case class BoardImpl(playableMatrix: Matrix[PlayerStoneGrid], hintMatrix: Matrix[HintStone]) extends Board:</span>
+<span class="pc bpc" id="L81" title="18 of 28 branches missed.">  private case class BoardImpl(playableMatrix: Matrix[PlayerStone], hintMatrix: Matrix[HintStone]) extends Board:</span>
 
     override def placeGuessAndHints(
-        rowPlayableStone: Vector[PlayerStoneGrid],
-        rowHintStone: Vector[HintStone],
+        rowPlayableStone: PlayableStones,
+        rowHintStone: HintStones,
         updateRow: Int
     ): Board =
-<span class="fc" id="L74">      copy(playableMatrix.replaceRow(updateRow, rowPlayableStone), hintMatrix.replaceRow(updateRow, rowHintStone))</span>
+<span class="fc" id="L88">      copy(playableMatrix.replaceRow(updateRow, rowPlayableStone), hintMatrix.replaceRow(updateRow, rowHintStone))</span>
 
-<span class="fc" id="L76">    override def rows: Int = playableMatrix.rows</span>
-<span class="fc" id="L77">    override def cols: Int = playableMatrix.cols</span>
+<span class="fc" id="L90">    override def rows: Int = playableMatrix.rows</span>
+<span class="fc" id="L91">    override def cols: Int = playableMatrix.cols</span>
 
-<span class="fc" id="L79">    override def getPlayableStone(row: Int, cols: Int): PlayerStoneGrid = playableMatrix.cell(row, cols)</span>
-<span class="fc" id="L80">    override def getHintStone(row: Int, cols: Int): HintStone = hintMatrix.cell(row, cols)</span>
+<span class="fc" id="L93">    override def getPlayableStone(row: Int, cols: Int): PlayerStone = playableMatrix.cell(row, cols)</span>
+<span class="fc" id="L94">    override def getHintStone(row: Int, cols: Int): HintStone = hintMatrix.cell(row, cols)</span>
 
     override def initializeCurrentTurn(currentTurn: Int): Board =
-<span class="nc" id="L83">      copy(playableMatrix.replaceRow(currentTurn, Vector.fill(cols)(StartCurrentTurn)), hintMatrix)</span>
+<span class="fc" id="L97">      copy(playableMatrix.replaceRow(currentTurn, Vector.fill(cols)(Playable)), hintMatrix)</span>
 
     override def winBoard(): Board =
-<span class="nc" id="L86">      copy(Matrix(rows, cols, Win), Matrix(rows, cols, HintRed))</span>
+<span class="fc" id="L100">      copy(Matrix(rows, cols, Win), Matrix(rows, cols, HintRed))</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

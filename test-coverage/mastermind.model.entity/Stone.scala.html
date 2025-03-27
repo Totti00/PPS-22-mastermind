@@ -1,45 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Stone.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.model.entity</a> &gt; <span class="el_source">Stone.scala</span></div><h1>Stone.scala</h1><pre class="source lang-java linenums">package mastermind.model.entity
 
+import mastermind.utils.prolog.Scala2P.*
+import mastermind.utils.GivenConversion.PrologConversion.given
 import scala.util.Random
+import scala.language.implicitConversions
+
+<span class="nc" id="L8">type PlayableStones = Vector[PlayerStone]</span>
+type HintStones = Vector[HintStone]
+<span class="fc" id="L10">val MAX_PERMUTATION = 100</span>
 
 sealed trait Stone
 
-<span class="fc" id="L7">enum PlayerStoneGrid extends Stone:</span>
-<span class="fc" id="L8">  case StartCurrentTurn, Empty, Win</span>
-<span class="pc bnc" id="L9" title="All 30 branches missed.">  private case Red, Green, Blue, Yellow, White, Purple</span>
+<span class="fc" id="L14">enum PlayerStone extends Stone:</span>
+<span class="fc" id="L15">  case Playable, Empty, Win</span>
+<span class="pc bnc" id="L16" title="All 30 branches missed.">  private case Red, Green, Blue, Yellow, White, Purple</span>
 
-<span class="fc" id="L11">  override def toString: String = this match</span>
-<span class="pc bpc" id="L12" title="3 of 6 branches missed.">    case StartCurrentTurn =&gt; &quot;StartCurrentTurn&quot;</span>
-<span class="pc bpc" id="L13" title="3 of 6 branches missed.">    case Red              =&gt; &quot;Red&quot;</span>
-<span class="pc bpc" id="L14" title="3 of 6 branches missed.">    case Green            =&gt; &quot;Green&quot;</span>
-<span class="pc bpc" id="L15" title="3 of 6 branches missed.">    case Blue             =&gt; &quot;Blue&quot;</span>
-<span class="pc bpc" id="L16" title="3 of 6 branches missed.">    case Yellow           =&gt; &quot;Yellow&quot;</span>
-<span class="pc bpc" id="L17" title="3 of 6 branches missed.">    case White            =&gt; &quot;White&quot;</span>
-<span class="pc bpc" id="L18" title="4 of 6 branches missed.">    case Purple           =&gt; &quot;Purple&quot;</span>
-<span class="pc bpc" id="L19" title="3 of 6 branches missed.">    case Win              =&gt; &quot;Win&quot;</span>
-<span class="pc bpc" id="L20" title="4 of 6 branches missed.">    case Empty            =&gt; &quot;Empty&quot;</span>
-
-<span class="nc" id="L22">object PlayerStoneGrid:</span>
-  /** @return
-    *   Provides a random color from those that the user can choose
+  /** Method to get the string representation of the page
+    * @return
+    *   The string representation of the page
     */
-  def random: PlayerStoneGrid =
-<span class="nc" id="L27">    val stones = Seq(Red, Green, Blue, Yellow, White, Purple)</span>
-<span class="nc" id="L28">    stones(Random.nextInt(stones.length))</span>
+<span class="fc" id="L22">  override def toString: String = this match</span>
+<span class="pc bpc" id="L23" title="3 of 6 branches missed.">    case Playable =&gt; &quot;Playable&quot;</span>
+<span class="pc bpc" id="L24" title="3 of 6 branches missed.">    case Red      =&gt; &quot;Red&quot;</span>
+<span class="pc bpc" id="L25" title="3 of 6 branches missed.">    case Green    =&gt; &quot;Green&quot;</span>
+<span class="pc bpc" id="L26" title="3 of 6 branches missed.">    case Blue     =&gt; &quot;Blue&quot;</span>
+<span class="pc bpc" id="L27" title="3 of 6 branches missed.">    case Yellow   =&gt; &quot;Yellow&quot;</span>
+<span class="pc bpc" id="L28" title="3 of 6 branches missed.">    case White    =&gt; &quot;White&quot;</span>
+<span class="pc bpc" id="L29" title="3 of 6 branches missed.">    case Purple   =&gt; &quot;Purple&quot;</span>
+<span class="pc bpc" id="L30" title="3 of 6 branches missed.">    case Win      =&gt; &quot;Win&quot;</span>
+<span class="pc bpc" id="L31" title="4 of 6 branches missed.">    case Empty    =&gt; &quot;Empty&quot;</span>
 
-  /** @param stoneColor
+<span class="nc" id="L33">object PlayerStone:</span>
+<span class="fc" id="L34">  private val engine = createEngine(&quot;/prolog/stone.pl&quot;)</span>
+
+  /** Generates a random set of `PlayableStones` and `colors` based on the provided length.
+    *
+    * @param codeAndColorLength
+    *   The length of the code and possible colors to use.
+    * @return
+    *   a tuple containing:
+    *   - `PlayableStones`: A vector of randomly selected stones, the code.
+    *   - `PlayableStones`: A vector of colors used to make the code.
+    */
+  def random(codeAndColorLength: Int): (PlayableStones, PlayableStones) =
+<span class="fc" id="L46">    val stones = Vector(Red, Green, Blue, Yellow, White, Purple)</span>
+<span class="fc" id="L47">    val colors = randomHelper(stones, &quot;permutation&quot;, codeAndColorLength)</span>
+<span class="fc" id="L48">    val code = randomHelper(colors, &quot;codeGenerator&quot;, codeAndColorLength)</span>
+
+<span class="fc" id="L50">    (code, colors)</span>
+
+  private def randomHelper(stones: PlayableStones, functor: String, codeAndColorLength: Int): PlayableStones =
+<span class="fc" id="L53">    val permutations = obtainVectorPlayable(stones, functor, codeAndColorLength)</span>
+<span class="fc" id="L54">    val drawOne = permutations(Random.nextInt(permutations.size))</span>
+<span class="fc" id="L55">    fromStringToVector(drawOne)(mapper)</span>
+
+  private def obtainVectorPlayable(stones: String, functor: String, codeAndColorLength: Int): Vector[String] =
+<span class="fc" id="L58">    engine(s&quot;$functor($stones, $codeAndColorLength, PlayableStones).&quot;)</span>
+<span class="fc" id="L59">      .take(MAX_PERMUTATION)</span>
+<span class="fc" id="L60">      .map(extractTermToString(_, &quot;PlayableStones&quot;))</span>
+      .toVector
+
+<span class="fc" id="L63">  private def mapper = PlayerStone.fromString</span>
+
+  /** Converts a string to the corresponding `PlayerStoneGrid` color.
+    * @param stoneColor
     *   The color of the stone
     * @return
     *   Gives the requested color or an empty color in case the requested color is not found
     */
-  def fromString(stoneColor: String): PlayerStoneGrid =
-<span class="pc" id="L36">    values.find(_.toString.equalsIgnoreCase(stoneColor)).getOrElse(Empty)</span>
+  def fromString(stoneColor: String): PlayerStone =
+<span class="pc" id="L72">    values.find(_.toString == stoneColor.toLowerCase.capitalize).getOrElse(Empty)</span>
 
-<span class="pc" id="L38">enum HintStone extends Stone:</span>
-<span class="pc bnc" id="L39" title="All 12 branches missed.">  case HintRed, HintWhite, HintEmpty</span>
+<span class="pc" id="L74">enum HintStone extends Stone:</span>
+<span class="pc bnc" id="L75" title="All 12 branches missed.">  case HintRed, HintWhite, HintEmpty</span>
 
-<span class="fc" id="L41">  override def toString: String = this match</span>
-<span class="pc bpc" id="L42" title="4 of 6 branches missed.">    case HintRed   =&gt; &quot;Red&quot;</span>
-<span class="pc bpc" id="L43" title="4 of 6 branches missed.">    case HintWhite =&gt; &quot;White&quot;</span>
-<span class="nc bnc" id="L44" title="All 6 branches missed.">    case HintEmpty =&gt; &quot;Empty&quot;</span>
+<span class="fc" id="L77">  override def toString: String = this match</span>
+<span class="pc bpc" id="L78" title="4 of 6 branches missed.">    case HintRed   =&gt; &quot;Red&quot;</span>
+<span class="pc bpc" id="L79" title="4 of 6 branches missed.">    case HintWhite =&gt; &quot;White&quot;</span>
+<span class="nc bnc" id="L80" title="All 6 branches missed.">    case HintEmpty =&gt; &quot;Empty&quot;</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

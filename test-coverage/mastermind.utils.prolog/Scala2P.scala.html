@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Scala2P.scala</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=2;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Jacoco Coverage Report</a> &gt; <a href="index.source.html" class="el_package">mastermind.utils.prolog</a> &gt; <span class="el_source">Scala2P.scala</span></div><h1>Scala2P.scala</h1><pre class="source lang-java linenums">package mastermind.utils.prolog
+
+import alice.tuprolog.*
+import mastermind.model.entity.Stone
+import scala.reflect.ClassTag
+
+<span class="nc" id="L7">object Scala2P:</span>
+  /** The prolog engine for solving goals from the given theory.
+    *
+    * @param theory
+    *   the theory used for solving goal
+    * @return
+    *   a [[Iterable]] of [[SolveInfo]]
+    */
+<span class="fc" id="L15">  def createEngine(theory: String): Term =&gt; Iterable[SolveInfo] =</span>
+<span class="fc" id="L16">    prologEngine(</span>
+      Theory.parseLazilyWithStandardOperators(
+<span class="fc" id="L18">        getClass.getResourceAsStream(theory)</span>
+      )
+    )
+
+  /** Extracts a Term and converts it to a String
+    *
+    * @param solveInfo
+    *   The solve info
+    * @param s
+    *   The term to extract
+    * @return
+    *   The extracted term
+    */
+  def extractTermToString(solveInfo: SolveInfo, s: String): String =
+<span class="fc" id="L32">    solveInfo.getTerm(s).toString.replace(&quot;'&quot;, &quot;&quot;)</span>
+
+  /** Converts a string to a vector
+    * @param list
+    *   The string representing the list, formatted as `&quot;[elem1, elem2, elem3, ...]&quot;`
+    * @param mapper
+    *   A function to convert each string element of the list to an instance of type `T`
+    * @tparam T
+    *   The type of the elements in the resulting vector. It must be a subtype of `Stone`.
+    * @return
+    *   A Vector containing the elements of the list converted by the &quot;mapper&quot; function.
+    */
+  def fromStringToVector[T &lt;: Stone: ClassTag](list: String)(mapper: String =&gt; T): Vector[T] =
+<span class="pc bpc" id="L45" title="3 of 6 branches missed.">    if list == &quot;[]&quot; then Vector.empty</span>
+<span class="fc" id="L46">    else list.init.tail.split(&quot;,&quot;).map(mapper).toVector</span>
+
+  private def prologEngine(theory: Theory): Term =&gt; Iterable[SolveInfo] =
+<span class="fc" id="L49">    val engine = Prolog()</span>
+<span class="fc" id="L50">    engine.setTheory(theory)</span>
+<span class="fc" id="L51">    goal =&gt;</span>
+<span class="fc" id="L52">      new Iterable[SolveInfo]:</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        override def iterator: Iterator[SolveInfo] = new Iterator[SolveInfo]:</span>
+<span class="fc" id="L54">          var solution: Option[SolveInfo] = Some(engine.solve(goal))</span>
+
+          override def hasNext: Boolean =
+<span class="pc" id="L57">            solution.fold(false)(f =&gt; f.hasOpenAlternatives || f.isSuccess)</span>
+
+          override def next(): SolveInfo =
+<span class="fc" id="L60">            try solution.get</span>
+            finally
+<span class="fc" id="L62">              solution =</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">                if solution.get.hasOpenAlternatives then Some(engine.solveNext())</span>
+<span class="fc" id="L64">                else None</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
