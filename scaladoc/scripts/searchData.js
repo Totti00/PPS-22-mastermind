@@ -49,7 +49,7 @@ pages = [{"l":"index.html#","e":false,"i":"","n":"Mastermind","t":"Mastermind","
 {"l":"mastermind/model/entity/Game.html#currentTurn-0","e":false,"i":"","n":"currentTurn","t":"currentTurn: Int","d":"mastermind.model.entity.Game","k":"def","x":""},
 {"l":"mastermind/model/entity/Game.html#currentTurn_-94c","e":false,"i":"","n":"currentTurn_","t":"currentTurn_(): Unit","d":"mastermind.model.entity.Game","k":"def","x":""},
 {"l":"mastermind/model/entity/Game.html#remainingTurns-0","e":false,"i":"","n":"remainingTurns","t":"remainingTurns: Int","d":"mastermind.model.entity.Game","k":"def","x":""},
-{"l":"mastermind/model/entity/Game.html#resetGame-fffff23e","e":false,"i":"","n":"resetGame","t":"resetGame(): Game","d":"mastermind.model.entity.Game","k":"def","x":""},
+{"l":"mastermind/model/entity/Game.html#resetGame-0","e":false,"i":"","n":"resetGame","t":"resetGame: Game","d":"mastermind.model.entity.Game","k":"def","x":""},
 {"l":"mastermind/model/entity/Game.html#state-0","e":false,"i":"","n":"state","t":"state: GameState","d":"mastermind.model.entity.Game","k":"def","x":""},
 {"l":"mastermind/model/entity/Game.html#state_-42c","e":false,"i":"","n":"state_","t":"state_(newState: GameState): Unit","d":"mastermind.model.entity.Game","k":"def","x":""},
 {"l":"mastermind/model/entity/Game$.html#","e":false,"i":"","n":"Game","t":"Game","d":"mastermind.model.entity","k":"object","x":""},
