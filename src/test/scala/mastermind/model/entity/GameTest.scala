@@ -39,7 +39,7 @@ class GameTest extends AnyFlatSpec with Matchers with BeforeAndAfterEach:
     game.currentTurn_()
     assert(game.remainingTurns == 9)
 
-    game = game.resetGame()
+    game = game.resetGame
     game.remainingTurns shouldBe 10
 
   }
