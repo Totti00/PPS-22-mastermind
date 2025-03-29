@@ -142,7 +142,31 @@ rappresentazione visiva del successo ottenuto.
 ## View
 ![View](../img/04-design/cake_view.jpg)
 
-Parlare di come abbiamo fatto le view
+L'integrazione di ScalaFX ha permesso di strutturare le viste in modo modulare e mantenibile, facilitando la separazione
+delle logiche di controllo e presentazione. Questo package fornisce i meccanismi per la gestione delle viste, consentendo il caricamento dinamico 
+delle interfacce grafiche
+tramite file FXML e l'aggiornamento della visualizzazione in base allo stato del gioco. I controller associati a queste viste sono
+scritti in Scala, e vengono utilizzati per gestire la logica dell'interazione con l'utente.
+L'astrazione principale è rappresentata dal trait View, che definisce le operazioni fondamentali per l'inizializzazione della 
+finestra principale, il caricamento delle diverse schermate e l'aggiornamento della griglia di gioco in risposta alle azioni 
+dell'utente.
+
+### MenuView
+
+-- INSERIRE IMMAGINE MENUVIEW --
+
+I pulsanti principali che interagiscono con l'utente sono legati a specifiche azioni nel gioco. Abbiamo implementato pulsanti per
+avviare il gioco in diverse modalità (facile, medio, difficile, estremo) e per accedere alle regole.
+
+### GameView
+
+-- INSERIRE IMMAGINE GAMEVIEW --
+
+Rappresenta la vista del tabellone di gioco in cui sono presenti i comandi:
+- checkCode: permette di verificare la combinazione scelta dall'utente
+- Help: permette di visualizzare le regole del gioco
+- Reset: permette di ricominciare una nuova partita
+- Back: permette di tornare al menu principale
 
 ## Controller
 ![Controller](../img/04-design/cake-controller.jpg)
