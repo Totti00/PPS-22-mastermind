@@ -4,21 +4,28 @@ parent: Backlog
 nav_order: 5
 ---
 # Sprint 5 [17/03/2025 - 24/03/2025]
-|                                          Backlog Item                                           | Id  | Task                                                           | Volontario | Stima (h) | Effettivo (h) |
-|:-----------------------------------------------------------------------------------------------:|:---:|----------------------------------------------------------------|:----------:|:---------:|:-------------:|
-|                                            Eventuale                                            | 0.1 | Refactor game view                                             |    Team    |     5     |      10       |
-|                                            Eventuale                                            | 0.2 | Refactor enum stone                                            |   Ramzi    |     2     |       3       |
-|                                            Eventuale                                            | 0.3 | Refactor check code                                            |   Ramzi    |     2     |       2       |
-|                                            Eventuale                                            | 0.4 | Introdotto pattern per gestione modalità di gioco              |   Totaro   |     1     |       2       |
-|                                            Eventuale                                            | 0.5 | Refactor menu                                                  |    Team    |     4     |       5       |
-|                                            Eventuale                                            | 0.6 | Refactor gestione bottoni campo di gioco                       |    Team    |     5     |       6       |
-|                                            Eventuale                                            | 0.7 | Refactor gestione eccezioni                                    |    Team    |     6     |      11       |
-| Come giocatore, voglio tentare di indovinare il codice segreto inserendo una sequenza di colori | 8.4 | Refactor gestione colori in base alla modalità di gioco        |    Team    |     2     |       3       |
-|                                            Eventuale                                            | 0.7 | Analisi pro e contro legate all'integrazione di prolog         |    Team    |     8     |      14       |
-| Come giocatore, voglio tentare di indovinare il codice segreto inserendo una sequenza di colori | 8.5 | Inserimento prolog nel check code per la prima regola          |   Ramzi    |     2     |       2       |
-| Come giocatore, voglio tentare di indovinare il codice segreto inserendo una sequenza di colori | 8.6 | Inserimento prolog nel check code per la seconda regola        |   Totaro   |     4     |       6       |
-| Come giocatore, voglio tentare di indovinare il codice segreto inserendo una sequenza di colori | 8.7 | Inserimento prolog nella generazione random del codice segreto |   Ramzi    |     3     |       4       |
-|                                                                                                 |     | **TOT**                                                        |            |    44     |      68       |
+
+
+|                                      Backlog Item                                               |  Id  | Task                                                           | Volontario | Stima (h) | Effettivo (h) |
+|:-----------------------------------------------------------------------------------------------:|:----:|----------------------------------------------------------------|:----------:|:---------:|:-------------:|
+|                                            Eventuale                                            | 0.1  | Refactor game view                                             |    Team    |     5     |      10       |
+|                                            Eventuale                                            | 0.2  | Refactor enum stone                                            |   Ramzi    |     2     |       3       |
+|                                            Eventuale                                            | 0.3  | Refactor check code                                            |   Ramzi    |     2     |       2       |
+|                                            Eventuale                                            | 0.4  | Introdotto pattern per gestione modalità di gioco              |   Totaro   |     1     |       2       |
+|                                            Eventuale                                            | 0.5  | Refactor menu                                                  |    Team    |     4     |       5       |
+|                                            Eventuale                                            | 0.6  | Refactor gestione bottoni campo di gioco                       |    Team    |     5     |       6       |
+|                                            Eventuale                                            | 0.7  | Refactor gestione eccezioni                                    |    Team    |     6     |      11       |
+| Come giocatore, voglio tentare di indovinare il codice segreto inserendo una sequenza di colori | 8.4  | Refactor gestione colori in base alla modalità di gioco        |    Team    |     2     |       3       |
+|                                            Eventuale                                            | 0.7  | Analisi pro e contro legate all'integrazione di prolog         |    Team    |     8     |      14       |
+| Come giocatore, voglio tentare di indovinare il codice segreto inserendo una sequenza di colori | 8.5  | Inserimento prolog nel check code per la prima regola          |   Ramzi    |     2     |       2       |
+| Come giocatore, voglio tentare di indovinare il codice segreto inserendo una sequenza di colori | 8.6  | Inserimento prolog nel check code per la seconda regola        |   Totaro   |     4     |       6       |
+| Come giocatore, voglio tentare di indovinare il codice segreto inserendo una sequenza di colori | 8.7  | Inserimento prolog nella generazione random del codice segreto |   Ramzi    |     3     |       4       |
+|                                                                                                 |      | **TOT**                                                        |            |    18     |      26       |
+
+
+
+
+
 
 ## Sprint goal
 
