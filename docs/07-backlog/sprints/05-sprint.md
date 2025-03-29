@@ -5,8 +5,7 @@ nav_order: 5
 ---
 # Sprint 5 [17/03/2025 - 24/03/2025]
 
-
-|                                      Backlog Item                                               |  Id  | Task                                                           | Volontario | Stima (h) | Effettivo (h) |
+|                                          Backlog Item                                           |  Id  | Task                                                           | Volontario | Stima (h) | Effettivo (h) |
 |:-----------------------------------------------------------------------------------------------:|:----:|----------------------------------------------------------------|:----------:|:---------:|:-------------:|
 |                                            Eventuale                                            | 0.1  | Refactor game view                                             |    Team    |     5     |      10       |
 |                                            Eventuale                                            | 0.2  | Refactor enum stone                                            |   Ramzi    |     2     |       3       |
@@ -20,12 +19,7 @@ nav_order: 5
 | Come giocatore, voglio tentare di indovinare il codice segreto inserendo una sequenza di colori | 8.5  | Inserimento prolog nel check code per la prima regola          |   Ramzi    |     2     |       2       |
 | Come giocatore, voglio tentare di indovinare il codice segreto inserendo una sequenza di colori | 8.6  | Inserimento prolog nel check code per la seconda regola        |   Totaro   |     4     |       6       |
 | Come giocatore, voglio tentare di indovinare il codice segreto inserendo una sequenza di colori | 8.7  | Inserimento prolog nella generazione random del codice segreto |   Ramzi    |     3     |       4       |
-|                                                                                                 |      | **TOT**                                                        |            |    18     |      26       |
-
-
-
-
-
+|                                                                                                 |      | **TOT**                                                        |            |    44     |      68       |
 
 ## Sprint goal
 
