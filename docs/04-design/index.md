@@ -85,136 +85,63 @@ dall'utente a una specifica modalità, che può essere una tra le seguenti:
 Queste classi definiscono, rispettivamente, le dimensioni della board, la lunghezza del codice segreto e il numero di colori utilizzabili;
 consentendo di istanziare un nuovo gioco con parametri che variano in base alla modalità scelta.
 
-### Code (inserire Stone)
+### Code
 
--- IMMAGINE DI CODE --
+-- INSERIRE IMMAGINE CODE --
 
-Il codice rappresenta la sequenza di colori segreta che il decodificatore deve indovinare.
-la funzione compareTo della classe Code andrà a calcolare il feedback e tornerà la sequenza di colori.
-Per fare cio utilizza due metodi che rappresentano le regole ed un terzo per unire queste ultime due.
-In particolare le regole sono state definite utilizzando toprolog:
- - spiegazione prima regola
- - spiegazione seconda 
+Il *trait* `Code` rappresenta il codice segreto che il giocatore deve indovinare. Quando viene creato un nuovo codice segreto, viene sfruttata
+la funzione *random*, che genera una sequenza casuale di colori tra quelli disponibili. Questa funzione non solo determina il 
+codice segreto, ma definisce anche la tavolozza di colori selezionabili nel corso della partita.
+L'implementazione concreta di Code, denominata `CodeImpl`, fornisce il metodo *compareTo*, responsabile del confronto tra il codice 
+segreto e il tentativo dell'utente. Questo metodo restituisce un insieme di suggerimenti basato sulle corrispondenze tra il codice 
+e l' input del giocatore. Il calcolo del feedback avviene attraverso due metodi ausiliari:
+- **compareToEqual**: determina le corrispondenze esatte, identificando le pedine che coincidono sia per colore 
+che per posizione con il codice segreto.
+- **compareToPresent**: rileva le pedine presenti nel codice segreto ma collocate in una posizione errata.
 
-unione delle prime due regole (joinRules)
+Per fornire un feedback strutturato e coerente con le regole del gioco, compareTo utilizza il metodo *joinVectors*, che combina i 
+risultati prodotti da compareToEqual e compareToPresent. Il metodo garantisce che il numero totale di suggerimenti generati sia 
+sempre pari alla lunghezza del codice segreto, completando l'output con pedine vuote qualora necessario.
+
+#### Interazione con Prolog
+
+-- INSERIRE IMMAGINE PROLOG --
+
+L'integrazione con un motore logico *Prolog* viene sfruttata sia per la generazione casuale del codice segreto sia per il confronto 
+con l'input del giocatore. In particolare, viene utilizzato:
+- nella funzione *random*, attraverso predicati, per determinare una combinazione casuale di colori validi
+- nei metodi *compareToEqual* e *compareToPresent*, invocando predicati per analizzare la relazione tra 
+il codice segreto e l'input del giocatore, restituendo un insieme di suggerimenti rappresentati da pedine di tipo `HintStone`.
 
 #### Stone
 
--- IMMAGINE DI STONE --
-Il metodo random si occupa di generare il codice attraverso due passi, entrambi utilizzando toProlog:
-- si occupa di creare prima la lista dei colori da utilizzare in base alla modalità.
-- per ottenere il codice segreto viene richiamata la regola +nome regola+ di toprolog per
-ritornare un codice segreto utilizzando i colori scelti dal passo precedente
+-- INSERIRE IMMAGINE STONE--
 
-
-
-
-
-
-
-La classe Code è un trait che rappresenta il codice segreto da indovinare. Nel momento in cui viene creato il codice segreto, viene sfruttato il metodo random per generare una sequenza casuale di colori.
-Questo metodo genera prima una combinazione casuale di colori, che saranno utilizzati per creare il codice segreto.
-Successivamente si utilizza una regola prolog per la generazione del codice segreto.
-
-Code definisce un metodi principali:
-- compareTo(userInput: PlayableStones): esegue il confronto tra il codice segreto e il tentativo dell'utente, restituendo un feedback. 
-Nell ospecifico, si avvale di due metodi ausialiari che sono:
-  - compareToEqual()
-  - compareToPresent
-
-
-
-
-
-1) cos'è Code
-2) random
-3) compareTo
-
-
-La classe Code è un trait che rappresenta il codice segreto da indovinare. Nel momento in cui viene creato il codice segreto, 
-viene sfruttato il metodo random per generare una sequenza casuale di colori.
-
-Questo metodo genera prima una combinazione casuale di colori, che saranno utilizzati per creare il codice segreto. 
-Successivamente si utilizza una regola prolog per la generazione del codice segreto.
-
-
-L'implementazione concreta di Code, definita come CodeImpl, definisce alcuni metodi principali, tra cui:
-- compareTo andrà a calcolare il feedback e tornerà la sequenza di colori.
-Per fare cio utilizza due metodi che rappresentano le regole ed un terzo per unire queste ultime due.
-
-
-Code Impl che è una implementazione di code definisce alcuni metodi principali, tra cui:
-- compareTo eé un metodo del trait code che 
-- compare toequal e il comparetopresent
-
-
-Interazione con Prolog
-
-Il modulo fa uso di un motore Prolog per determinare casualmente il codice segreto e per confrontare l'input del giocatore con il
-codice da indovinare. In particolare, il motore viene utilizzato nei seguenti contesti:
-- Per la generazione casuale del codice e della tavolozza di colori utilizzabili, sfruttando i predicati permutation e codeGenerator;
-- Per il calcolo dei suggerimenti, invocando i predicati compareToEqual e compareToPresent e trasformando l'output in un vettore di
-  HintStone.
-
-Stone
-Il trait Stone rappresenta un'astrazione comune per le pedine utilizzate nel gioco. Da esso derivano due tipologie di entità:
-- PlayerStone, che rappresenta le pedine selezionabili dal giocatore per comporre un tentativo;
-- HintStone, che rappresenta i suggerimenti forniti dal sistema in risposta ai tentativi effettuati.
-
-
-
-Essa definisce un metodi principali:
-- compareTo(userInput: PlayableStones): esegue il confronto tra il codice segreto e il tentativo dell'utente, restituendo un insieme 
-di suggerimenti (HintStones).
-
-
-L'oggetto Code fornisce due metodi apply, uno per creare un codice casuale dato un valore di dimensione e l'altro per creare un 
-codice predefinito per scopi di test. La creazione di un codice casuale avviene sfruttando il metodo PlayerStone.random(size), che 
-genera un insieme casuale di pedine.
-L'implementazione concreta di Code, definita come CodeImpl, utilizza un motore Prolog (engine) per il confronto tra il codice segreto 
-e l'input dell'utente. Il metodo compareTo richiama due metodi ausiliari:
-- compareToEqual(userInput), che individua le corrispondenze esatte tra codice e input;
-- compareToPresent(userInput), che rileva le pedine presenti ma in posizione errata.
-Entrambi questi metodi sfruttano getHintStonesByRule, che invoca un predicato Prolog per ottenere i suggerimenti corrispondenti alle 
-regole di Mastermind. Il metodo joinVectors unisce i risultati prodotti dai metodi di confronto, completando il vettore di 
-suggerimenti con pedine vuote (HintEmpty) in modo che la sua dimensione sia pari a quella del codice segreto.
-
-
-
-
-Classe Stone
-
-Il trait Stone rappresenta un'astrazione comune per le pedine utilizzate nel gioco. Da esso derivano due tipologie di entità:
-- PlayerStone, che rappresenta le pedine selezionabili dal giocatore per comporre un tentativo;
-- HintStone, che rappresenta i suggerimenti forniti dal sistema in risposta ai tentativi effettuati.
-
-L'enum PlayerStone definisce le pedine giocabili, tra cui sei colori (Red, Green, Blue, Yellow, White, Purple), oltre a stati 
-speciali (Playable, Empty, Win). Il metodo toString fornisce una rappresentazione testuale della pedina.
-L'oggetto PlayerStone include un motore Prolog per la generazione casuale di codici e colori. Il metodo random genera una 
-combinazione casuale di pedine attraverso randomHelper, che utilizza il predicato permutation per selezionare colori e codeGenerator 
-per determinare il codice segreto.
-L'enum HintStone definisce le pedine che costituiscono il feedback del sistema: HintRed indica una corrispondenza esatta, HintWhite 
-una corrispondenza parziale e HintEmpty nessuna corrispondenza. Anche in questo caso, è presente un metodo toString per restituire 
-una rappresentazione testuale della pedina di suggerimento.
-
-
-
-Interazione con Prolog
-
-Il modulo fa uso di un motore Prolog per determinare casualmente il codice segreto e per confrontare l'input del giocatore con il 
-codice da indovinare. In particolare, il motore viene utilizzato nei seguenti contesti:
-- Per la generazione casuale del codice e della tavolozza di colori utilizzabili, sfruttando i predicati permutation e codeGenerator;
-- Per il calcolo dei suggerimenti, invocando i predicati compareToEqual e compareToPresent e trasformando l'output in un vettore di 
-HintStone.
-
-
-
-
+Il *trait* `Stone` rappresenta un'astrazione comune per le pedine utilizzate nel gioco. Da esso derivano due entità principali:
+- **PlayerStone**: rappresenta le pedine selezionabili dal giocatore per comporre un tentativo. Questo tipo di pedine include sei colori 
+principali e alcuni stati speciali (Playable, Empty, Win)
+- **HintStone**: rappresenta i suggerimenti forniti dal sistema in risposta ai tentativi effettuati dal giocatore. Esistono tre tipi di 
+HintStone:
+  - *HintRed*: indica una corrispondenza esatta tra codice segreto e input.
+  - *HintWhite*: segnala che il colore è presente nel codice segreto ma si trova in una posizione errata.
+  - *HintEmpty*: indica che il colore non è presente nel codice segreto.
 
 ### Board (inserire Matrix)
 
+-- INSERIRE IMMAGINE BOARD --
+
+Il *trait* `Board`definisce l'interfaccia della griglia di gioco, suddivisa in due matrici. La prima rappresenta 
+i tentativi effettuati dall’utente (PlayableStone) mentre la seconda i feedback connessi a ogni tentativo (HintStone).
+Queste possono essere gestite mediante metodi dedicati per ottenere dimensioni e accedere agli elementi in posizioni specifiche.
+Tra le operazioni principali offerte dall'interfaccia, quelle fondamentali sono:
+- **placeGuessAndHints** che permette di aggiornare entrambe le matrici, tramite il metodo *replaceRow*, con la combinazione scelta dall'utente e il relativo feedback
+- **initializeCurrentTurn** che inizializza la riga corrispondente al turno corrente, predisponendo le celle per l’inserimento delle scelte del giocatore
+- **winBoard** che modifica l'intera matrice di gioco assegnando a tutte le celle lo stato di vittoria, garantendo una 
+rappresentazione visiva del successo ottenuto.
+
 ## View
 ![View](../img/04-design/cake_view.jpg)
+
 Parlare di come abbiamo fatto le view
 
 ## Controller
