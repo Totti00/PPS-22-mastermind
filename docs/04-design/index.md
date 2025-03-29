@@ -214,11 +214,11 @@ HintStone.
 ### Board (inserire Matrix)
 
 ## View
-Immagine della struttura cake view
+![View](../img/04-design/cake_view.jpg)
 Parlare di come abbiamo fatto le view
 
 ## Controller
-Immagine della struttura cake controller e basta
+![Controller](../img/04-design/cake-controller.jpg)
 
 Parlare anche di SubmittGuess e startNewTurn
 
