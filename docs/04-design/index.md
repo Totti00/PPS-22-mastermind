@@ -184,7 +184,11 @@ logica di gioco. Oltre a permettere alla vista di accedere al modello, il modulo
 
 Il pattern Factory è stato implementato nella sua versione classica in Scala, facendo uso dell'accoppiata *trait* - *companion object*
 per mantenere private le implementazioni di alcune classi. Un esempio di applicazione del pattern si può osservare nella classe
-`NOME CLASSE`:
+`Game`:
+
+```scala
+object Game
+``` 
 
 ### Strategy
 Il pattern Strategy è nativamente supportato in Scala grazie alle funzioni higher-order. Un esempio di utilizzo si trova in
