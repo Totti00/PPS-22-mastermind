@@ -2,7 +2,7 @@ package mastermind.model.entity
 
 import mastermind.model.entity.HintStone.{HintEmpty, HintRed, HintWhite}
 import mastermind.model.entity.PlayerStone.Empty
-import mastermind.model.strategy.{EasyMode, MediumMode}
+import mastermind.model.mode.{EasyMode, MediumMode}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

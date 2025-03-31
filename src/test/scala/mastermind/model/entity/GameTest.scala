@@ -1,6 +1,6 @@
 package mastermind.model.entity
 
-import mastermind.model.GameState
+import mastermind.model.{InGame, PlayerWin, PlayerLose}
 import mastermind.model.entity.PlayerStone.{Playable, Win}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.flatspec.AnyFlatSpec
@@ -21,7 +21,7 @@ class GameTest extends AnyFlatSpec with Matchers with BeforeAndAfterEach:
     assert(game.code.colors.length == 5)
     assert(game.remainingTurns == 10)
     assert(game.currentTurn == 0)
-    assert(game.state == GameState.InGame)
+    assert(game.state == InGame)
   }
 
   "Remaining turns" should "decrease after a turn" in {
@@ -46,16 +46,16 @@ class GameTest extends AnyFlatSpec with Matchers with BeforeAndAfterEach:
 
   "Game state" should "update correctly" in {
 
-    game.state shouldBe GameState.InGame
+    game.state shouldBe InGame
 
-    game.state_(GameState.PlayerLose)
-    game.state shouldBe GameState.PlayerLose
+    game.state_(PlayerLose)
+    game.state shouldBe PlayerLose
 
-    game.state_(GameState.InGame)
-    game.state shouldBe GameState.InGame
+    game.state_(InGame)
+    game.state shouldBe InGame
 
-    game.state_(GameState.PlayerWin)
-    game.state shouldBe GameState.PlayerWin
+    game.state_(PlayerWin)
+    game.state shouldBe PlayerWin
 
   }
 

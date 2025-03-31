@@ -1,6 +1,6 @@
 package mastermind.controller
 
-import mastermind.model.GameState.InGame
+import mastermind.model.InGame
 import mastermind.model.{GameState, ModelModule}
 import mastermind.model.entity.{HintStones, PlayableStones, Stone}
 import mastermind.utils.ErrorHandler.*

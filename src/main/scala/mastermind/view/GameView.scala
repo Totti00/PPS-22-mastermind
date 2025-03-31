@@ -5,7 +5,7 @@ import javafx.fxml.{FXML, Initializable}
 import javafx.scene.control.Label
 import javafx.scene.layout.{GridPane, VBox}
 import mastermind.controller.ControllerModule
-import mastermind.model.GameState.{InGame, PlayerLose, PlayerWin}
+import mastermind.model.{InGame, PlayerLose, PlayerWin}
 import mastermind.model.entity.{HintStone, HintStones, PlayableStones, PlayerStone, Stone}
 import mastermind.utils.{GridUpdateType, Initialize, UpdateHint, UpdatePlayable}
 import scalafx.animation.{KeyFrame, Timeline}

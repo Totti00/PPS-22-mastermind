@@ -1,6 +1,6 @@
 package mastermind.model.entity
 
-import mastermind.model.strategy.MediumMode
+import mastermind.model.mode.MediumMode
 import mastermind.utils.ErrorHandler.*
 
 trait Matrix[T]:

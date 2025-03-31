@@ -4,7 +4,7 @@ import javafx.embed.swing.JFXPanel
 import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 import mastermind.controller.ControllerModule
-import mastermind.model.GameState
+import mastermind.model.{InGame, PlayerWin, PlayerLose}
 import mastermind.model.entity.HintStone.{HintRed, HintWhite}
 import mastermind.utils.PagesEnum.Rules
 import mastermind.utils.{Initialize, UpdateHint, UpdatePlayable}
@@ -17,6 +17,7 @@ import scalafx.application.Platform
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.input.MouseEvent
 import scalafx.stage.Stage
+
 import scala.jdk.CollectionConverters.*
 
 class GameViewTest extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach:
@@ -46,7 +47,7 @@ class GameViewTest extends AnyFlatSpec with Matchers with BeforeAndAfterAll with
     Platform.runLater(() => testCode)
 
   "CheckButton" should "call controller.checkCode" in runOnFXThread:
-    when(mockController.gameState).thenReturn(GameState.InGame)
+    when(mockController.gameState).thenReturn(InGame)
     gameView.checkButton()
     verify(mockController).checkCode(any())
 
@@ -66,14 +67,14 @@ class GameViewTest extends AnyFlatSpec with Matchers with BeforeAndAfterAll with
     gameView.updateView(Initialize, None)
 
   "UpdateView" should "display 'You Win!' when game state is PlayerWin" in runOnFXThread:
-    when(mockController.gameState).thenReturn(GameState.PlayerWin)
+    when(mockController.gameState).thenReturn(PlayerWin)
     gameView.updateView(UpdatePlayable, None)
 
     val resultGameLabel = getPrivateField[Label]("resultGame")
     resultGameLabel.getText shouldBe "You Win!"
 
   "UpdateView" should "clear grids and initialize timer on Initialize" in runOnFXThread:
-    when(mockController.gameState).thenReturn(GameState.InGame)
+    when(mockController.gameState).thenReturn(InGame)
     gameView.updateView(Initialize, None)
 
     val attemptGrid = getPrivateField[GridPane]("attemptGrid")
@@ -85,12 +86,12 @@ class GameViewTest extends AnyFlatSpec with Matchers with BeforeAndAfterAll with
     timeLabel.getText shouldBe "Time: 00:00"
 
   "UpdateView" should "display 'You Lose!' when game state is PlayerLose" in runOnFXThread:
-    when(mockController.gameState).thenReturn(GameState.PlayerLose)
+    when(mockController.gameState).thenReturn(PlayerLose)
     gameView.updateView(Initialize, None)
     getPrivateField[Label]("resultGame").getText shouldBe "You Lose!"
 
   "UpdateView" should "update hint grid for UpdateHint type" in runOnFXThread:
-    when(mockController.gameState).thenReturn(GameState.InGame)
+    when(mockController.gameState).thenReturn(InGame)
     when(mockController.turn).thenReturn(0)
     val testHints = Vector(HintRed, HintWhite, HintWhite, HintWhite, HintRed)
     gameView.updateView(UpdateHint, Some(testHints))

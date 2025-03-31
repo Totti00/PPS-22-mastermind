@@ -1,12 +1,12 @@
 package mastermind.model
 
 import mastermind.Launcher.ModelImpl
-import mastermind.model.GameState.PlayerLose
+import mastermind.model.PlayerLose
 import mastermind.model.ModelModule.Model
 import mastermind.model.entity.HintStone.{HintEmpty, HintRed}
 import mastermind.model.entity.{HintStone, PlayerStone}
 import mastermind.model.entity.PlayerStone.{Empty, Playable}
-import mastermind.model.strategy.{EasyMode, ExtremeMode, MediumMode}
+import mastermind.model.mode.{EasyMode, ExtremeMode, MediumMode}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

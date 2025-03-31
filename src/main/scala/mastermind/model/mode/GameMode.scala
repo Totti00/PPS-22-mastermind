@@ -1,4 +1,4 @@
-package mastermind.model.strategy
+package mastermind.model.mode
 
 trait GameMode:
   /** The size of the board

@@ -1,6 +1,6 @@
 package mastermind.utils
 
-import mastermind.model.strategy.*
+import mastermind.model.mode.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.shouldEqual
 

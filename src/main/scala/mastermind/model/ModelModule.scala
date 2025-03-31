@@ -1,9 +1,9 @@
 package mastermind.model
 
-import mastermind.model.GameState.{PlayerLose, PlayerWin}
+import mastermind.model.{PlayerLose, PlayerWin}
 import mastermind.model.entity.HintStone.HintRed
 import mastermind.model.entity.{Board, Code, Game, HintStone, HintStones, PlayableStones, PlayerStone}
-import mastermind.model.strategy.*
+import mastermind.model.mode.*
 import mastermind.utils.ErrorHandler.*
 
 object ModelModule:

@@ -1,6 +1,6 @@
 package mastermind.model.entity
 
-import mastermind.model.GameState
+import mastermind.model.{GameState, InGame}
 import mastermind.utils.ErrorHandler.*
 
 trait Game:
@@ -57,7 +57,7 @@ trait Game:
   def state_(newState: GameState): Unit
 
 object Game:
-  def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn, GameState.InGame)
+  def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn, InGame)
 
   private case class GameImpl(
       var board: Board,
