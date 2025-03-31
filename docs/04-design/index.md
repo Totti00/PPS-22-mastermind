@@ -21,6 +21,7 @@ correttamente (queste verranno mixed-in dai provider degli altri componenti);
 5. Un trait `Interface`, che combina e organizza gli elementi del modulo, rendendolo pronto per l'uso. 
 
 Di seguito è riportato un esempio di modulo Controller realizzato secondo questo modello:
+
 ```scala
 object ControllerModule:
   trait Controller:
@@ -55,10 +56,10 @@ Questa interfaccia modella il concetto di *gioco*, rappresenta l'entità central
 espone i seguenti metodi fondamentali:
 - **board**: ha lo scopo di mantenere traccia dei tentati e i feedback relativi all’utente
 - **code**: rappresenta il codice segreto che il giocatore deve indovinare.
-- **remainingTurns** e **currentTurn**: Consentono, rispettivamente, di determinare il numero di turni rimanenti e di accedere al turno corrente; il metodo currentTurn_() incrementa il turno in corso.     -- DA RIVEDERE IL SETTER -- 
+- **remainingTurns** e **currentTurn**: Consentono, rispettivamente, di determinare il numero di turni rimanenti e di accedere al turno corrente; il metodo currentTurn_() incrementa il turno in corso.
 - **state**: Questo metodo gestisce il GameState, un'entità che descrive lo stato della partita.
 
-#### GameState
+#### Game State
 
 -- INSERIRE IMMAGINE GAMESTATE --
 
@@ -70,7 +71,7 @@ espone i seguenti metodi fondamentali:
 Questi stati vengono utilizzati per controllare il flusso della partita e per aggiornare la logica di gioco (ad esempio, 
 interrompendo il gioco in caso di vittoria o sconfitta).
 
-#### GameMode
+#### Game Mode
 
 -- INSERIRE IMMAGINE GAMEMODE --
 
@@ -151,14 +152,14 @@ L'astrazione principale è rappresentata dal trait View, che definisce le operaz
 finestra principale, il caricamento delle diverse schermate e l'aggiornamento della griglia di gioco in risposta alle azioni 
 dell'utente.
 
-### MenuView
+### Menu View
 
 -- INSERIRE IMMAGINE MENUVIEW --
 
 I pulsanti principali che interagiscono con l'utente sono legati a specifiche azioni nel gioco. Abbiamo implementato pulsanti per
 avviare il gioco in diverse modalità (facile, medio, difficile, estremo) e per accedere alle regole.
 
-### GameView
+### Game View
 
 -- INSERIRE IMMAGINE GAMEVIEW --
 
@@ -171,32 +172,52 @@ Rappresenta la vista del tabellone di gioco in cui sono presenti i comandi:
 ## Controller
 ![Controller](../img/04-design/cake-controller.jpg)
 
-Parlare anche di SubmittGuess e startNewTurn
+Il `ControllerModule` funge da intermediario tra `ViewModule` e `ModelModule`, coordinando l'interazione tra l'interfaccia utente e la 
+logica di gioco. Oltre a permettere alla vista di accedere al modello, il modulo gestisce diverse operazioni fondamentali, tra cui:
+- Il recupero delle pedine dal tabellone di gioco.
+- La verifica della combinazione scelta dal giocatore e l'avanzamento al turno successivo.
+- Il controllo dello stato di gioco.
 
 ## Pattern utilizzati
 
+### Factory
+
+Il pattern Factory è stato implementato nella sua versione classica in Scala, facendo uso dell'accoppiata *trait* - *companion object*
+per mantenere private le implementazioni di alcune classi. Un esempio di applicazione del pattern si può osservare nella classe
+`NOME CLASSE`:
+
 ### Strategy
-Nel nostro progetto, il pattern Strategy è stato implementato utilizzando un'interfaccia (trait) GameMode e più classi concrete (EasyMode, MediumMode, HardMode, ExtremeMode). Questo approccio consente di modellare le diverse modalità di gioco in modo incapsulato e scalabile, mantenendo un'architettura chiara e facilmente estendibile.
+Il pattern Strategy è nativamente supportato in Scala grazie alle funzioni higher-order. Un esempio di utilizzo si trova in
+`Scala2P`, dove è possibile definire il comportamento strategico in modo flessibile:
 
-Un esempio di utilizzo della strategia nel nostro codice è il seguente:
+--ESEMPIO FUNZIONE FROMSTRINGTOVECTOR--
 
-```scala
-override def startNewGame(difficulty: String): Unit =
-  currentMode = giveMeEither {
-    difficulty.toLowerCase match
-      case "easy"    => EasyMode()
-      case "medium"  => MediumMode()
-      case "hard"    => HardMode()
-      case "extreme" => ExtremeMode()
-  } match
-    case Right(result) => result
-    case Left(_)       => MediumMode()
-```
+In particolare, il metodo *fromStringToVector* è un metodo higher-order che consente di "iniettare" la strategia da utilizzare
+direttamente dall'esterno.
 
-In questo frammento, il modo di gioco viene selezionato dinamicamente in base alla difficoltà scelta dal giocatore, istanziando l'oggetto corrispondente.
-A differenza di un approccio basato su funzioni higher-order, in cui la strategia viene passata come parametro a una funzione, il nostro approccio a classi consente di incapsulare lo stato e il comportamento di ogni modalità di gioco in modo autonomo, rendendo più agevole la manutenzione e l'estensione del codice.
+### Singleton
 
-In contesti in cui le strategie sono puramente funzionali e prive di stato, l'uso di funzioni higher-order può risultare più conciso. Tuttavia, nel nostro caso, il pattern Strategy basato su classi è risultato più adeguato, garantendo una maggiore chiarezza e separazione delle responsabilità.
+Nel progetto, si è ampiamente utilizzato questo pattern creazionale, che assicura la creazione di una sola istanza per una 
+determinata classe, offrendo un punto di accesso globale ad essa. In Scala, l’implementazione di questo pattern è particolarmente 
+intuitiva grazie agli object, che rappresentano classi con un’unica istanza. Questa viene inizializzata in modo lazy, ovvero solo 
+nel momento in cui viene effettivamente utilizzata. Fino ad allora, nessuna istanza dell’object esisterà nella memoria heap.
+
+
+Anche il pattern Singleton trova pieno supporto in Scala. Esso garantisce che una determinata classe abbia una sola e unica
+istanza, un obiettivo facilmente realizzabile mediante l'uso degli object. Un esempio di applicazione del Singleton si può
+riscontrare nei seguenti casi:
+
+--ESEMPIO STATI DI GIOCO--
+
+### Adapter
+
+Il pattern Adapter è impiegato quando si verifica un'incompatibilità tra due componenti distinti che devono interagire
+all'interno del sistema. In Scala, tale pattern può essere implementato agevolmente tramite il meccanismo delle *given conversion*.
+Nel contesto del progetto, questo pattern è stato ampiamente utilizzato per facilitare la cooperazione tra Scala e Prolog.
+
+--ESEMPIO DEI GIVEN--
 
 ## Organizzazione del codice
-Il codice è stato struttura in package come descritto nel seguente diagramma
+Il codice è stato strutturato in package come descritto nel seguente diagramma
+
+--INSERIRE IMMAGINE PACKAGES--
