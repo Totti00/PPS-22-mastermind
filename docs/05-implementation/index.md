@@ -232,20 +232,22 @@ Per la valutazione del tentativo si è reso necessario implementare
 
 ### Totaro
 Nel corso dello sviluppo del progetto, mi sono occupato della progettazione dell'architettura di base, adottando il pattern `MVC` 
-per garantire una chiara separazione delle responsabilità. Contestualmente, ho integrato *ScalaFX* per la gestione dell'interfaccia 
-grafica, assicurando un'organizzazione modulare e flessibile del codice. Questa fase iniziale ha posto le fondamenta per le 
-successive implementazioni, facilitando l'espansione e la manutenzione del software. Questo comprende lo sviluppo delle classi:
+per garantire una chiara separazione delle responsabilità. Contestualmente, sfruttando il *currying*, ho integrato *ScalaFX* per la 
+gestione dell'interfaccia grafica, assicurando un'organizzazione modulare e flessibile del codice. Questa fase iniziale ha posto le 
+fondamenta per le successive implementazioni, facilitando l'espansione e la manutenzione del software. Questo comprende lo sviluppo 
+delle classi:
 - `Launcher`;
 - `ViewModule`;
 - `ControllerModule`;
 
 Per la gestione dell’interfaccia utente, è stata implementata la schermata principale di gioco. Questa si occupa della 
 visualizzazione degli elementi grafici, tra cui il pannello di gioco, il numero di turni rimanenti e un pulsante per tornare al menu 
-principale. Inoltre, è stata gestita l’interazione con l’utente attraverso eventi di input, tra cui la logica associata al click del 
-mouse, che permette di selezionare e posizionare i colori nel tentativo del giocatore. Questo comprende le classi:
+principale. L'aggiornamento del pannello di gioco è stato realizzato tramite una *higher-order function*, sfruttando il *polimorfismo* 
+per trasformare dinamicamente i nuovi valori in etichette grafiche. Inoltre, è stata gestita l’interazione con l’utente attraverso 
+eventi di input, tra cui la logica associata al click del mouse, che permette di selezionare e posizionare i colori nel tentativo 
+del giocatore. Questo comprende le classi:
 - `GameView`;
 - `GridUpdateType`;
-
 
 All'interno del package `Model` mi sono dedicato principalmente alla gestione dello stato di gioco che per l'appunto regolano lo stato
 attuale della partita. Questo è stato possibile grazie al **pattern Singleton**. Parallelamente, ho ideato la gestione delle modalità 
