@@ -231,26 +231,44 @@ Per la valutazione del tentativo si è reso necessario implementare
 
 
 ### Totaro
-Nel corso dello sviluppo del progetto, mi sono occupato della progettazione dell'architettura di base, adottando il pattern MVC 
-per garantire una chiara separazione delle responsabilità. Contestualmente, ho integrato ScalaFX per la gestione dell'interfaccia 
+Nel corso dello sviluppo del progetto, mi sono occupato della progettazione dell'architettura di base, adottando il pattern `MVC` 
+per garantire una chiara separazione delle responsabilità. Contestualmente, ho integrato *ScalaFX* per la gestione dell'interfaccia 
 grafica, assicurando un'organizzazione modulare e flessibile del codice. Questa fase iniziale ha posto le fondamenta per le 
-successive implementazioni, facilitando l'espansione e la manutenzione del software.
+successive implementazioni, facilitando l'espansione e la manutenzione del software. Questo comprende lo sviluppo delle classi:
+- `Launcher`;
+- `ViewModule`;
+- `ControllerModule`;
 
-#### View
-GameView(view, turni, back), logicaMouse,
+Per la gestione dell’interfaccia utente, è stata implementata la schermata principale di gioco. Questa si occupa della 
+visualizzazione degli elementi grafici, tra cui il pannello di gioco, il numero di turni rimanenti e un pulsante per tornare al menu 
+principale. Inoltre, è stata gestita l’interazione con l’utente attraverso eventi di input, tra cui la logica associata al click del 
+mouse, che permette di selezionare e posizionare i colori nel tentativo del giocatore. Questo comprende le classi:
+- `GameView`;
+- `GridUpdateType`;
 
-Per la gestione dell’interfaccia utente, è stata implementata la classe GameView, che rappresenta la schermata principale di gioco. 
-Questa classe si occupa della visualizzazione degli elementi grafici, tra cui il pannello di gioco, il numero di turni rimanenti e 
-un pulsante per tornare al menu principale. Inoltre, è stata gestita l’interazione con l’utente attraverso eventi di input, tra cui 
-la logica associata al click del mouse, che permette di selezionare e posizionare i colori nel tentativo del giocatore.
 
-#### Model
-GameMode, gameState
+All'interno del package `Model` mi sono dedicato principalmente alla gestione dello stato di gioco che per l'appunto regolano lo stato
+attuale della partita. Questo è stato possibile grazie al **pattern Singleton**. Parallelamente, ho ideato la gestione delle modalità 
+definendo un trait astratto, con quattro implementazioni concrete (EasyMode, MediumMode, HardMode, ExtremeMode). Ciascuna modalità 
+specifica dimensioni del tabellone, lunghezza del codice segreto e il numero di colori presi in considerazione, permettendo una 
+facile estensione a nuove difficoltà. L'uso di classi immutabili e parametri preconfigurati assicura coerenza durante le partite, 
+mentre l'astrazione del trait centralizza la logica delle regole. Questa struttura ha reso il model scalabile e adattabile a future 
+evoluzioni del gameplay. Le classi relative a questo sviluppo sono le seguenti:
+- `GameMode`;
+- `GameState`;
 
-L'implementazione di `GameState` è stata possibile grazie al **pattern Singleton** e utile a regolare lo stato attuale della partita.
+Infine, sempre in autonomia, ho integrato Prolog all'interno della classe `Code` per confrontare il codice segreto con l'input 
+fornito dall'utente (*compareToEqual*).
 
-#### Prolog
-prolog(checkCode 2a)
+
+
+
+
+
+
+
+
+
 
 
 
