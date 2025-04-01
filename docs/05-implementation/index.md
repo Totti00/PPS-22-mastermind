@@ -38,8 +38,24 @@ path match
 ```
 
 ### Currying 
-Confrontarsi con ramzi, perchè alla fine lo si utilizza solo in fromStringToVector ma ne parliamo già nel capitolo precedente 
-nel pattern strategy perchè utilizza high order function  //TODOOOOOOOOOOOOOOOOOOOOOOOOOO
+In Scala, è possibile definire funzioni *curried*, il che implica che la valutazione di una funzione che accetta più parametri 
+possa essere riformulata come una sequenza di funzioni parziali.
+
+Questo approccio permette di aderire al principio **DRY** (Don't Repeat Yourself), facilitando il riuso del codice. Infatti, quando 
+una funzione è *curried*, è possibile applicarla parzialmente per poterla utilizzare in più punti del codice.
+
+Nel package View, è stato deciso di adottare questa tecnica nel seguente modo:
+```scala
+override def loadView(path: PagesEnum, mode: Option[String] = None): Unit =
+  val load = loadFXML(path)
+  path match
+    case Game =>
+      context.controller.startGame(mode.get)
+      gameView = Some(GameView(context.controller, stage.get))
+      load(gameView.get)
+    case Rules => load(RulesView(stage.get))
+    case Menu  => load(MenuView(context.controller, stage.get))
+```
 
 ### High order function
 L'utilizzo delle *higher-order functions* consente di definire funzioni che accettano come parametro un'altra funzione (o più di una) 
@@ -120,7 +136,7 @@ giveMeEither {
 
 ### Mixins
 Il concetto di mixins consente di combinare più classi attraverso la composizione anziché ricorrere all'ereditarietà. Un 
-esempio concreto di questa tecnica è implementato all'interno della classe ControllerModule:
+esempio concreto di questa tecnica è implementato all'interno della classe `ControllerModule`:
 ```scala
 trait Interface extends Provider with Component:
 ```
@@ -131,9 +147,9 @@ di progettazione ci si è interrogati su come poter sfruttare la programmazione 
 alcuni metodi che ben si adattavano alle caratteristiche di Prolog.
 
 Per integrarlo in modo più efficiente e fluido nel progetto, è stato sviluppato un modulo che sfrutta un motore Prolog per
-risolvere le query in ingresso. In questo modo, la soluzione fornita risulta sotto forma di oggetti SolveInfo. Per facilitare 
+risolvere le query in ingresso. In questo modo, la soluzione fornita risulta sotto forma di oggetti `SolveInfo`. Per facilitare 
 l’interazione con il motore, sono stati implementati metodi che eseguono il parsing dei risultati in formato stringa e li convertono 
-in vettori di oggetti Stone.
+in vettori di oggetti `Stone`.
 
 Nello specifico, sono stati realizzati due file `.pl`: uno per la generazione del codice segreto e l'altro per la 
 gestione della logica di confronto tra il codice e il tentativo.
@@ -192,5 +208,75 @@ La mole di lavoro maggiore relativa alla parte di logica e view è stata svolta 
 contribuito in modo più significativo alla parte di model e al testing.
 
 ### Ramzi
+GameView, model, gestione view con controller e model, cronometro, reset, checkCode prima implementazione, prolog: stone e checkcode il primo
+
+
+Inizialmente il mio compito e stato costituito dall'implmentazione delle classi del model in particole:
+-Board: rappresenta la classe he ha al suo interno il campo di gioco
+-Code: rappresenta il costrutto per la gestione del codice
+-Game: rappresenta la partita che l'utente sta svolgendo
+-Matrix: rappresenta la matrice di gioco 
+-Stone: Rappresentano tutte le stone che possono susseguirsi durante il gioco
+Il passo successivo mi ha portato ha creare metodi consoni per la gestioni degli elementi sopraindicati all'interno della classe ModelModule.
+
+Una volta creata la struttura portante del progetto ho creato le funzioni all'interno della view per poter interagire con il controllore al fine di riempire le matrici di gioco e di connettere le azioni ai pulsanti.
+
+
+Il passa successivo è stato di implementare il metodo all'interno della view per la gestione del tentativo dell'utente. I passaggi sono stati:
+1. Ottenimento dell'input dell'utente sotto forma di vettore di stone, utilizzando i controlli opportuni
+2. gestione della logica di valutazione del tentativo attraverso l'uso del model e del controller
+3. infine visualizzazione del feedback all'interno del campo di gioco
+
+Per la valutazione del tentativo si è reso necessario implementare
+
 
 ### Totaro
+Nel corso dello sviluppo del progetto, mi sono occupato della progettazione dell'architettura di base, adottando il pattern MVC 
+per garantire una chiara separazione delle responsabilità. Contestualmente, ho integrato ScalaFX per la gestione dell'interfaccia 
+grafica, assicurando un'organizzazione modulare e flessibile del codice. Questa fase iniziale ha posto le fondamenta per le 
+successive implementazioni, facilitando l'espansione e la manutenzione del software.
+
+#### View
+GameView(view, turni, back), logicaMouse,
+
+Per la gestione dell’interfaccia utente, è stata implementata la classe GameView, che rappresenta la schermata principale di gioco. 
+Questa classe si occupa della visualizzazione degli elementi grafici, tra cui il pannello di gioco, il numero di turni rimanenti e 
+un pulsante per tornare al menu principale. Inoltre, è stata gestita l’interazione con l’utente attraverso eventi di input, tra cui 
+la logica associata al click del mouse, che permette di selezionare e posizionare i colori nel tentativo del giocatore.
+
+#### Model
+GameMode, gameState
+
+L'implementazione di `GameState` è stata possibile grazie al **pattern Singleton** e utile a regolare lo stato attuale della partita.
+
+#### Prolog
+prolog(checkCode 2a)
+
+
+
+Sprint 2
+view: ra
+pattern MVC: totti
+Implementazione architettura base: team
+
+Sprint 3
+model: ramzi
+gestione pagina di gioco, inizializzazione: ramzi
+view pagina di gioco (Game): totti
+logica mouse giocatore: totti
+
+
+Sprint 4
+checkCode prima implementazione, logica connessa anche con view: ramzi
+win loose, logica: totti
+view cronometro anche reset: ramzi
+turni , model: totti
+back: totti
+
+Sprint 5
+comune: refactor package View, gestione eccezioni(either)
+prolog: totti , ra
+totti : pattern strategy
+
+
+
