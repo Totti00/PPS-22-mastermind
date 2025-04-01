@@ -62,7 +62,6 @@ pages = [{"l":"index.html#","e":false,"i":"","n":"Mastermind","t":"Mastermind","
 {"l":"mastermind/model/entity/Matrix.html#cell-573","e":false,"i":"","n":"cell","t":"cell(row: Int, col: Int): T","d":"mastermind.model.entity.Matrix","k":"def","x":""},
 {"l":"mastermind/model/entity/Matrix.html#cols-0","e":false,"i":"","n":"cols","t":"cols: Int","d":"mastermind.model.entity.Matrix","k":"def","x":""},
 {"l":"mastermind/model/entity/Matrix.html#elements-0","e":false,"i":"","n":"elements","t":"elements: Vector[Vector[T]]","d":"mastermind.model.entity.Matrix","k":"def","x":""},
-{"l":"mastermind/model/entity/Matrix.html#replaceCell-fffff540","e":false,"i":"","n":"replaceCell","t":"replaceCell(row: Int, col: Int, cell: T): Matrix[T]","d":"mastermind.model.entity.Matrix","k":"def","x":""},
 {"l":"mastermind/model/entity/Matrix.html#replaceRow-8bd","e":false,"i":"","n":"replaceRow","t":"replaceRow(row: Int, vec: Vector[T]): Matrix[T]","d":"mastermind.model.entity.Matrix","k":"def","x":""},
 {"l":"mastermind/model/entity/Matrix.html#row-1b0","e":false,"i":"","n":"row","t":"row(row: Int): Vector[T]","d":"mastermind.model.entity.Matrix","k":"def","x":""},
 {"l":"mastermind/model/entity/Matrix.html#rows-0","e":false,"i":"","n":"rows","t":"rows: Int","d":"mastermind.model.entity.Matrix","k":"def","x":""},

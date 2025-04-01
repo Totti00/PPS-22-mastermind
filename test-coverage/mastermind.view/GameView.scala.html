@@ -49,8 +49,8 @@ trait GameView:
   def updateView(updateType: GridUpdateType, hintStones: Option[HintStones]): Unit
 
 <span class="nc" id="L51">object GameView:</span>
-<span class="fc" id="L52">  def apply(controller: ControllerModule.Controller, stage: Stage): GameView = GameViewImpl(controller, stage)</span>
-<span class="pc" id="L53">  private class GameViewImpl(private val controller: ControllerModule.Controller, private val stage: Stage)</span>
+<span class="nc" id="L52">  def apply(controller: ControllerModule.Controller, stage: Stage): GameView = GameViewImpl(controller, stage)</span>
+<span class="nc" id="L53">  private class GameViewImpl(private val controller: ControllerModule.Controller, private val stage: Stage)</span>
       extends GameView
       with Initializable:
 
@@ -78,9 +78,9 @@ trait GameView:
     @FXML
     private var mainContainer: VBox = _
 
-<span class="fc" id="L81">    private var timer: Option[Timeline] = None</span>
-<span class="fc" id="L82">    private var browseColors: Int = 0</span>
-<span class="fc" id="L83">    private var selectableColors: Option[PlayableStones] = None</span>
+<span class="nc" id="L81">    private var timer: Option[Timeline] = None</span>
+<span class="nc" id="L82">    private var browseColors: Int = 0</span>
+<span class="nc" id="L83">    private var selectableColors: Option[PlayableStones] = None</span>
 
     /** This method is called after the FXML view is loaded.
       *
@@ -101,11 +101,11 @@ trait GameView:
 
 <span class="nc" id="L102">    override def checkButton(): Unit = submitGuess()</span>
 
-<span class="fc" id="L104">    override def resetButton(): Unit = controller.resetGame()</span>
+<span class="nc" id="L104">    override def resetButton(): Unit = controller.resetGame()</span>
 
-<span class="fc" id="L106">    override def backButton(): Unit = controller.backToMenu()</span>
+<span class="nc" id="L106">    override def backButton(): Unit = controller.backToMenu()</span>
 
-<span class="fc" id="L108">    override def helpButton(): Unit = controller.goToPage(Rules)</span>
+<span class="nc" id="L108">    override def helpButton(): Unit = controller.goToPage(Rules)</span>
 
 <span class="nc" id="L110">    override def updateView(updateType: GridUpdateType, hintStones: Option[HintStones] = None): Unit =</span>
 <span class="nc" id="L111">      updateRemainingTurns()</span>
@@ -250,12 +250,12 @@ trait GameView:
       )
 
     private def submitGuess(): Unit =
-<span class="pc bpc" id="L253" title="4 of 6 branches missed.">      if controller.gameState == InGame then</span>
+<span class="nc bnc" id="L253" title="All 6 branches missed.">      if controller.gameState == InGame then</span>
 <span class="nc" id="L254">        val guess = extractGuess()</span>
 <span class="nc bnc" id="L255" title="All 2 branches missed.">        if !guess.contains(Playable) then controller.checkCode(guess)</span>
 
     private def extractGuess(): PlayableStones =
-<span class="pc" id="L258">      attemptGrid.getChildren</span>
+<span class="nc" id="L258">      attemptGrid.getChildren</span>
 <span class="nc" id="L259">        .filtered(child =&gt; GridPane.getRowIndex(child) == controller.turn)</span>
         .asScala
 <span class="nc" id="L261">        .map(cell =&gt; PlayerStone.fromString(cell.asInstanceOf[Label].getText))</span>
