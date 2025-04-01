@@ -40,19 +40,6 @@ import mastermind.utils.ErrorHandler.*
     */
 <span class="fc" id="L41">  def row(row: Int): Vector[T] = elements(row)</span>
 
-  /** Replaces an element at a specific row and column in the matrix with a new element.
-    *
-    * @param row
-    *   The row index
-    * @param col
-    *   The column index
-    * @param cell
-    *   The element to be inserted in the matrix
-    * @return
-    *   New matrix with the element replaced by the new one
-    */
-  def replaceCell(row: Int, col: Int, cell: T): Matrix[T]
-
   /** Replace an entire row of the matrix
     *
     * @param row
@@ -64,19 +51,16 @@ import mastermind.utils.ErrorHandler.*
     */
   def replaceRow(row: Int, vec: Vector[T]): Matrix[T]
 
-<span class="nc" id="L67">object Matrix:</span>
+<span class="nc" id="L54">object Matrix:</span>
 
-<span class="fc" id="L69">  def apply[T](rows: Int, cols: Int, filling: T): Matrix[T] =</span>
-<span class="fc" id="L70">    giveMeEither {</span>
-<span class="pc bpc" id="L71" title="1 of 4 branches missed.">      require(rows &gt;= 0 &amp;&amp; cols &gt;= 0, &quot;Invalid matrix size&quot;)</span>
-<span class="fc" id="L72">      MatrixImpl(Vector.fill(rows, cols)(filling))</span>
-<span class="fc" id="L73">    } match</span>
-<span class="fc bfc" id="L74" title="All 2 branches covered.">      case Right(result) =&gt; result</span>
-<span class="pc bpc" id="L75" title="1 of 2 branches missed.">      case Left(_)       =&gt; MatrixImpl(Vector.fill(MediumMode().boardSize._1, MediumMode().boardSize._2)(filling))</span>
+<span class="fc" id="L56">  def apply[T](rows: Int, cols: Int, filling: T): Matrix[T] =</span>
+<span class="fc" id="L57">    giveMeEither {</span>
+<span class="pc bpc" id="L58" title="1 of 4 branches missed.">      require(rows &gt;= 0 &amp;&amp; cols &gt;= 0, &quot;Invalid matrix size&quot;)</span>
+<span class="fc" id="L59">      MatrixImpl(Vector.fill(rows, cols)(filling))</span>
+<span class="fc" id="L60">    } match</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">      case Right(result) =&gt; result</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">      case Left(_)       =&gt; MatrixImpl(Vector.fill(MediumMode().boardSize._1, MediumMode().boardSize._2)(filling))</span>
 
-<span class="pc bpc" id="L77" title="10 of 18 branches missed.">  private case class MatrixImpl[T](override val elements: Vector[Vector[T]]) extends Matrix[T]:</span>
-<span class="fc" id="L78">    override def replaceRow(row: Int, vec: Vector[T]): Matrix[T] = copy(elements.updated(row, vec))</span>
-<span class="fc" id="L79">    override def replaceCell(row: Int, col: Int, cell: T): Matrix[T] = copy(</span>
-<span class="fc" id="L80">      elements.updated(row, elements(row).updated(col, cell))</span>
-    )
+<span class="pc bpc" id="L64" title="10 of 18 branches missed.">  private case class MatrixImpl[T](override val elements: Vector[Vector[T]]) extends Matrix[T]:</span>
+<span class="fc" id="L65">    override def replaceRow(row: Int, vec: Vector[T]): Matrix[T] = copy(elements.updated(row, vec))</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
