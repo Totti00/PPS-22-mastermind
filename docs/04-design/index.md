@@ -187,31 +187,49 @@ per mantenere private le implementazioni di alcune classi. Un esempio di applica
 `Game`:
 
 ```scala
-object Game
-``` 
+trait Game:
+  def resetGame: Game
+
+object Game:
+  def apply(field: Board, code: Code, currentTurn: Int): Game = GameImpl(field, code, currentTurn, InGame)
+
+  private case class GameImpl(
+      var board: Board, 
+      override val code: Code, 
+      private var _currentTurn: Int, 
+      private var _state: GameState
+  ) extends Game:
+  ...
+```
 
 ### Strategy
 Il pattern Strategy è nativamente supportato in Scala grazie alle funzioni higher-order. Un esempio di utilizzo si trova in
 `Scala2P`, dove è possibile definire il comportamento strategico in modo flessibile:
 
---ESEMPIO FUNZIONE FROMSTRINGTOVECTOR--
+```scala
+def fromStringToVector[T <: Stone: ClassTag](list: String)(mapper: String => T): Vector[T] =
+  if list == "[]" then Vector.empty
+  else list.init.tail.split(",").map(mapper).toVector
+```
 
 In particolare, il metodo *fromStringToVector* è un metodo higher-order che consente di "iniettare" la strategia da utilizzare
 direttamente dall'esterno.
 
 ### Singleton
 
-Nel progetto, si è ampiamente utilizzato questo pattern creazionale, che assicura la creazione di una sola istanza per una 
-determinata classe, offrendo un punto di accesso globale ad essa. In Scala, l’implementazione di questo pattern è particolarmente 
-intuitiva grazie agli object, che rappresentano classi con un’unica istanza. Questa viene inizializzata in modo lazy, ovvero solo 
-nel momento in cui viene effettivamente utilizzata. Fino ad allora, nessuna istanza dell’object esisterà nella memoria heap.
+All'interno del progetto, questo pattern creazionale è stato ampiamente adottato per garantire l'esistenza di un'unica 
+istanza di una specifica classe, fornendo un punto di accesso globale ad essa. In Scala, la sua implementazione risulta 
+particolarmente agevole grazie agli *object*, i quali rappresentano classi con un'istanza singola. Quest'ultima viene inizializzata 
+in modalità *lazy*, ovvero solo quando viene effettivamente richiesta, evitando così la presenza prematura dell'istanza nella memoria heap.
+Un esempio di applicazione del Singleton si può riscontrare nel seguente caso:
 
+```scala
+sealed trait GameState
 
-Anche il pattern Singleton trova pieno supporto in Scala. Esso garantisce che una determinata classe abbia una sola e unica
-istanza, un obiettivo facilmente realizzabile mediante l'uso degli object. Un esempio di applicazione del Singleton si può
-riscontrare nei seguenti casi:
-
---ESEMPIO STATI DI GIOCO--
+case object InGame extends GameState
+case object PlayerWin extends GameState
+case object PlayerLose extends GameState
+```
 
 ### Adapter
 
@@ -219,7 +237,10 @@ Il pattern Adapter è impiegato quando si verifica un'incompatibilità tra due c
 all'interno del sistema. In Scala, tale pattern può essere implementato agevolmente tramite il meccanismo delle *given conversion*.
 Nel contesto del progetto, questo pattern è stato ampiamente utilizzato per facilitare la cooperazione tra Scala e Prolog.
 
---ESEMPIO DEI GIVEN--
+```scala
+given Conversion[PlayableStones, String] = _.map(_.toString.toLowerCase).mkString("[", ", ", "]")
+given Conversion[String, Term] = Term.createTerm(_)
+```
 
 ## Organizzazione del codice
 Il codice è stato strutturato in package come descritto nel seguente diagramma
