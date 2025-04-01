@@ -54,18 +54,19 @@ import mastermind.utils.PagesEnum
 <span class="nc" id="L54">        loadView(Menu)</span>
 
 <span class="nc" id="L56">      override def loadView(path: PagesEnum, mode: Option[String] = None): Unit =</span>
-<span class="nc" id="L57">        path match</span>
-<span class="nc bnc" id="L58" title="All 6 branches missed.">          case Game =&gt;</span>
-<span class="nc" id="L59">            context.controller.startGame(mode.get)</span>
-<span class="nc" id="L60">            gameView = Some(GameView(context.controller, stage.get))</span>
-<span class="nc" id="L61">            loadFXML[GameView](path, gameView.get)</span>
-<span class="nc bnc" id="L62" title="All 6 branches missed.">          case Rules =&gt; loadFXML[RulesView](path, RulesView(stage.get))</span>
-<span class="nc bnc" id="L63" title="All 6 branches missed.">          case Menu  =&gt; loadFXML[MenuView](path, MenuView(context.controller, stage.get))</span>
+<span class="nc" id="L57">        val load = loadFXML(path)</span>
+<span class="nc" id="L58">        path match</span>
+<span class="nc bnc" id="L59" title="All 6 branches missed.">          case Game =&gt;</span>
+<span class="nc" id="L60">            context.controller.startGame(mode.get)</span>
+<span class="nc" id="L61">            gameView = Some(GameView(context.controller, stage.get))</span>
+<span class="nc" id="L62">            load(gameView.get)</span>
+<span class="nc bnc" id="L63" title="All 6 branches missed.">          case Rules =&gt; load(RulesView(stage.get))</span>
+<span class="nc bnc" id="L64" title="All 6 branches missed.">          case Menu  =&gt; load(MenuView(context.controller, stage.get))</span>
 
-      private def loadFXML[T](path: PagesEnum, controller: T): Unit =
-<span class="nc" id="L66">        val loader = new FXMLLoader(getClass.getResource(s&quot;/fxml/$path.fxml&quot;))</span>
-<span class="nc" id="L67">        loader.setController(controller)</span>
-<span class="nc" id="L68">        loader.load()</span>
+      private def loadFXML[T](path: PagesEnum)(controller: T): Unit =
+<span class="nc" id="L67">        val loader = new FXMLLoader(getClass.getResource(s&quot;/fxml/$path.fxml&quot;))</span>
+<span class="nc" id="L68">        loader.setController(controller)</span>
+<span class="nc" id="L69">        loader.load()</span>
 
   trait Interface extends Provider with Component:
     self: Requirements =&gt;
