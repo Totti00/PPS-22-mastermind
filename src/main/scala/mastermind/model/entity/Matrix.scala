@@ -40,19 +40,6 @@ trait Matrix[T]:
     */
   def row(row: Int): Vector[T] = elements(row)
 
-  /** Replaces an element at a specific row and column in the matrix with a new element.
-    *
-    * @param row
-    *   The row index
-    * @param col
-    *   The column index
-    * @param cell
-    *   The element to be inserted in the matrix
-    * @return
-    *   New matrix with the element replaced by the new one
-    */
-  def replaceCell(row: Int, col: Int, cell: T): Matrix[T]
-
   /** Replace an entire row of the matrix
     *
     * @param row
@@ -76,6 +63,3 @@ object Matrix:
 
   private case class MatrixImpl[T](override val elements: Vector[Vector[T]]) extends Matrix[T]:
     override def replaceRow(row: Int, vec: Vector[T]): Matrix[T] = copy(elements.updated(row, vec))
-    override def replaceCell(row: Int, col: Int, cell: T): Matrix[T] = copy(
-      elements.updated(row, elements(row).updated(col, cell))
-    )

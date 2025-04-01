@@ -24,15 +24,6 @@ class MatrixTest extends AnyFlatSpec with Matchers:
     row shouldBe Seq(0, 0, 0)
   }
 
-  "Matrix" should "replace the correct cell value" in {
-    val matrix = Matrix(3, 3, 0)
-    val updatedMatrix = matrix.replaceCell(1, 1, 5)
-
-    assert(updatedMatrix.cell(1, 1) == 5)
-    assert(updatedMatrix.cell(0, 0) == 0)
-    updatedMatrix.cell(2, 2) shouldBe 0
-  }
-
   "Matrix" should "replace the correct row" in {
     val matrix = Matrix(3, 3, 0)
     val updatedRow = Vector(1, 1, 1)
@@ -41,23 +32,4 @@ class MatrixTest extends AnyFlatSpec with Matchers:
     assert(updatedMatrix.row(1) == updatedRow)
     assert(updatedMatrix.row(0) == Seq(0, 0, 0))
     updatedMatrix.row(2) shouldBe Seq(0, 0, 0)
-  }
-
-  "Playable Matrix" should "replace the correct cell value" in {
-    val matrix: Matrix[PlayerStone] = Matrix(3, 3, Empty)
-    val updatedMatrix = matrix.replaceCell(1, 1, PlayerStone.fromString("Red"))
-
-    updatedMatrix.cell(1, 1) shouldBe PlayerStone.fromString("Red")
-    updatedMatrix.cell(0, 0) shouldBe Empty
-    updatedMatrix.cell(2, 2) shouldBe Empty
-  }
-
-  "Hint Matrix" should "replace the correct cell value" in {
-    val matrix: Matrix[HintStone] = Matrix(3, 3, HintEmpty)
-    val updatedMatrix = matrix.replaceCell(1, 1, HintWhite)
-
-    updatedMatrix.cell(1, 1) shouldBe HintWhite
-    updatedMatrix.cell(0, 0) shouldBe HintEmpty
-    updatedMatrix.cell(2, 2) should not be Empty
-
   }

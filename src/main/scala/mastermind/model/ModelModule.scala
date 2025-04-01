@@ -1,8 +1,7 @@
 package mastermind.model
 
-import mastermind.model.{PlayerLose, PlayerWin}
 import mastermind.model.entity.HintStone.HintRed
-import mastermind.model.entity.{Board, Code, Game, HintStone, HintStones, PlayableStones, PlayerStone}
+import mastermind.model.entity.*
 import mastermind.model.mode.*
 import mastermind.utils.ErrorHandler.*
 
@@ -152,7 +151,7 @@ object ModelModule:
       override def startNewTurn(): Unit =
         currentGame.get.currentTurn_()
         if currentGame.get.remainingTurns == 0 then gameState_(PlayerLose)
-        if currentTurn < currentGame.get.board.rows then
+        if gameState == InGame then
           val newBoard = currentGame.get.board.initializeCurrentTurn(currentTurn)
           currentGame.get.board_(newBoard)
 
