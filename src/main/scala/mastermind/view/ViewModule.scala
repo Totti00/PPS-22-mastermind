@@ -54,15 +54,16 @@ object ViewModule:
         loadView(Menu)
 
       override def loadView(path: PagesEnum, mode: Option[String] = None): Unit =
+        val load = loadFXML(path)
         path match
           case Game =>
             context.controller.startGame(mode.get)
             gameView = Some(GameView(context.controller, stage.get))
-            loadFXML[GameView](path, gameView.get)
-          case Rules => loadFXML[RulesView](path, RulesView(stage.get))
-          case Menu  => loadFXML[MenuView](path, MenuView(context.controller, stage.get))
+            load(gameView.get)
+          case Rules => load(RulesView(stage.get))
+          case Menu  => load(MenuView(context.controller, stage.get))
 
-      private def loadFXML[T](path: PagesEnum, controller: T): Unit =
+      private def loadFXML[T](path: PagesEnum)(controller: T): Unit =
         val loader = new FXMLLoader(getClass.getResource(s"/fxml/$path.fxml"))
         loader.setController(controller)
         loader.load()
