@@ -2,6 +2,7 @@ package mastermind.utils.prolog
 
 import alice.tuprolog.*
 import mastermind.model.entity.Stone
+import mastermind.utils.GivenConversion.PrologConversion.given
 import scala.reflect.ClassTag
 
 object Scala2P:
@@ -19,29 +20,10 @@ object Scala2P:
       )
     )
 
-  /** Extracts a Term and converts it to a String
-    *
-    * @param solveInfo
-    *   The solve info
-    * @param s
-    *   The term to extract
-    * @return
-    *   The extracted term
-    */
-  def extractTermToString(solveInfo: SolveInfo, s: String): String =
+  private def extractTermToString(solveInfo: SolveInfo, s: String): String =
     solveInfo.getTerm(s).toString.replace("'", "")
 
-  /** Converts a string to a vector
-    * @param list
-    *   The string representing the list, formatted as `"[elem1, elem2, elem3, ...]"`
-    * @param mapper
-    *   A function to convert each string element of the list to an instance of type `T`
-    * @tparam T
-    *   The type of the elements in the resulting vector. It must be a subtype of `Stone`.
-    * @return
-    *   A Vector containing the elements of the list converted by the "mapper" function.
-    */
-  def fromStringToVector[T <: Stone: ClassTag](list: String)(mapper: String => T): Vector[T] =
+  private def fromStringToVector[T <: Stone: ClassTag](list: String)(mapper: String => T): Vector[T] =
     if list == "[]" then Vector.empty
     else list.init.tail.split(",").map(mapper).toVector
 
@@ -62,3 +44,27 @@ object Scala2P:
               solution =
                 if solution.get.hasOpenAlternatives then Some(engine.solveNext())
                 else None
+
+  /** Retrieves the result from a prolog query
+    * @param engine
+    *   The prolog engine
+    * @param functor
+    *   The functor to query
+    * @param mapper
+    *   The function to convert the result to the desired type
+    * @param parameters
+    *   The parameters to pass to the functor
+    * @tparam T
+    *   The type of the result
+    * @return
+    *   The result of the query
+    */
+  def getResultFromProlog[T <: Stone: ClassTag](
+      engine: Term => Iterable[SolveInfo],
+      functor: String,
+      mapper: String => T,
+      parameters: String*
+  ): Vector[T] =
+    val solveInfo = engine(s"$functor(${parameters.mkString(", ")}, Stones).").head
+    val result = extractTermToString(solveInfo, "Stones")
+    fromStringToVector(result)(mapper)

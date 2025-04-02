@@ -1,11 +1,14 @@
-% Altro soluzione ma con la sicurezza che si ferma perché gli do un count
+%nuovo modo per avere un codice
+
+randNumFromList(List, Element) :- length(List, NumberOfElements), rand_int(NumberOfElements,N), Position is N+1, element(Position, List, Element) .
+
 codeGenerator(_, 0, []).
-codeGenerator(Colors, N, [H|T]) :- N > 0, member(H, Colors), N1 is N - 1, codeGenerator(Colors, N1, T).
+codeGenerator(List, Length, [Element|Tail]) :- Length>0, randNumFromList(List, Element), NewLength is Length - 1, codeGenerator(List, NewLength, Tail).
 
-% trova tutte le permutazioni
-member2([H|T], H, T).
-member2([H|T], E, [H|O]) :- member2(T,E,O).
 
-permutation(L, 0, []).
-permutation(L, N, [E|T2]) :- N>0, member2(L, E, T), N1 is N-1, permutation(T, N1, T2).
+
+%nuovo modo per avere una lista di colori
+
+colors(List, 0, []).
+colors(List, Length, [Element|Tail]) :- Length>0, randNumFromList(List, Element), delete(Element, List, ListDest), NewLength is Length-1, colors(ListDest, NewLength, Tail).
 

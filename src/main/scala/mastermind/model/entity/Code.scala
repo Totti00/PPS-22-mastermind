@@ -47,18 +47,15 @@ object Code:
       rulesJoinedVector
 
     private def compareToPresent(userInput: PlayableStones): HintStones =
-      getHintStonesByRule("compareToPresent", code, userInput)
+      getResultFromProlog(engine, "compareToPresent", mapper(), code, userInput)
 
     private def compareToEqual(userInput: PlayableStones): HintStones =
-      getHintStonesByRule("compareToEqual", code, userInput)
+      getResultFromProlog(engine, "compareToEqual", mapper(), code, userInput)
 
-    private def getHintStonesByRule(functor: String, code: String, userInput: String): HintStones =
-      val solveInfo = engine(s"$functor($code, $userInput, HintStones).").head
-      val result = extractTermToString(solveInfo, "HintStones")
-      fromStringToVector(result) {
-        case s if s.toLowerCase == "hintred" => HintRed
-        case _                               => HintWhite
-      }
+    private def mapper(): String => HintStone = {
+      case s if s.toLowerCase == "hintred" => HintRed
+      case _                               => HintWhite
+    }
 
     private def joinVectors(hintStonesRed: HintStones, hintStonesWhite: HintStones): HintStones =
       val missingPositions = code.size - (hintStonesRed.size + hintStonesWhite.size)

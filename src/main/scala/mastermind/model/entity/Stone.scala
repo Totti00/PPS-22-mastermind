@@ -44,21 +44,9 @@ object PlayerStone:
     */
   def random(codeAndColorLength: Int): (PlayableStones, PlayableStones) =
     val stones = Vector(Red, Green, Blue, Yellow, White, Purple)
-    val colors = randomHelper(stones, "permutation", codeAndColorLength)
-    val code = randomHelper(colors, "codeGenerator", codeAndColorLength)
-
+    val colors = getResultFromProlog(engine, "colors", mapper, stones, codeAndColorLength.toString)
+    val code = getResultFromProlog(engine, "codeGenerator", mapper, colors, codeAndColorLength.toString)
     (code, colors)
-
-  private def randomHelper(stones: PlayableStones, functor: String, codeAndColorLength: Int): PlayableStones =
-    val permutations = obtainVectorPlayable(stones, functor, codeAndColorLength)
-    val drawOne = permutations(Random.nextInt(permutations.size))
-    fromStringToVector(drawOne)(mapper)
-
-  private def obtainVectorPlayable(stones: String, functor: String, codeAndColorLength: Int): Vector[String] =
-    engine(s"$functor($stones, $codeAndColorLength, PlayableStones).")
-      .take(MAX_PERMUTATION)
-      .map(extractTermToString(_, "PlayableStones"))
-      .toVector
 
   private def mapper = PlayerStone.fromString
 
