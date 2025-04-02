@@ -40,26 +40,25 @@ trait Code:
 <span class="fc" id="L40">    private val engine = createEngine(&quot;/prolog/code.pl&quot;)</span>
 
     override def compareTo(userInput: PlayableStones): HintStones =
-<span class="fc" id="L43">      println(s&quot;Code: $code&quot;)</span>
-<span class="fc" id="L44">      val hintStonesRed = compareToEqual(userInput)</span>
-<span class="fc" id="L45">      val hintStoneWhite = compareToPresent(userInput)</span>
-<span class="fc" id="L46">      val rulesJoinedVector = joinVectors(hintStonesRed, hintStoneWhite)</span>
-<span class="fc" id="L47">      rulesJoinedVector</span>
+<span class="fc" id="L43">      val hintStonesRed = compareToEqual(userInput)</span>
+<span class="fc" id="L44">      val hintStoneWhite = compareToPresent(userInput)</span>
+<span class="fc" id="L45">      val rulesJoinedVector = joinVectors(hintStonesRed, hintStoneWhite)</span>
+<span class="fc" id="L46">      rulesJoinedVector</span>
 
     private def compareToPresent(userInput: PlayableStones): HintStones =
-<span class="fc" id="L50">      getResultFromProlog(engine, &quot;compareToPresent&quot;, mapper(), code, userInput)</span>
+<span class="fc" id="L49">      getResultFromProlog(engine, &quot;compareToPresent&quot;, mapper(), code, userInput)</span>
 
     private def compareToEqual(userInput: PlayableStones): HintStones =
-<span class="fc" id="L53">      getResultFromProlog(engine, &quot;compareToEqual&quot;, mapper(), code, userInput)</span>
+<span class="fc" id="L52">      getResultFromProlog(engine, &quot;compareToEqual&quot;, mapper(), code, userInput)</span>
 
-<span class="fc" id="L55">    private def mapper(): String =&gt; HintStone = {</span>
+<span class="fc" id="L54">    private def mapper(): String =&gt; HintStone = {</span>
       case s if s.toLowerCase == &quot;hintred&quot; =&gt; HintRed
       case _                               =&gt; HintWhite
     }
 
     private def joinVectors(hintStonesRed: HintStones, hintStonesWhite: HintStones): HintStones =
-<span class="fc" id="L61">      val missingPositions = code.size - (hintStonesRed.size + hintStonesWhite.size)</span>
+<span class="fc" id="L60">      val missingPositions = code.size - (hintStonesRed.size + hintStonesWhite.size)</span>
       val joinedVectors: HintStones =
-<span class="fc" id="L63">        hintStonesRed ++ hintStonesWhite ++ Vector.fill(missingPositions)(HintEmpty)</span>
-<span class="fc" id="L64">      joinedVectors</span>
+<span class="fc" id="L62">        hintStonesRed ++ hintStonesWhite ++ Vector.fill(missingPositions)(HintEmpty)</span>
+<span class="fc" id="L63">      joinedVectors</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
