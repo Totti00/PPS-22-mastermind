@@ -6,8 +6,6 @@ nav_order: 8
 
 Gli items sono ordinati per priorità.
 
-Il calo settimanale è basato sull'effettivo lavorato.
-
 |      Id | Item                                                                                             | Story Point (SP) |
 |--------:|:-------------------------------------------------------------------------------------------------|:----------------:|
 |       0 | Eventuale                                                                                        |        0         |

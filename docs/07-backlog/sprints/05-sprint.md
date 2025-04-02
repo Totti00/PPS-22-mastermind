@@ -3,7 +3,7 @@ title: Sprint 5
 parent: Backlog
 nav_order: 5
 ---
-# Sprint 5 [17/03/2025 - 24/03/2025]
+# Sprint 5 [17/03/2025 - 27/03/2025]
 
 |                                          Backlog Item                                           | Id  | Task                                                           | Volontario | Stima (h) | Effettivo (h) |
 |:-----------------------------------------------------------------------------------------------:|:---:|----------------------------------------------------------------|:----------:|:---------:|:-------------:|
@@ -30,7 +30,7 @@ Gli obiettivi di questo Sprint sono stati:
 
 ## Deadline
 
-24/03/2025
+27/03/2025
 
 ## Sprint review
 Gli obiettivi prefissati nello sprint sono stati raggiunti, espandendo notevolmente il valore del prodotto rilasciato.
