@@ -35,7 +35,7 @@ jobs:
           fi
         shell: bash
       - name: Run tests
-        run: sbt test
+        run: sbt -Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw test
 
   format:
     runs-on: ubuntu-22.04
