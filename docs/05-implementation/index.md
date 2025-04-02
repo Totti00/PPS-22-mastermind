@@ -281,10 +281,10 @@ confrontare l’input dell’utente con il codice segreto.
 In seguito, all’interno della classe `GameView`, ho implementato un timer utilizzando il costrutto *Timeline* fornito da *JavaFX*, 
 gestendo contemporaneamente il pulsante di reset, che consente di azzerare la partita corrente e avviarne una nuova mantenendo le 
 stesse impostazioni di gioco. Questa funzionalità ha coinvolto i moduli:
--`ViewModule`
--`ModelModule`
--`ControllerModule`
--`GameView`
+- `ViewModule`
+- `ModelModule`
+- `ControllerModule`
+- `GameView`
 
 Infine, ho integrato *Prolog* nella classe `Code` e `Stone` per il confronto tra il codice segreto e l’input fornito dall’utente tramite 
 la regola *compareToEqual* ([dettagli](#prolog-confronto)). Inoltre, ho implementato la generazione del codice segreto, che prevede prima la selezione casuale dei 
