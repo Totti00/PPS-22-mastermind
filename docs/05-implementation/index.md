@@ -295,9 +295,9 @@ per garantire una chiara separazione delle responsabilità. Contestualmente, sfr
 gestione dell'interfaccia grafica, assicurando un'organizzazione modulare e flessibile del codice. Questa fase iniziale ha posto le 
 fondamenta per le successive implementazioni, facilitando l'espansione e la manutenzione del software. Questo comprende lo sviluppo 
 delle classi:
-- `Launcher`;
-- `ViewModule`;
-- `ControllerModule`;
+- `Launcher`
+- `ViewModule`
+- `ControllerModule`
 
 Per la gestione dell’interfaccia utente, è stata implementata la schermata principale di gioco. Questa si occupa della 
 visualizzazione degli elementi grafici, tra cui il pannello di gioco, il numero di turni rimanenti e un pulsante per tornare al menu 
@@ -305,8 +305,8 @@ principale. L'aggiornamento del pannello di gioco è stato realizzato tramite un
 per trasformare dinamicamente i nuovi valori in etichette grafiche. Inoltre, è stata gestita l’interazione con l’utente attraverso 
 eventi di input, tra cui la logica associata al click del mouse, che permette di selezionare e posizionare i colori nel tentativo 
 del giocatore. Questo comprende le classi:
-- `GameView`;
-- `GridUpdateType`;
+- `GameView`
+- `GridUpdateType`
 
 All'interno del package `Model` mi sono dedicato principalmente alla gestione dello stato di gioco che per l'appunto regolano lo stato
 attuale della partita. Questo è stato possibile grazie al **pattern Singleton**. Parallelamente, ho ideato la gestione delle modalità 
@@ -315,8 +315,8 @@ specifica dimensioni del tabellone, lunghezza del codice segreto e il numero di 
 facile estensione a nuove difficoltà. L'uso di classi immutabili e parametri preconfigurati assicura coerenza durante le partite, 
 mentre l'astrazione del *trait* centralizza la logica delle regole. Questa struttura ha reso il model scalabile e adattabile a future 
 evoluzioni del gameplay. Le classi relative a questo sviluppo sono le seguenti:
-- `GameMode`;
-- `GameState`;
+- `GameMode`
+- `GameState`
 
-Infine, sempre in autonomia, ho integrato Prolog all'interno della classe `Code` per confrontare il codice segreto con l'input 
+Infine, sempre in autonomia, ho integrato Prolog all'interno della classe `Code` nel Model per confrontare il codice segreto con l'input 
 fornito dall'utente (*compareToPresent*). Per approfondire, fare riferimento alla [sezione dedicata](#prolog-confronto).
