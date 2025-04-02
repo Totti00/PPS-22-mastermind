@@ -109,7 +109,7 @@ Distributed under the MIT License. See [LICENSE](https://github.com/Totti00/PPS-
 ## Acknowledgements
 
 - [Giacomo Totaro](https://www.linkedin.com/in/giacomo-totaro-8152801b3/)
-- [Ramzi Gallala]()
+- [Ramzi Gallala](https://github.com/ramzigallala)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
