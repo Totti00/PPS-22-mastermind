@@ -34,6 +34,8 @@ jobs:
              brew install sbt
           fi
         shell: bash
+      - name: Run tests
+        run: sbt test
 
   format:
     runs-on: ubuntu-22.04
