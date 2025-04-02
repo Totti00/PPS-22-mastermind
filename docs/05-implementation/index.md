@@ -154,7 +154,7 @@ in vettori di oggetti `Stone`.
 Nello specifico, sono stati realizzati due file `.pl`: uno per la generazione del codice segreto e l'altro per la 
 gestione della logica di confronto tra il codice e il tentativo.
 
-### Utilizzo di Prolog per la generazione del codice segreto
+<h3 id="prolog-generazione-codice">Utilizzo di Prolog per la generazione del codice segreto</h3>
 
 Attraverso il *Prolog engine*, viene inizialmente creato un vettore contenente i colori che saranno utilizzati, seguito dalla 
 generazione del codice segreto.
@@ -174,7 +174,8 @@ codeGenerator(_, 0, []).
 codeGenerator(Colors, N, [H|T]) :- N > 0, member(H, Colors), N1 is N - 1, codeGenerator(Colors, N1, T).
 ```
 
-### Utilizzo di Prolog per il confronto tra il codice segreto e il tentativo fornito dall'utente
+<h3 id="prolog-confronto">Utilizzo di Prolog per il confronto tra il codice segreto e il tentativo fornito dall'utente</h3>
+
 Questo confronto è stato implementato tramite regole logiche in *Prolog* per generare gli indizi appropriati.
 In particolare, la regola *compareToEqual* verifica la corrispondenza degli elementi nelle stesse posizioni, 
 assegnando un `hintRed` per ognuna di esse. Gli elementi che non corrispondono vengono esclusi dal confronto successivo.
@@ -195,6 +196,50 @@ compareToPresent(Code, UserInput, HintStones) :-
     compare_elements(FilteredCode, FilteredUserInput, [], HintStones), !.
 ```
 
+Il predicato *exclude_correct_matches* confronta gli elementi nelle stesse posizioni delle due liste iniziali: se coincidono, vengono 
+scartati da entrambe; in caso contrario, vengono mantenuti per la successiva fase di confronto.
+
+```prolog
+exclude_correct_matches([], [], [], []).
+exclude_correct_matches([X | CT], [X | UT], FC, FU) :- exclude_correct_matches(CT, UT, FC, FU).
+exclude_correct_matches([C | CT], [U | UT], [C | FC], [U | FU]) :- exclude_correct_matches(CT, UT, FC, FU).
+```
+
+Attraverso *compare_elements*, invece, è possibile determinare gli elementi erroneamente posizionati tra l'input del giocatore e il 
+codice segreto, considerando solo quelli che non sono già stati identificati come corretti.
+
+```prolog
+compare_elements(_, [], Hints, Hints).
+compare_elements(Code, [U | UT], Acc, HintStones) :-
+    count_occurrences(U, Code, Occurrences),
+    Occurrences > 0,
+    add_hints(Occurrences, Acc, NewAcc),
+    remove_elements(U, [U | UT], RestUserInput),
+    compare_elements(Code, RestUserInput, NewAcc, HintStones).
+compare_elements(Code, [_ | UT], Acc, HintStones) :- compare_elements(Code, UT, Acc, HintStones).
+```
+Per ciascun elemento rimanente nell'input dell'utente:
+
+1. Si calcola il numero di occorrenze corrispondenti nel codice segreto:
+```prolog
+count_occurrences(_, [], 0).
+count_occurrences(E, [E|T], N) :- count_occurrences(E, T, N1), N is N1 + 1.
+count_occurrences(E, [H|T], N) :- E \= H, count_occurrences(E, T, N).
+```
+
+2. Se l'elemento è presente almeno una volta nel codice segreto, si aggiunge un numero corrispondente di *hintWhite*:
+```prolog
+add_hints(0, Acc, Acc).
+add_hints(N, Acc, NewAcc) :- N > 0, N1 is N - 1, add_hints(N1, [hintWhite | Acc], NewAcc).
+```
+
+3. Dopo aver gestito l’elemento, si rimuove la sua occorrenza dal tentativo dell'utente e si ripete il processo per i restanti elementi.
+```prolog
+remove_elements(_, [], []).
+remove_elements(E, [E|T], Rest) :- remove_elements(E, T, Rest).
+remove_elements(E, [H|T], [H|Rest]) :- E \= H, remove_elements(E, T, Rest).
+```
+
 ## Suddivisione del lavoro
 
 Essendo il team di sviluppo composto da soli due membri, risulta complicato distinguere nettamente aree 
@@ -208,28 +253,42 @@ La mole di lavoro maggiore relativa alla parte di logica e view è stata svolta 
 contribuito in modo più significativo alla parte di model e al testing.
 
 ### Ramzi
-GameView, model, gestione view con controller e model, cronometro, reset, checkCode prima implementazione, prolog: stone e checkcode il primo
+Inizialmente, il mio incarico è stato quello di sviluppare le classi principali del Model, in particolare:
+- `Board`: definisce il campo di gioco e gestisce la sua struttura.
+- `Code`: rappresenta il meccanismo di gestione del codice segreto.
+- `Game`: modella lo stato della partita in corso.
+- `Matrix`: implementa la matrice di gioco in cui vengono registrati i tentativi dell’utente.
+- `Stone`: identifica le diverse pedine che possono essere utilizzate nel corso della partita.
 
+Successivamente, ho sviluppato i metodi necessari per la gestione di questi elementi all’interno della classe `ModelModule`, 
+assicurando una corretta manipolazione dei dati e una logica coerente con le regole del gioco.
 
-Inizialmente il mio compito e stato costituito dall'implmentazione delle classi del model in particole:
--Board: rappresenta la classe he ha al suo interno il campo di gioco
--Code: rappresenta il costrutto per la gestione del codice
--Game: rappresenta la partita che l'utente sta svolgendo
--Matrix: rappresenta la matrice di gioco 
--Stone: Rappresentano tutte le stone che possono susseguirsi durante il gioco
-Il passo successivo mi ha portato ha creare metodi consoni per la gestioni degli elementi sopraindicati all'interno della classe ModelModule.
+Una volta definita l’architettura di base del progetto, ho implementato le funzionalità della View per permettere l’interazione 
+con il Controller, consentendo la modifica dello stato della matrice di gioco e l’associazione delle azioni ai pulsanti.
 
-Una volta creata la struttura portante del progetto ho creato le funzioni all'interno della view per poter interagire con il controllore al fine di riempire le matrici di gioco e di connettere le azioni ai pulsanti.
+Il passo successivo è stato implementare la gestione del tentativo dell’utente nella classe `GameView`, articolandolo nei seguenti 
+passaggi:
 
+1. Acquisizione dell’input dell’utente sotto forma di vettore di `PlayableStone`, con le dovute validazioni.
 
-Il passa successivo è stato di implementare il metodo all'interno della view per la gestione del tentativo dell'utente. I passaggi sono stati:
-1. Ottenimento dell'input dell'utente sotto forma di vettore di stone, utilizzando i controlli opportuni
-2. gestione della logica di valutazione del tentativo attraverso l'uso del model e del controller
-3. infine visualizzazione del feedback all'interno del campo di gioco
+2. Elaborazione della logica di valutazione del tentativo, sfruttando le funzionalità del Model e del Controller.
 
-Per la valutazione del tentativo si è reso necessario implementare
+3. Visualizzazione del feedback direttamente all’interno del campo di gioco.
 
+Per la valutazione del tentativo, ho sviluppato una prima versione della classe `Code`, che implementa il metodo *compareTo* per 
+confrontare l’input dell’utente con il codice segreto.
 
+In seguito, all’interno della classe `GameView`, ho implementato un timer utilizzando il costrutto *Timeline* fornito da *JavaFX*, 
+gestendo contemporaneamente il pulsante di reset, che consente di azzerare la partita corrente e avviarne una nuova mantenendo le 
+stesse impostazioni di gioco. Questa funzionalità ha coinvolto i moduli:
+-`ViewModule`
+-`ModelModule`
+-`ControllerModule`
+-`GameView`
+
+Infine, ho integrato *Prolog* nella classe `Code` e `Stone` per il confronto tra il codice segreto e l’input fornito dall’utente tramite 
+la regola *compareToEqual* ([dettagli](#prolog-confronto)). Inoltre, ho implementato la generazione del codice segreto, che prevede prima la selezione casuale dei 
+colori disponibili (*colors*), seguita dalla costruzione del codice (*codeGenerator*), per maggiori dettagli vedere la sezione relativa [dettagli](#prolog-generazione-codice). 
 ### Totaro
 Nel corso dello sviluppo del progetto, mi sono occupato della progettazione dell'architettura di base, adottando il pattern `MVC` 
 per garantire una chiara separazione delle responsabilità. Contestualmente, sfruttando il *currying*, ho integrato *ScalaFX* per la 
@@ -251,52 +310,13 @@ del giocatore. Questo comprende le classi:
 
 All'interno del package `Model` mi sono dedicato principalmente alla gestione dello stato di gioco che per l'appunto regolano lo stato
 attuale della partita. Questo è stato possibile grazie al **pattern Singleton**. Parallelamente, ho ideato la gestione delle modalità 
-definendo un trait astratto, con quattro implementazioni concrete (EasyMode, MediumMode, HardMode, ExtremeMode). Ciascuna modalità 
+definendo un *trait* astratto, con quattro implementazioni concrete (EasyMode, MediumMode, HardMode, ExtremeMode). Ciascuna modalità 
 specifica dimensioni del tabellone, lunghezza del codice segreto e il numero di colori presi in considerazione, permettendo una 
 facile estensione a nuove difficoltà. L'uso di classi immutabili e parametri preconfigurati assicura coerenza durante le partite, 
-mentre l'astrazione del trait centralizza la logica delle regole. Questa struttura ha reso il model scalabile e adattabile a future 
+mentre l'astrazione del *trait* centralizza la logica delle regole. Questa struttura ha reso il model scalabile e adattabile a future 
 evoluzioni del gameplay. Le classi relative a questo sviluppo sono le seguenti:
 - `GameMode`;
 - `GameState`;
 
 Infine, sempre in autonomia, ho integrato Prolog all'interno della classe `Code` per confrontare il codice segreto con l'input 
-fornito dall'utente (*compareToEqual*).
-
-
-
-
-
-
-
-
-
-
-
-
-
-Sprint 2
-view: ra
-pattern MVC: totti
-Implementazione architettura base: team
-
-Sprint 3
-model: ramzi
-gestione pagina di gioco, inizializzazione: ramzi
-view pagina di gioco (Game): totti
-logica mouse giocatore: totti
-
-
-Sprint 4
-checkCode prima implementazione, logica connessa anche con view: ramzi
-win loose, logica: totti
-view cronometro anche reset: ramzi
-turni , model: totti
-back: totti
-
-Sprint 5
-comune: refactor package View, gestione eccezioni(either)
-prolog: totti , ra
-totti : pattern strategy
-
-
-
+fornito dall'utente (*compareToPresent*). Per approfondire, fare riferimento alla [sezione dedicata](#prolog-confronto).
