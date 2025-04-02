@@ -158,20 +158,23 @@ gestione della logica di confronto tra il codice e il tentativo.
 
 Attraverso il *Prolog engine*, viene inizialmente creato un vettore contenente i colori che saranno utilizzati, seguito dalla 
 generazione del codice segreto.
-Utilizzando la regola *permutation*, è possibile ottenere tutte le possibili permutazioni della lista di colori, senza ripetizioni. 
-Successivamente, una di queste permutazioni viene selezionata in modo casuale utilizzando Scala.
+Utilizzando la regola *colors*, è possibile ottenere una possibile permutazione della lista di colori, senza ripetizioni.
 ```prolog
-member2([H|T], H, T).
-member2([H|T], E, [H|O]) :- member2(T,E,O).
-
-permutation(L, 0, []).
-permutation(L, N, [E|T2]) :- N>0, member2(L, E, T), N1 is N-1, permutation(T, N1, T2).
+colors(List, 0, []).
+colors(List, Length, [Element|Tail]) :- Length>0, randNumFromList(List, Element), delete(Element, List, ListDest), NewLength is Length-1, colors(ListDest, NewLength, Tail).
 ```
-Infine, viene impiegata la regola *codeGenerator* per generare tutte le possibili permutazioni di una lista di colori, inclusi i casi
-con ripetizioni. Anche in questo caso, una delle possibilità viene selezionata casualmente utilizzando Scala.
+
+Infine, viene impiegata la regola *codeGenerator* per generare una possibile permutazione di una lista di colori, inclusi i casi
+con ripetizioni.
 ```prolog
 codeGenerator(_, 0, []).
-codeGenerator(Colors, N, [H|T]) :- N > 0, member(H, Colors), N1 is N - 1, codeGenerator(Colors, N1, T).
+codeGenerator(List, Length, [Element|Tail]) :- Length>0, randNumFromList(List, Element), NewLength is Length - 1, codeGenerator(List, NewLength, Tail).
+```
+
+Entrambe utilizzano la regola *randNumFromList* che data una lista torna una elemento random di essa.
+
+```prolog
+randNumFromList(List, Element) :- length(List, NumberOfElements), rand_int(NumberOfElements,N), Position is N+1, element(Position, List, Element) .
 ```
 
 <h3 id="prolog-confronto">Utilizzo di Prolog per il confronto tra il codice segreto e il tentativo fornito dall'utente</h3>
