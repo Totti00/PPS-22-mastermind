@@ -52,12 +52,12 @@ Di seguito sarà riportata una descrizione più dettagliata del nostro dominio a
 - Il sistema deve consentire il cambio della modalità di gioco in qualsiasi momento.
 
 ## Non funzionali
-- Usabilità: l'interfaccia grafica deve essere user-friendly. 
-- Affidabilità: il gioco non deve presentare crash o blocchi inaspettati ed essere stabile.
-- Portabilità: il gioco deve essere cross-platform, cioè eseguibile su SO Windows, Linux e MacOS.
-- Documentazione: realizzare una documentazione chiara e completa per facilitare la comprensione del codice e la risoluzione dei problemi.
-- Manutenibilità: il codice deve essere strutturato in modo da agevolare future modifiche e aggiornamenti.
-- Performance: il sistema deve essere reattivo alle azioni del giocatore e in grado di sostenere il carico di lavoro necessario per lo svolgimento una partita.
+- **Usabilità**: l'interfaccia grafica deve essere user-friendly. 
+- **Affidabilità**: il gioco non deve presentare crash o blocchi inaspettati ed essere stabile.
+- **Portabilità**: il gioco deve essere cross-platform, cioè eseguibile su SO Windows, Linux e MacOS.
+- **Documentazione**: realizzare una documentazione chiara e completa per facilitare la comprensione del codice e la risoluzione dei problemi.
+- **Manutenibilità**: il codice deve essere strutturato in modo da agevolare future modifiche e aggiornamenti.
+- **Performance**: il sistema deve essere reattivo alle azioni del giocatore e in grado di sostenere il carico di lavoro necessario per lo svolgimento di una partita.
 
 ## Implementazione
 Utilizzo di:
@@ -68,7 +68,7 @@ Utilizzo di:
 - tuProlog 4.x
 
 ## Requisiti Opzionali:
-- Gestione delle partite: fornire un sistema per avviare, mettere in pausa, salvare e riprendere partite in corso.
-- Ranking e statistiche di gioco: sviluppare una pagina per visualizzare classifiche e statistiche utili a monitorare le prestazioni dei giocatori nel corso del tempo.
-- Modalità multiplayer online: sviluppare una funzione che permetta ai giocatori in luoghi diversi di sfidarsi in partite online.
-- Area di gioco configurabile: sviluppare un'interfaccia che permetta ai giocatori di personalizzare il codice segreto e la grandezza del campo di gioco.
+- **Gestione delle partite**: fornire un sistema per avviare, mettere in pausa, salvare e riprendere partite in corso.
+- **Ranking e statistiche di gioco**: sviluppare una pagina per visualizzare classifiche e statistiche utili a monitorare le prestazioni dei giocatori nel corso del tempo.
+- **Modalità multiplayer online**: sviluppare una funzione che permetta ai giocatori in luoghi diversi di sfidarsi in partite online.
+- **Area di gioco configurabile**: sviluppare un'interfaccia che permetta ai giocatori di personalizzare il codice segreto e la grandezza del campo di gioco.

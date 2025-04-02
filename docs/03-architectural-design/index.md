@@ -16,4 +16,4 @@ L'architettura scelta vede quindi la presenza di tre componenti principali:
 - **Controller**: ricopre il ruolo di ponte fra model e view, occupandosi dello scambio di informazioni fra questi due. Riceve i comandi dall'utente attraverso la View e reagisce modificando lo stato dei componenti View e Model;
 - **View**: in cui è possibile trovare tutte le interfacce grafiche per l'interazione con il sistema. Visualizza i dati contenuti nel Model e si occupa dell'interazione con gli utenti, notificando il Controller.
   
-In sintesi, si è deciso di utilizzare questo pattern in quanto favorisce il riuso del codice, facilità la manutenzione del software e ne agevola la scalabilità.
+In sintesi, si è deciso di utilizzare questo pattern in quanto favorisce il riuso del codice, facilita la manutenzione del software e ne agevola la scalabilità.

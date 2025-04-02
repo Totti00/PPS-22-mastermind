@@ -63,7 +63,7 @@ e di suddividerli in liste, a seconda dello stato di avanzamento di ciascuna att
 Grazie a questa struttura, ogni membro del team potrà avere una visione d'insieme sull'intero flusso di lavoro.
 
 ## DVCS
-Per la gestione del codice sorgente su Git e GitHub, è stato scelto un modello che prevede l'utilizzo di due branch per 
+Per la gestione del codice sorgente su Git e GitHub, è stato scelto un modello che prevede l'utilizzo di tre branch per 
 organizzare lo sviluppo in modo strutturato:
 - **main**: branch principale, utilizzato sia per lo sviluppo che per il rilascio di codice stabile.
 - **develop**: branch di sviluppo, utilizzato per integrare le funzionalità sviluppate dai vari membri del team. 

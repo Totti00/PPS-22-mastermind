@@ -8,7 +8,7 @@ Gli items sono ordinati per priorità.
 
 |      Id | Item                                                                                             | Story Point (SP) |
 |--------:|:-------------------------------------------------------------------------------------------------|:----------------:|
-|       0 | Eventuale                                                                                        |        0         |
+|       0 | Eventuale                                                                                        |        2         |
 |       1 | Setup repository                                                                                 |        1         |
 |       2 | Domain understanding & reporting                                                                 |        3         |
 |       3 | Software Architecture                                                                            |        2         |
@@ -22,4 +22,4 @@ Gli items sono ordinati per priorità.
 |      11 | Come giocatore, voglio vedere il numero di tentativi rimanenti                                   |        2         |
 |      12 | Come giocatore, voglio poter riavviare la partita in qualsiasi momento                           |        2         |
 |      13 | Come giocatore, voglio poter visualizzare le regole del gioco in qualsiasi momento della partita |        3         |
-| **TOT** |                                                                                                  |        41        |
+| **TOT** |                                                                                                  |        43        |

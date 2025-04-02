@@ -31,10 +31,10 @@ idiomatica. Nel progetto, è stato impiegato prevalentemente nella sua forma pi�
 più potente dello *switch* di Java. Ad esempio:
 
 ```scala
-path match
-  case Game => loadFXML[GameView](path, Some(GameView(context.controller, stage.get)).get)
-  case Rules => loadFXML[RulesView](path, RulesView(stage.get))
-  case Menu  => loadFXML[MenuView](path, MenuView(context.controller, stage.get))
+override def toString: String = this match
+  case HintRed   => "Red"
+  case HintWhite => "White"
+  case HintEmpty => "Empty"
 ```
 
 ### Currying 
@@ -243,7 +243,7 @@ remove_elements(E, [H|T], [H|Rest]) :- E \= H, remove_elements(E, T, Rest).
 ## Suddivisione del lavoro
 
 Essendo il team di sviluppo composto da soli due membri, risulta complicato distinguere nettamente aree 
-dell'applicazione attribuili a un solo membro piuttosto che all'altro: questo perché l'intero processo di sviluppo si è svolto in 
+dell'applicazione attribuibili a un solo membro piuttosto che all'altro: questo perché l'intero processo di sviluppo si è svolto in 
 stretta collaborazione, perciò la quasi totalità degli elementi implementati è opera dell'intero team.
 
 Durante lo svolgimento del progetto si è cercato di suddividere il carico di lavoro nella maniera più equa possibile, cercando di 
@@ -287,8 +287,9 @@ stesse impostazioni di gioco. Questa funzionalità ha coinvolto i moduli:
 - `GameView`
 
 Infine, ho integrato *Prolog* nella classe `Code` e `Stone` per il confronto tra il codice segreto e l’input fornito dall’utente tramite 
-la regola *compareToEqual* ([dettagli](#prolog-confronto)). Inoltre, ho implementato la generazione del codice segreto, che prevede prima la selezione casuale dei 
-colori disponibili (*colors*), seguita dalla costruzione del codice (*codeGenerator*), per maggiori dettagli vedere la sezione relativa [dettagli](#prolog-generazione-codice). 
+la regola *compareToEqual* ([dettagli](#prolog-confronto)). Inoltre, ho implementato la generazione del codice segreto, che prevede 
+prima la selezione casuale dei colori disponibili (*colors*), seguita dalla costruzione del codice (*codeGenerator*), per maggiori 
+dettagli vedere la [sezione relativa](#prolog-generazione-codice). 
 
 ### Totaro Giacomo
 Nel corso dello sviluppo del progetto, mi sono occupato della progettazione dell'architettura di base, adottando il pattern `MVC` 

@@ -8,7 +8,7 @@ nav_order: 5
 In questo capitolo verrà descritta nel dettaglio l'architettura del sistema, analizzandone i principali componenti e le 
 rispettive caratteristiche.
 
-## Component programming & cake Pattern
+## Component programming & Cake Pattern
 Come illustrato nella sezione precedente, si è scelto di adottare il pattern architetturale MVC. Per facilitare questa implementazione,
 è stato impiegato il Cake Pattern, che consente di gestire le dipendenze tra i vari componenti in modo chiaro e strutturato, sfruttando
 caratteristiche avanzate della programmazione funzionale come self-type, mix-in e type-members.
@@ -50,18 +50,18 @@ object ControllerModule:
 
 ### Game
 
--- INSERIRE IMMAGINE GAME --
+-- INSERIRE IMMAGINE GAME CON MODELMODULE, GAMESTATE(senza metodi e/o campi) E GAMEBOARD(senza metodi e/o campi)--
 
-Questa interfaccia modella il concetto di *gioco*, rappresenta l'entità centrale del modello di dominio per il gioco. Tale *trait* 
+Questa interfaccia modella il concetto di *gioco*, rappresenta l'entità centrale del modello di dominio. Tale *trait* 
 espone i seguenti metodi fondamentali:
-- **board**: ha lo scopo di mantenere traccia dei tentati e i feedback relativi all’utente
+- **board**: ha lo scopo di mantenere traccia dei tentati e i feedback relativi all’utente.
 - **code**: rappresenta il codice segreto che il giocatore deve indovinare.
 - **remainingTurns** e **currentTurn**: Consentono, rispettivamente, di determinare il numero di turni rimanenti e di accedere al turno corrente; il metodo currentTurn_() incrementa il turno in corso.
 - **state**: Questo metodo gestisce il GameState, un'entità che descrive lo stato della partita.
 
 #### Game State
 
--- INSERIRE IMMAGINE GAMESTATE --
+-- INSERIRE IMMAGINE GAMESTATE fatto bene con tutto--
 
 `GameState` è un *sealed trait* che rappresenta i tre possibili stati:
 - **InGame**: indica che la partita è in corso
@@ -73,7 +73,7 @@ interrompendo il gioco in caso di vittoria o sconfitta).
 
 #### Game Mode
 
--- INSERIRE IMMAGINE GAMEMODE --
+-- INSERIRE IMMAGINE GAMEMODE fatto bene con tutto --
 
 Per quanto riguarda la configurazione delle partite, il `ModelModule` si avvale del *trait* `GameMode` per gestire le diverse 
 modalità di gioco. In particolare, il metodo *startNewGame* mappa la stringa corrispondente al livello di difficoltà scelto 
@@ -88,14 +88,14 @@ consentendo di istanziare un nuovo gioco con parametri che variano in base alla 
 
 ### Code
 
--- INSERIRE IMMAGINE CODE --
+-- INSERIRE IMMAGINE CODE E STONE--
 
 Il *trait* `Code` rappresenta il codice segreto che il giocatore deve indovinare. Quando viene creato un nuovo codice segreto, viene sfruttata
 la funzione *random*, che genera una sequenza casuale di colori tra quelli disponibili. Questa funzione non solo determina il 
 codice segreto, ma definisce anche la tavolozza di colori selezionabili nel corso della partita.
 L'implementazione concreta di Code, denominata `CodeImpl`, fornisce il metodo *compareTo*, responsabile del confronto tra il codice 
 segreto e il tentativo dell'utente. Questo metodo restituisce un insieme di suggerimenti basato sulle corrispondenze tra il codice 
-e l' input del giocatore. Il calcolo del feedback avviene attraverso due metodi ausiliari:
+e l'input del giocatore. Il calcolo del feedback avviene attraverso due metodi ausiliari:
 - **compareToEqual**: determina le corrispondenze esatte, identificando le pedine che coincidono sia per colore 
 che per posizione con il codice segreto.
 - **compareToPresent**: rileva le pedine presenti nel codice segreto ma collocate in una posizione errata.
@@ -116,7 +116,7 @@ il codice segreto e l'input del giocatore, restituendo un insieme di suggeriment
 
 #### Stone
 
--- INSERIRE IMMAGINE STONE--
+-- INSERIRE IMMAGINE STONE CON PlayerStone e HintStone--
 
 Il *trait* `Stone` rappresenta un'astrazione comune per le pedine utilizzate nel gioco. Da esso derivano due entità principali:
 - **PlayerStone**: rappresenta le pedine selezionabili dal giocatore per comporre un tentativo. Questo tipo di pedine include sei colori 
@@ -127,9 +127,9 @@ HintStone:
   - *HintWhite*: segnala che il colore è presente nel codice segreto ma si trova in una posizione errata.
   - *HintEmpty*: indica che il colore non è presente nel codice segreto.
 
-### Board (inserire Matrix)
+### Board
 
--- INSERIRE IMMAGINE BOARD --
+-- INSERIRE IMMAGINE BOARD CON MATRIX fatto bene con tutto --
 
 Il *trait* `Board`definisce l'interfaccia della griglia di gioco, suddivisa in due matrici. La prima rappresenta 
 i tentativi effettuati dall’utente (PlayableStone) mentre la seconda i feedback connessi a ogni tentativo (HintStone).
@@ -164,10 +164,10 @@ avviare il gioco in diverse modalità (facile, medio, difficile, estremo) e per 
 -- INSERIRE IMMAGINE GAMEVIEW --
 
 Rappresenta la vista del tabellone di gioco in cui sono presenti i comandi:
-- checkCode: permette di verificare la combinazione scelta dall'utente
-- Help: permette di visualizzare le regole del gioco
-- Reset: permette di ricominciare una nuova partita
-- Back: permette di tornare al menu principale
+- **CheckCode**: permette di verificare la combinazione scelta dall'utente
+- **Help**: permette di visualizzare le regole del gioco
+- **Reset**: permette di ricominciare una nuova partita
+- **Back**: permette di tornare al menu principale
 
 ## Controller
 ![Controller](../img/04-design/cake-controller.jpg)
@@ -243,6 +243,6 @@ given Conversion[String, Term] = Term.createTerm(_)
 ```
 
 ## Organizzazione del codice
-Il codice è stato strutturato in package come descritto nel seguente diagramma
+Il codice è stato strutturato in package come descritto nel seguente diagramma:
 
 --INSERIRE IMMAGINE PACKAGES--

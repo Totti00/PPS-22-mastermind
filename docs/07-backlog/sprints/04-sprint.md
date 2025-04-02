@@ -35,9 +35,10 @@ Lo Sprint goal è stato raggiunto secondo i tempi previsti.
 
 ## Sprint retrospective
 
-La sprint è andata molto bene, con tutte le funzionalità principali implementate con successo, come la possibilità di indovinare il codice segreto, visualizzare il tempo trascorso, 
-il numero di tentativi rimanenti e il riavvio della partita. Abbiamo rispettato i tempi di sviluppo e il gioco funziona come previsto, offrendo un feedback chiaro e utile al giocatore. 
-L'interfaccia utente è stata ben strutturata, e la gestione degli input e del cronometro è fluida, migliorando l'esperienza di gioco complessiva. Siamo soddisfatti dei progressi 
-e pronti per ottimizzare ulteriormente nei prossimi passi.
+La sprint è andata molto bene, con tutte le funzionalità principali implementate con successo, come la possibilità di indovinare il 
+codice segreto, visualizzare il tempo trascorso, il numero di tentativi rimanenti e il riavvio della partita. Abbiamo rispettato i 
+tempi di sviluppo e il gioco funziona come previsto, offrendo un feedback chiaro e utile al giocatore. L'interfaccia utente è stata 
+ben strutturata, e la gestione degli input e del cronometro è fluida, migliorando l'esperienza di gioco complessiva. Siamo soddisfatti 
+dei progressi e pronti per ottimizzarli ulteriormente nei prossimi passi.
 
 
