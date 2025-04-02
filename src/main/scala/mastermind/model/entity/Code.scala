@@ -40,7 +40,6 @@ object Code:
     private val engine = createEngine("/prolog/code.pl")
 
     override def compareTo(userInput: PlayableStones): HintStones =
-      println(s"Code: $code")
       val hintStonesRed = compareToEqual(userInput)
       val hintStoneWhite = compareToPresent(userInput)
       val rulesJoinedVector = joinVectors(hintStonesRed, hintStoneWhite)
