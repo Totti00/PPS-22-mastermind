@@ -252,7 +252,7 @@ sfruttare le competenze di entrambi i membri del gruppo ed evitando che uno dei 
 La mole di lavoro maggiore relativa alla parte di logica e view è stata svolta da Giacomo Totaro, mentre Ramzi Gallala ha 
 contribuito in modo più significativo alla parte di model e al testing.
 
-### Ramzi
+### Gallala Ramzi
 Inizialmente, il mio incarico è stato quello di sviluppare le classi principali del Model, in particolare:
 - `Board`: definisce il campo di gioco e gestisce la sua struttura.
 - `Code`: rappresenta il meccanismo di gestione del codice segreto.
@@ -289,7 +289,8 @@ stesse impostazioni di gioco. Questa funzionalità ha coinvolto i moduli:
 Infine, ho integrato *Prolog* nella classe `Code` e `Stone` per il confronto tra il codice segreto e l’input fornito dall’utente tramite 
 la regola *compareToEqual* ([dettagli](#prolog-confronto)). Inoltre, ho implementato la generazione del codice segreto, che prevede prima la selezione casuale dei 
 colori disponibili (*colors*), seguita dalla costruzione del codice (*codeGenerator*), per maggiori dettagli vedere la sezione relativa [dettagli](#prolog-generazione-codice). 
-### Totaro
+
+### Totaro Giacomo
 Nel corso dello sviluppo del progetto, mi sono occupato della progettazione dell'architettura di base, adottando il pattern `MVC` 
 per garantire una chiara separazione delle responsabilità. Contestualmente, sfruttando il *currying*, ho integrato *ScalaFX* per la 
 gestione dell'interfaccia grafica, assicurando un'organizzazione modulare e flessibile del codice. Questa fase iniziale ha posto le 
