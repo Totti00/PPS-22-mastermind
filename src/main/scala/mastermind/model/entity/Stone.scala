@@ -44,7 +44,9 @@ object PlayerStone:
     */
   def random(codeAndColorLength: Int): (PlayableStones, PlayableStones) =
     val stones = Vector(Red, Green, Blue, Yellow, White, Purple)
-    val colors = getResultFromProlog(engine, "colors", mapper, stones, codeAndColorLength.toString)
+    val colors = codeAndColorLength match
+      case length if length >= stones.length => stones
+      case _ => getResultFromProlog(engine, "colors", mapper, stones, codeAndColorLength.toString)
     val code = getResultFromProlog(engine, "codeGenerator", mapper, colors, codeAndColorLength.toString)
     (code, colors)
 
