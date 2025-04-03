@@ -47,10 +47,14 @@ object ControllerModule:
 
 ![Model](../img/04-design/cake-model.jpg)
 ![Model_dettaglio](../img/04-design/model.jpg)
-
+(
+- in Board mettere placeGuessAndHints
+- in Game cambiare currentTurn con remainingTurns
+- controllare frecce da gameState a Game, da Stone a Code e da Matrix a Board
+)
 ### Game
 
--- INSERIRE IMMAGINE GAME CON MODELMODULE, GAMESTATE(senza metodi e/o campi) E GAMEBOARD(senza metodi e/o campi)--
+-- INSERIRE IMMAGINE GAME CON MODELMODULE (come immagine precedente), GAMESTATE(senza metodi e/o campi) E GAMEBOARD(senza metodi e/o campi)--
 
 Questa interfaccia modella il concetto di *gioco*, rappresenta l'entità centrale del modello di dominio. Tale *trait* 
 espone i seguenti metodi fondamentali:
@@ -61,7 +65,7 @@ espone i seguenti metodi fondamentali:
 
 #### Game State
 
--- INSERIRE IMMAGINE GAMESTATE fatto bene con tutto--
+-- INSERIRE IMMAGINE GAMESTATE fatto bene con tutto ciò significa uguale all'immagine del model di dettaglio--
 
 `GameState` è un *sealed trait* che rappresenta i tre possibili stati:
 - **InGame**: indica che la partita è in corso
@@ -73,7 +77,7 @@ interrompendo il gioco in caso di vittoria o sconfitta).
 
 #### Game Mode
 
--- INSERIRE IMMAGINE GAMEMODE fatto bene con tutto --
+-- INSERIRE IMMAGINE GAMEMODE fatto bene con tutto, ciò significa con campi e/o metodi con le varie modalità (uguale al model di dettaglio) --
 
 Per quanto riguarda la configurazione delle partite, il `ModelModule` si avvale del *trait* `GameMode` per gestire le diverse 
 modalità di gioco. In particolare, il metodo *startNewGame* mappa la stringa corrispondente al livello di difficoltà scelto 
@@ -88,7 +92,7 @@ consentendo di istanziare un nuovo gioco con parametri che variano in base alla 
 
 ### Code
 
--- INSERIRE IMMAGINE CODE E STONE--
+-- INSERIRE IMMAGINE CODE E STONE, con metodi e campi e collegamenti --
 
 Il *trait* `Code` rappresenta il codice segreto che il giocatore deve indovinare. Quando viene creato un nuovo codice segreto, viene sfruttata
 la funzione *random*, che genera una sequenza casuale di colori tra quelli disponibili. Questa funzione non solo determina il 
@@ -106,7 +110,7 @@ sempre pari alla lunghezza del codice segreto, completando l'output con pedine v
 
 #### Interazione con Prolog
 
--- INSERIRE IMMAGINE PROLOG --
+-- INSERIRE IMMAGINE PROLOG --   ????? VEDERE PROGETTI PRECEDENTI
 
 L'integrazione con un motore logico *Prolog* viene sfruttata sia per la generazione casuale del codice segreto sia per il confronto 
 con l'input del giocatore. In particolare, viene utilizzato:
@@ -115,8 +119,6 @@ con l'input del giocatore. In particolare, viene utilizzato:
 il codice segreto e l'input del giocatore, restituendo un insieme di suggerimenti rappresentati da pedine di tipo `HintStone`.
 
 #### Stone
-
--- INSERIRE IMMAGINE STONE CON PlayerStone e HintStone--
 
 Il *trait* `Stone` rappresenta un'astrazione comune per le pedine utilizzate nel gioco. Da esso derivano due entità principali:
 - **PlayerStone**: rappresenta le pedine selezionabili dal giocatore per comporre un tentativo. Questo tipo di pedine include sei colori 
@@ -129,7 +131,7 @@ HintStone:
 
 ### Board
 
--- INSERIRE IMMAGINE BOARD CON MATRIX fatto bene con tutto --
+-- INSERIRE IMMAGINE BOARD CON MATRIX fatto bene con tutto. Matrix collegata a STONE ma solo il trait, non le enum --
 
 Il *trait* `Board`definisce l'interfaccia della griglia di gioco, suddivisa in due matrici. La prima rappresenta 
 i tentativi effettuati dall’utente (PlayableStone) mentre la seconda i feedback connessi a ogni tentativo (HintStone).
@@ -154,14 +156,14 @@ dell'utente.
 
 ### Menu View
 
--- INSERIRE IMMAGINE MENUVIEW --
+-- INSERIRE IMMAGINE MENUVIEW solo campi e metodi senza collegarlo --
 
 I pulsanti principali che interagiscono con l'utente sono legati a specifiche azioni nel gioco. Abbiamo implementato pulsanti per
 avviare il gioco in diverse modalità (facile, medio, difficile, estremo) e per accedere alle regole.
 
 ### Game View
 
--- INSERIRE IMMAGINE GAMEVIEW --
+-- INSERIRE IMMAGINE GAMEVIEW solo campi e metodi senza collegarlo--
 
 Rappresenta la vista del tabellone di gioco in cui sono presenti i comandi:
 - **CheckCode**: permette di verificare la combinazione scelta dall'utente
@@ -245,4 +247,4 @@ given Conversion[String, Term] = Term.createTerm(_)
 ## Organizzazione del codice
 Il codice è stato strutturato in package come descritto nel seguente diagramma:
 
---INSERIRE IMMAGINE PACKAGES--
+--INSERIRE IMMAGINE PACKAGES guarda le altre relazioni --
