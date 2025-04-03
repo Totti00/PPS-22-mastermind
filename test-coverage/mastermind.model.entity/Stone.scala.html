@@ -7,7 +7,7 @@ import scala.language.implicitConversions
 
 <span class="nc" id="L8">type PlayableStones = Vector[PlayerStone]</span>
 type HintStones = Vector[HintStone]
-<span class="fc" id="L10">val MAX_PERMUTATION = 100</span>
+<span class="nc" id="L10">val MAX_PERMUTATION = 100</span>
 
 sealed trait Stone
 
@@ -44,23 +44,13 @@ sealed trait Stone
     */
   def random(codeAndColorLength: Int): (PlayableStones, PlayableStones) =
 <span class="fc" id="L46">    val stones = Vector(Red, Green, Blue, Yellow, White, Purple)</span>
-<span class="fc" id="L47">    val colors = randomHelper(stones, &quot;permutation&quot;, codeAndColorLength)</span>
-<span class="fc" id="L48">    val code = randomHelper(colors, &quot;codeGenerator&quot;, codeAndColorLength)</span>
+<span class="fc" id="L47">    val colors = codeAndColorLength match</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">      case length if length &gt;= stones.length =&gt; stones</span>
+<span class="fc" id="L49">      case _ =&gt; getResultFromProlog(engine, &quot;colors&quot;, mapper, stones, codeAndColorLength.toString)</span>
+<span class="fc" id="L50">    val code = getResultFromProlog(engine, &quot;codeGenerator&quot;, mapper, colors, codeAndColorLength.toString)</span>
+<span class="fc" id="L51">    (code, colors)</span>
 
-<span class="fc" id="L50">    (code, colors)</span>
-
-  private def randomHelper(stones: PlayableStones, functor: String, codeAndColorLength: Int): PlayableStones =
-<span class="fc" id="L53">    val permutations = obtainVectorPlayable(stones, functor, codeAndColorLength)</span>
-<span class="fc" id="L54">    val drawOne = permutations(Random.nextInt(permutations.size))</span>
-<span class="fc" id="L55">    fromStringToVector(drawOne)(mapper)</span>
-
-  private def obtainVectorPlayable(stones: String, functor: String, codeAndColorLength: Int): Vector[String] =
-<span class="fc" id="L58">    engine(s&quot;$functor($stones, $codeAndColorLength, PlayableStones).&quot;)</span>
-<span class="fc" id="L59">      .take(MAX_PERMUTATION)</span>
-<span class="fc" id="L60">      .map(extractTermToString(_, &quot;PlayableStones&quot;))</span>
-      .toVector
-
-<span class="fc" id="L63">  private def mapper = PlayerStone.fromString</span>
+<span class="fc" id="L53">  private def mapper = PlayerStone.fromString</span>
 
   /** Converts a string to the corresponding `PlayerStoneGrid` color.
     * @param stoneColor
@@ -69,13 +59,13 @@ sealed trait Stone
     *   Gives the requested color or an empty color in case the requested color is not found
     */
   def fromString(stoneColor: String): PlayerStone =
-<span class="pc" id="L72">    values.find(_.toString == stoneColor.toLowerCase.capitalize).getOrElse(Empty)</span>
+<span class="pc" id="L62">    values.find(_.toString == stoneColor.toLowerCase.capitalize).getOrElse(Empty)</span>
 
-<span class="pc" id="L74">enum HintStone extends Stone:</span>
-<span class="pc bnc" id="L75" title="All 12 branches missed.">  case HintRed, HintWhite, HintEmpty</span>
+<span class="pc" id="L64">enum HintStone extends Stone:</span>
+<span class="pc bnc" id="L65" title="All 12 branches missed.">  case HintRed, HintWhite, HintEmpty</span>
 
-<span class="fc" id="L77">  override def toString: String = this match</span>
-<span class="pc bpc" id="L78" title="4 of 6 branches missed.">    case HintRed   =&gt; &quot;Red&quot;</span>
-<span class="pc bpc" id="L79" title="4 of 6 branches missed.">    case HintWhite =&gt; &quot;White&quot;</span>
-<span class="nc bnc" id="L80" title="All 6 branches missed.">    case HintEmpty =&gt; &quot;Empty&quot;</span>
+<span class="fc" id="L67">  override def toString: String = this match</span>
+<span class="pc bpc" id="L68" title="4 of 6 branches missed.">    case HintRed   =&gt; &quot;Red&quot;</span>
+<span class="pc bpc" id="L69" title="4 of 6 branches missed.">    case HintWhite =&gt; &quot;White&quot;</span>
+<span class="nc bnc" id="L70" title="All 6 branches missed.">    case HintEmpty =&gt; &quot;Empty&quot;</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

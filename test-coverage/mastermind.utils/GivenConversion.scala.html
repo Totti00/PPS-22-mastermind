@@ -6,6 +6,6 @@ import mastermind.model.entity.PlayableStones
 <span class="nc" id="L6">object GivenConversion:</span>
 
 <span class="pc" id="L8">  object PrologConversion:</span>
-<span class="pc bpc" id="L9" title="9 of 18 branches missed.">    given Conversion[PlayableStones, String] = _.map(_.toString.toLowerCase).mkString(&quot;[&quot;, &quot;, &quot;, &quot;]&quot;)</span>
+<span class="pc bpc" id="L9" title="11 of 18 branches missed.">    given Conversion[PlayableStones, String] = _.map(_.toString.toLowerCase).mkString(&quot;[&quot;, &quot;, &quot;, &quot;]&quot;)</span>
 <span class="pc bpc" id="L10" title="11 of 18 branches missed.">    given Conversion[String, Term] = Term.createTerm(_)</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
