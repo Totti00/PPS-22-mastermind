@@ -291,8 +291,8 @@ stesse impostazioni di gioco. Questa funzionalità ha coinvolto i moduli:
 
 Infine, ho integrato *Prolog* nella classe `Code` e `Stone` per il confronto tra il codice segreto e l’input fornito dall’utente tramite 
 la regola *compareToEqual* ([dettagli](#prolog-confronto)). Inoltre, ho implementato la generazione del codice segreto, che prevede 
-prima la selezione casuale dei colori disponibili (*colors*), seguita dalla costruzione del codice (*codeGenerator*), per maggiori 
-dettagli vedere la [sezione relativa](#prolog-generazione-codice). 
+prima la selezione casuale dei colori disponibili (*colors*) solo nel caso in cui la lunghezza richiesta sia minore degli *stones* a 
+disposizione, seguita poi dalla costruzione del codice (*codeGenerator*), per maggiori dettagli vedere la [sezione relativa](#prolog-generazione-codice). 
 
 ### Totaro Giacomo
 Nel corso dello sviluppo del progetto, mi sono occupato della progettazione dell'architettura di base, adottando il pattern `MVC` 
