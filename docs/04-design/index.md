@@ -46,7 +46,7 @@ object ControllerModule:
 ## Model
 
 ![Model](../img/04-design/cake-model.jpg)
-![Model_dettaglio](../img/04-design/model.jpg)
+![Model_dettaglio](../img/04-design/model2.jpg)
 (
 - in Board mettere placeGuessAndHints
 - in Game cambiare currentTurn con remainingTurns
