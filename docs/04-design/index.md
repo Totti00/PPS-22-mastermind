@@ -46,11 +46,12 @@ object ControllerModule:
 ## Model
 
 ![Model](../img/04-design/cake-model.jpg)
-![Model_dettaglio](../img/04-design/model.jpg)
+![Model_dettaglio](../img/04-design/model2.jpg)
 
 ### Game
 
 -- INSERIRE IMMAGINE GAME CON MODELMODULE, GAMESTATE(senza metodi e/o campi) E GAMEBOARD(senza metodi e/o campi)--
+![Game](../img/04-design/model2.jpg)
 
 Questa interfaccia modella il concetto di *gioco*, rappresenta l'entità centrale del modello di dominio. Tale *trait* 
 espone i seguenti metodi fondamentali:
