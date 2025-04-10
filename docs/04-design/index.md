@@ -52,6 +52,10 @@ object ControllerModule:
 
 ![Game](../img/04-design/game.jpg)
 
+<p align="center">
+  <img src="../img/04-design/game.jpg" alt="Game" />
+</p>
+
 Questa interfaccia modella il concetto di *gioco*, rappresenta l'entità centrale del modello di dominio. Tale *trait* 
 espone i seguenti metodi fondamentali:
 - **board**: ha lo scopo di mantenere traccia dei tentati e i feedback relativi all’utente.
@@ -62,6 +66,10 @@ espone i seguenti metodi fondamentali:
 #### Game State
 
 ![GameState](../img/04-design/gameState.jpg)
+
+<p align="center">
+  <img src="../img/04-design/gameState.jpg" alt="GameState" />
+</p>
 
 `GameState` è un *sealed trait* che rappresenta i tre possibili stati:
 - **InGame**: indica che la partita è in corso
