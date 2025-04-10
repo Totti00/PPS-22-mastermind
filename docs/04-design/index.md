@@ -50,8 +50,6 @@ object ControllerModule:
 
 ### Game
 
-![Game](../img/04-design/game.jpg)
-
 <p align="center">
   <img src="../img/04-design/game.jpg" alt="Game" />
 </p>
@@ -64,8 +62,6 @@ espone i seguenti metodi fondamentali:
 - **state**: Questo metodo gestisce il GameState, un'entità che descrive lo stato della partita.
 
 #### Game State
-
-![GameState](../img/04-design/gameState.jpg)
 
 <p align="center">
   <img src="../img/04-design/gameState.jpg" alt="GameState" />
@@ -81,7 +77,9 @@ interrompendo il gioco in caso di vittoria o sconfitta).
 
 #### Game Mode
 
-![GameMode](../img/04-design/gameMode.jpg)
+<p align="center">
+  <img src="../img/04-design/gameMode.jpg" alt="GameMode" />
+</p>
 
 Per quanto riguarda la configurazione delle partite, il `ModelModule` si avvale del *trait* `GameMode` per gestire le diverse 
 modalità di gioco. In particolare, il metodo *startNewGame* mappa la stringa corrispondente al livello di difficoltà scelto 
@@ -159,14 +157,18 @@ dell'utente.
 
 ### Menu View
 
-![MenuView](../img/04-design/menuView.jpg)
+<p align="center">
+  <img src="../img/04-design/menuView.jpg" alt="MenuView" />
+</p>
 
 I pulsanti principali che interagiscono con l'utente sono legati a specifiche azioni nel gioco. Abbiamo implementato pulsanti per
 avviare il gioco in diverse modalità (facile, medio, difficile, estremo) e per accedere alle regole.
 
 ### Game View
 
-![GameView](../img/04-design/gameView.jpg)
+<p align="center">
+  <img src="../img/04-design/gameView.jpg" alt="GameView" />
+</p>
 
 Rappresenta la vista del tabellone di gioco in cui sono presenti i comandi:
 - **CheckCode**: permette di verificare la combinazione scelta dall'utente
